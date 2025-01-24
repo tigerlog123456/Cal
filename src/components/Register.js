@@ -26,7 +26,8 @@ const RegisterComponent = ({ onLoginClick }) => {
             status : registerdata.status,
             location : registerdata.location,
             phonenumber : registerdata.phonenumber,
-            rate : registerdata.rate
+            rate : registerdata.rate,
+            price : registerdata.price
         }
         const clientdata = {
             fullName : registerdata.Fullname,
@@ -36,7 +37,7 @@ const RegisterComponent = ({ onLoginClick }) => {
             status : registerdata.status,
             targetWeight : registerdata.targetweight,
             weight : registerdata.weight,
-            agencyId : null
+            agencyId : ""
         }
         try {
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);

@@ -9,7 +9,7 @@ import Register from "../components/Register";
 
 import '../App.css'
 import Navbar from "../components/Navbar";
-function Homepage () {
+function Homepage ( {ontrigger}) {
   const [user , setUser] = useState(null);
   const [userislogged, setUserisLogged] = useState(null);
   const [showRegister, setShowRegister] = useState(false); 

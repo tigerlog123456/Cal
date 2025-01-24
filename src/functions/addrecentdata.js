@@ -49,7 +49,8 @@ const Addrecentdata = ({data}) =>{
     }, [caloriesburned, caloriesneeded ]); 
     return(
         //Client Dashboard Inputs
-        <div>
+        <div className="p-4">
+            <h1 className="font-bold text-xl">Daily Data</h1>
              <input
                 type="number"
                 placeholder="todayweight"

@@ -4,13 +4,14 @@ const Registerinfo = ({setusertype , registerdata}) =>{
  const [Fullname , setfullname] = useState("")
     const [age , setage] = useState("")
     const [weight , setweight] =  useState("")
-    const [ height , setheight] = useState("")
+    const [height , setheight] = useState("")
     const [targetweight ,settargetweight] = useState("")
     const [health , sethealth] = useState("")
     const [agencyname , setagencyname] = useState("")
     const [ownername , setownername] = useState("")
     const [location , setlocation] = useState("")
     const [phonenumber , setphonenumber] = useState("")
+    const [price , setprice]=useState(0)
     const status = 'active'
     const rate = 0
     useEffect(() => {
@@ -27,8 +28,9 @@ const Registerinfo = ({setusertype , registerdata}) =>{
             location,
             phonenumber,
             rate,
+            price,
         });
-    }, [Fullname, age, weight, height, targetweight, health, agencyname, ownername, status , location , phonenumber , rate]);
+    }, [Fullname, age, weight, height, targetweight, health, agencyname, ownername, status , location , phonenumber , rate , price]);
 
     const renderusertype = () => {
 
@@ -103,6 +105,12 @@ const Registerinfo = ({setusertype , registerdata}) =>{
                 value={location}
                 placeholder="location"
                 onChange={(e) => setlocation(e.target.value)}
+            />
+            <input
+                type="number"
+                value={price}
+                placeholder="price"
+                onChange={(e) => setprice(e.target.value)}
             />
         </div>
                 );

@@ -3,6 +3,7 @@ import React , {usestate , useCallback} from "react";
 import '../App.css'
 import Addrecentdata from "../functions/addrecentdata";
 import Getrecentdata from "../functions/getrecentdata";
+import Getagencies from "../functions/getallagencies";
 const ClientDashboard = ({data}) => {
     return (
         <div className="">
@@ -14,6 +15,7 @@ const ClientDashboard = ({data}) => {
         <h2>Welcome, {data.fullName}</h2>
         <Addrecentdata data={data} />
         <Getrecentdata data={data} />
+        <Getagencies data={data}/>
         </>
         )}
          

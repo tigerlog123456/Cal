@@ -2,24 +2,38 @@ import { useEffect } from 'react';
 import '../App.css'
 import { useState } from 'react';
 import {db} from '../firebase-config';
-import { doc, getDoc } from 'firebase/firestore';
+import {collection, doc, getDocs, query, where } from 'firebase/firestore';
 
-const SpecificUser = ({data , setfetcheddata}) =>{
+const SpecificUser = ({agencycode, agencydata , data , setfetcheddata}) =>{
+
+
     const [error, setError] = useState(null);
-
     useEffect(() => {
-        if (data) {
+       
+        if (data) { 
             const fetchUserData = async () => {
                 try {
-                    const userDoc = doc(db, 'users', data);
-                    const docSnap = await getDoc(userDoc);
-
-                    if (docSnap.exists()) {
-                        const userData = docSnap.data();
-                        setfetcheddata(userData); // Correctly call setfetcheddata
+                    const userDoc = collection(db, 'users');
+                    const query1 = query(userDoc, where("uid", "==", data));
+                    const query2 = query(userDoc, where("agencyCode", "==", agencydata));
+                    const query3 = query(userDoc, where("agencyCode", "==", agencycode));
+                    const [snapshot1, snapshot2 , snapshot3 ] = await Promise.all([
+                        getDocs(query1),
+                        getDocs(query2),
+                        getDocs(query3),
+                      ]);
+                      const results = [];
+                      snapshot1.forEach((doc) => results.push(doc.data()));
+                      snapshot2.forEach((doc) => results.push(doc.data()));
+                      snapshot3.forEach((doc) => results.push(doc.data()));
+                 
+                      if (results.length > 0) {
+                        setfetcheddata(results); 
+                       // Assuming you want the first matched document
                     } else {
-                        setError('No user data found.');
+                        setError("No matching documents found.");
                     }
+
                 } catch (err) {
                     setError('Failed to fetch user data.');
                     console.error(err);
@@ -27,7 +41,7 @@ const SpecificUser = ({data , setfetcheddata}) =>{
             };
             fetchUserData();
         }
-    }, [data, setfetcheddata]);
+    }, [data , agencycode , agencydata, setfetcheddata]);
     // Optionally, handle error rendering
     if (error) {
         return <p>{error}</p>;

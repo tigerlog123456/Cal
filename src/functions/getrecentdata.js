@@ -29,11 +29,11 @@ const [timestamp , settimestamp] = useState([])
     useEffect(()=>{
         fetchdata()
     },[data])
-
     return (
       //Client Dashboard Table
-
+      
         <div className="p-4">
+          <h1 className='font-bold text-xl'>Recent Data</h1>
       {recentdata.length > 0 ? (
         recentdata.map((record, index) => (
           <div key={index} className="overflow-x-auto mb-6">
@@ -41,8 +41,8 @@ const [timestamp , settimestamp] = useState([])
             <div className="flex justify-between p-2 font-bold">
               <div className="w-1/6">Water</div>
               <div className="w-1/6">Steps</div>
-              <div className="w-1/6">Calories Burned</div>
               <div className="w-1/6">Today's Weight</div>
+              <div className="w-1/6">Calories Burned</div>
               <div className="w-1/6">Calories Needed</div>
               <div className="w-1/6">Timestamp</div>
             </div>
@@ -50,8 +50,8 @@ const [timestamp , settimestamp] = useState([])
             <div className="flex justify-between p-2">
               <div className="w-1/6">{record.water}</div>
               <div className="w-1/6">{record.steps}</div>
-              <div className="w-1/6">{record.caloriesburned}</div>
               <div className="w-1/6">{record.todayWeight}</div>
+              <div className="w-1/6">{record.caloriesburned}</div>
               <div className="w-1/6">{record.caloriesneeded}</div>
               <div className="w-1/6">{timestamp[index] ? timestamp[index].toString() : 'N/A'}</div>
             </div>
