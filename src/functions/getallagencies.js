@@ -10,11 +10,9 @@ const [error, setError] = useState(null);
                         // Query Firestore to fetch users where usertype = 'agencies'
                         const q = query(collection(db, "users"), where("userType", "==", "agency"));
                         const querySnapshot = await getDocs(q);
-                        console.log(querySnapshot)
                         if (!querySnapshot.empty) {
                           const usersData = querySnapshot.docs.map(doc => doc.data());
                           setAllAgencies(usersData); // Set agencies data
-                          console.log(usersData)
                         } else {
                           setError('No agencies found.');
                         }
