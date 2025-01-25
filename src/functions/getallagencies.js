@@ -81,79 +81,85 @@ const Getagencies = () => {
     setSortField(field); // Update the sort field
   };
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold">Top Gyms</h1>
-      {error && <p>{error}</p>}
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="Search agencies..."
-          className="p-2 border rounded w-full"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-      <div className="mb-4 flex items-center">
-        <button
-          className="p-2 bg-blue-500 text-white rounded mr-2"
-          onClick={() => handleSort("agencyName")}
-        >
-          Sort by Name ({sortOrder === "asc" && sortField === "agencyName" ? "Ascending" : "Descending"})
-        </button>
-        <button
-          className="p-2 bg-blue-500 text-white rounded mr-2"
-          onClick={() => handleSort("ownerName")}
-        >
-          Sort by Owner Name ({sortOrder === "asc" && sortField === "ownerName" ? "Ascending" : "Descending"})
-        </button>
-        <button
-          className="p-2 bg-blue-500 text-white rounded mr-2"
-          onClick={() => handleSort("location")}
-        >
-          Sort by location ({sortOrder === "asc" && sortField === "location" ? "Ascending" : "Descending"})
-        </button>
-        <button
-          className="p-2 bg-blue-500 text-white rounded mr-2"
-          onClick={() => handleSort("price")}
-        >
-          Sort by Price ({sortOrder === "asc" && sortField === "price" ? "Ascending" : "Descending"})
-        </button>
-        <button
-          className="p-2 bg-blue-500 text-white rounded"
-          onClick={() => handleSort("averageRate")}
-        >
-          Sort by Rate ({sortOrder === "asc" && sortField === "averageRate" ? "Ascending" : "Descending"})
-        </button>
-      </div>
-      <div>
-        {filteredAgencies && filteredAgencies.length > 0 ? (
-          filteredAgencies.map((agency, index) => (
-            <div key={index} className="overflow-x-auto mb-6">
-              {/* Row 1: Headers */}
-              <div className="flex justify-between p-2 font-bold">
-                <div className="w-1/6">Name</div>
-                <div className="w-1/6">Owner Name</div>
-                <div className="w-1/6">Phone Number</div>
-                <div className="w-1/6">Location</div>
-                <div className="w-1/6">Price</div>
-                <div className="w-1/6">Rate</div>
-              </div>
-              {/* Row 2: Values */}
-              <div className="flex justify-between p-2">
-                <div className="w-1/6">{agency.agencyName}</div>
-                <div className="w-1/6">{agency.ownerName}</div>
-                <div className="w-1/6">{agency.phonenumber}</div>
-                <div className="w-1/6">{agency.location}</div>
-                <div className="w-1/6">{agency.price}</div>
-                <div className="w-1/6">{agency.averageRate}</div> {/* Displaying average rate */}
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>No agencies to display.</p>
-        )}
-      </div>
+    <div className="p-4 bg-white shadow-lg rounded-lg  mx-auto">
+  <h1 className="text-xl font-bold">Top Gyms</h1>
+  {error && <p>{error}</p>}
+
+  {/* Sort buttons at the top */}
+  <div className="mb-4 flex justify-between items-center">
+    <div className="flex space-x-2">
+      <button
+        className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+        onClick={() => handleSort("agencyName")}
+      >
+        Sort by Name
+      </button>
+      <button
+        className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+        onClick={() => handleSort("ownerName")}
+      >
+        Sort by Owner
+      </button>
+      <button
+        className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+        onClick={() => handleSort("location")}
+      >
+        Sort by Location
+      </button>
+      <button
+        className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+        onClick={() => handleSort("price")}
+      >
+        Sort by Price
+      </button>
+      <button
+        className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
+        onClick={() => handleSort("averageRate")}
+      >
+        Sort by Rate
+      </button>
     </div>
+    <input
+      type="text"
+      placeholder="Search agencies..."
+      className="p-2 border rounded w-1/4"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    />
+  </div>
+
+  {/* Table headers with background color */}
+  <div className="overflow-x-auto mb-6">
+    <div className="flex justify-between p-2 font-bold border-b bg-gray-100">
+      <div className="w-1/6">Name</div>
+      <div className="w-1/6">Owner Name</div>
+      <div className="w-1/6">Phone Number</div>
+      <div className="w-1/6">Location</div>
+      <div className="w-1/6">Price</div>
+      <div className="w-1/6">Rate</div>
+    </div>
+
+    {/* Table rows with background and hover effect */}
+    {filteredAgencies && filteredAgencies.length > 0 ? (
+      filteredAgencies.map((agency, index) => (
+        <div
+          key={index}
+          className="flex justify-between p-2 border-b bg-white hover:bg-gray-50"
+        >
+          <div className="w-1/6">{agency.agencyName}</div>
+          <div className="w-1/6">{agency.ownerName}</div>
+          <div className="w-1/6">{agency.phonenumber}</div>
+          <div className="w-1/6">{agency.location}</div>
+          <div className="w-1/6">{agency.price}</div>
+          <div className="w-1/6">{agency.averageRate}</div>
+        </div>
+      ))
+    ) : (
+      <p>No agencies to display.</p>
+    )}
+  </div>
+</div>
+
   );
 };
 export default Getagencies;

@@ -1,70 +1,82 @@
-import { useEffect, useState } from "react"
-import { doc, setDoc , getDoc ,  updateDoc, increment } from "firebase/firestore"; // Import Firestore methods
-import { db } from "../firebase-config"
-const Addrate = ({data}) =>{
-const [rate , setrate] = useState("")
-const [hasRated, setHasRated] = useState(false);
-useEffect(()=>{
+import { useEffect, useState } from "react";
+import { doc, setDoc, getDoc, updateDoc, increment } from "firebase/firestore"; // Import Firestore methods
+import { db } from "../firebase-config";
+
+const Addrate = ({ data }) => {
+  const [rate, setRate] = useState("");
+  const [hasRated, setHasRated] = useState(false);
+
+  useEffect(() => {
     checkIfRated();
- } , [data , rate])
- const checkIfRated = async () => {
+  }, [data]);
+
+  const checkIfRated = async () => {
     if (data[0] && data[1]) {
       const rateRef = doc(db, "AgencyRate", `${data[0].uid}_${data[1].uid}`);
       const rateSnapshot = await getDoc(rateRef);
       if (rateSnapshot.exists()) {
-        // If document exists, set `hasRated` to true
         setHasRated(true);
       }
     }
   };
-const handlesubmit = async() =>{
+
+  const handleSubmit = async () => {
     if (data[0] && data[1] && rate) {
-        try {
-          // Define a document reference for the AgencyRate collection
-          const rateRef = doc(db, "AgencyRate" ,`${data[0].uid}_${data[1].uid}`);
-          // Set the rate data in Firestore
-          await setDoc(rateRef, {
-            userId: data[0].uid, // User's UID
-            agencyId: data[1].uid, // Agency's UID
-            rate: rate, // Rate given by the user
-            timestamp: new Date(), // Timestamp of when the rate was submitted
-          });   
-          const agencyRef = doc(db, "users", data[1].uid); // Reference to the agency document
-          const agencySnapshot = await getDoc(agencyRef);
-          if (agencySnapshot.exists()) {
-            // Increment the rating count by 1
-            await updateDoc(agencyRef, {
-              rate: increment(1),
-            });
-          } else {
-          }
-          // Optionally, you can reset the rate after submission
-          setHasRated(true); // Mark as rated
-          setrate("");
-        } catch (error) {
+      try {
+        const rateRef = doc(db, "AgencyRate", `${data[0].uid}_${data[1].uid}`);
+        await setDoc(rateRef, {
+          userId: data[0].uid,
+          agencyId: data[1].uid,
+          rate: rate,
+          timestamp: new Date(),
+        });
+
+        const agencyRef = doc(db, "users", data[1].uid);
+        const agencySnapshot = await getDoc(agencyRef);
+        if (agencySnapshot.exists()) {
+          await updateDoc(agencyRef, {
+            rate: increment(1),
+          });
         }
-      } else if (hasRated) {
+
+        setHasRated(true);
+        setRate("");
+      } catch (error) {
+        console.error("Error submitting rating:", error);
       }
-      else {
-      }
-}
-return(
-    <div>
+    }
+  };
+
+  return (
+    <div className="flex items-center space-x-2">
       {hasRated ? (
-        <p>Already Rated</p>
+        <p className="text-green-600 font-medium text-sm">Rated</p>
       ) : (
-        <>
-          <select value={rate} onChange={(e) => setrate(e.target.value)} key={1}>
+        <div className="flex items-center space-x-2">
+          <select
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+            className="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+          >
+            <option value="" disabled>
+              Rate
+            </option>
             <option value="1">1</option>
             <option value="2">2</option>
             <option value="3">3</option>
             <option value="4">4</option>
             <option value="5">5</option>
           </select>
-          <button onClick={handlesubmit}>Submit</button>
-        </>
+          <button
+            onClick={handleSubmit}
+            className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-sm"
+          >
+            Submit
+          </button>
+        </div>
       )}
     </div>
-)
-}
-export default Addrate
+  );
+};
+
+export default Addrate;
