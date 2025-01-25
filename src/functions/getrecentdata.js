@@ -4,7 +4,7 @@ import {collection, getDocs,query, where } from 'firebase/firestore';
 import { db } from "../firebase-config";
 
 
-const Getrecentdata= ({data , selecteduser}) =>{
+const Getrecentdata= ({data , refreshKey , Setrecent }) =>{
 const [recentdata , setRecentdata] = useState([])
 const [timestamp , settimestamp] = useState([])
     const fetchdata = async() =>{
@@ -22,13 +22,27 @@ const [timestamp , settimestamp] = useState([])
               });
               if (dataList.length > 0) {
                 setRecentdata(dataList); // Store all the fetched records
+                Setrecent(dataList)
                 settimestamp(dataList.map(item => new Date(item.timestamp)));
+                dataList.sort((a, b) => b.timestamp - a.timestamp);
               }
         } catch (error) { console.error('Error fetching recent data:', error); }
     }
+    const formatDate = (timestamp) => {
+      const date = typeof timestamp === "number" ? new Date(timestamp) : timestamp;
+      if (!date) return "N/A";
+      const options = {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      };
+      return date.toLocaleString("en-GB", options); // "en-GB" ensures DD/MM/YYYY format
+    };
     useEffect(()=>{
         fetchdata()
-    },[data])
+    },[data , refreshKey])
     return (
       //Client Dashboard Table
       
@@ -44,7 +58,7 @@ const [timestamp , settimestamp] = useState([])
               <div className="w-1/6">Today's Weight</div>
               <div className="w-1/6">Calories Burned</div>
               <div className="w-1/6">Calories Needed</div>
-              <div className="w-1/6">Timestamp</div>
+              <div className="w-1/6">Date / Time</div>
             </div>
             {/* Row 2: Values */}
             <div className="flex justify-between p-2">
@@ -53,7 +67,9 @@ const [timestamp , settimestamp] = useState([])
               <div className="w-1/6">{record.todayWeight}</div>
               <div className="w-1/6">{record.caloriesburned}</div>
               <div className="w-1/6">{record.caloriesneeded}</div>
-              <div className="w-1/6">{timestamp[index] ? timestamp[index].toString() : 'N/A'}</div>
+              <div className="w-1/6">
+                {record.timestamp ? formatDate(record.timestamp) : "N/A"}
+              </div>
             </div>
           </div>
         ))

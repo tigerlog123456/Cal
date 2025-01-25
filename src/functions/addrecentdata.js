@@ -2,7 +2,7 @@ import {useEffect, useState } from "react"
 import { db } from '../firebase-config';
 import { collection, addDoc } from 'firebase/firestore';
 import '../App.css'
-const Addrecentdata = ({data}) =>{
+const Addrecentdata = ({data , onDataAdded}) =>{
     const [steps , setsteps] = useState("")
     const [todayweight , settodayweight] = useState("")
     const [water , setwater] = useState("")
@@ -11,7 +11,7 @@ const Addrecentdata = ({data}) =>{
     const calculation = async() =>{
         const validateInputs = () => {
             // Ensure all fields are greater than 10
-            if (steps <= 10 || todayweight <= 10 || water <= 10) {
+            if (steps <= 10 || todayweight <= 10 || water <= 1) {
                 return false;
             }
             return true;
@@ -41,6 +41,7 @@ const Addrecentdata = ({data}) =>{
         }  
         try {
         await addDoc(collection(db, 'recentData'), updateddata);
+        onDataAdded();
     } catch (error) {
         console.error('Error saving data:', error);
     }
@@ -51,12 +52,7 @@ const Addrecentdata = ({data}) =>{
         //Client Dashboard Inputs
         <div className="p-4">
             <h1 className="font-bold text-xl">Daily Data</h1>
-             <input
-                type="number"
-                placeholder="todayweight"
-                value={todayweight}
-                onChange={(e) => settodayweight(e.target.value)}
-            />
+            
             <input
                 type="number"
                 placeholder="water"   
@@ -68,6 +64,12 @@ const Addrecentdata = ({data}) =>{
                 placeholder="steps"        
                 value={steps}
                 onChange={(e) => setsteps(e.target.value)}
+            />
+             <input
+                type="number"
+                placeholder="todayweight"
+                value={todayweight}
+                onChange={(e) => settodayweight(e.target.value)}
             />
             <button onClick={calculation}>
                 Calculate

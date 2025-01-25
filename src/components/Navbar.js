@@ -5,21 +5,24 @@ import { auth } from "../firebase-config"; // Import your Firebase auth instance
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
+import Addrate from "../functions/Rateimport";
 const Navbar = ({data , ontrigger}) =>{
     const navigate = useNavigate()
     const [fetcheddata , setfetcheddata] = useState()
     const [showOverlay, setShowOverlay] = useState(false);
     const [agencyInput, setAgencyInput] = useState("");
     const [fetchedd , setfetchdd] = useState()
+    const [isConnectedToAgency, setIsConnectedToAgency] = useState(data?.agencyId == ""); // Track if connected to agency
     useEffect(()=>{
         if(data && fetcheddata){
           setfetchdd(fetcheddata)
+
         }
-    },[data , fetcheddata , fetchedd ])
+    },[data , fetcheddata , fetchedd , isConnectedToAgency ])
   const handleLogout= async()=>{
         try {
             await signOut(auth); // Logs the user out of Firebase
-            console.log("User logged out successfully");
+
             window.location.reload();
             // Optionally, redirect the user or clear local state here
         } catch (error) {
@@ -36,14 +39,13 @@ const Navbar = ({data , ontrigger}) =>{
             return;
         }
         if (fetchedd && fetchedd.length > 1) {
-            console.log("Second element:", fetchedd); // Safely log the second element
             try {
                 const userDocRef = doc(db, "users", data.uid); // Reference to the user's document
                 await updateDoc(userDocRef, {
                     agencyId: agencyInput, // Update the agencyId field
                 });
-                console.log("Agency ID updated successfully.");
                 setShowOverlay(false); // Hide the overlay after submission
+                setIsConnectedToAgency(true);
             } catch (error) {
                 console.error("Error updating agency ID:", error);
             }
@@ -58,20 +60,22 @@ const Navbar = ({data , ontrigger}) =>{
         // Navbar Div
         <div>
             <p>logo</p>
-            {data && data.agencyId === "" && data.userType === "client" && (
-                // Need to make it as Button
-                <div>
-                    <button onClick={handleconnect}>
-                        Connect to Agency
-                    </button>
-                </div>
-            )}
+            {data && data.agencyId === "" && data.userType === "client" && !isConnectedToAgency && (
+        // Only show the "Connect to Agency" button if not already connected
+        <div>
+          <button onClick={handleconnect}>Connect to Agency</button>
+        </div>
+      )}
              {data && data.agencyId !== " " && data.userType === "client" && (
                 // Agency name if found instead of the button
                 <div>
                     <SpecificUser agencycode={data.agencyId} agencydata={agencyInput} data={data.uid} setfetcheddata={setfetcheddata} />
                   {fetchedd && fetchedd.length > 1 && (
+                    <>
+                    
                     <p>{fetchedd[1].agencyName}</p>
+                    <Addrate data={fetchedd} />
+                    </>
                   )}
                 </div>
             )}
@@ -81,7 +85,11 @@ const Navbar = ({data , ontrigger}) =>{
                     navigate('/Cal')
                 }}>Home</a>
             }
-            <p>profile</p>
+            {data && (
+              <p>profile</p>
+            )}
+
+            
             {data &&(
                 // Logout Button
                 <button onClick={handleLogout}>
