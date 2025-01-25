@@ -5,7 +5,6 @@ import {db} from '../firebase-config';
 import { doc, getDoc } from 'firebase/firestore';
 
     const UserData = ({data, onDataFetched }) => {
-        
         const [error, setError] = useState(null);
         const importeddata = data
         useEffect(() => {
@@ -17,7 +16,6 @@ import { doc, getDoc } from 'firebase/firestore';
                         if (docSnap.exists()) {
                             const userData = docSnap.data();
                             onDataFetched(userData); // Pass the fetched data to Homepage
-    
                         } else {
                             setError('No user data found.');
                         }
@@ -25,9 +23,7 @@ import { doc, getDoc } from 'firebase/firestore';
                         setError('Failed to fetch user data.');
                         console.error(err);
                     }
-                };
-                
-                
+                };         
                 fetchUserData();
             }
         }, [importeddata, onDataFetched]);

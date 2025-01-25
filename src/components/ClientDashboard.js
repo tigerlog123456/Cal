@@ -1,5 +1,4 @@
-  import React , {useState , useCallback, useEffect} from "react";
-
+  import React , {useState} from "react";
   import '../App.css'
   import Addrecentdata from "../functions/addrecentdata";
   import Getrecentdata from "../functions/getrecentdata";

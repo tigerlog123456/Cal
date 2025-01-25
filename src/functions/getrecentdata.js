@@ -3,7 +3,6 @@ import '../App.css'
 import {collection, getDocs,query, where } from 'firebase/firestore';
 import { db } from "../firebase-config";
 
-
 const Getrecentdata= ({data , refreshKey , Setrecent }) =>{
 const [recentdata , setRecentdata] = useState([])
 const [timestamp , settimestamp] = useState([])
@@ -45,7 +44,6 @@ const [timestamp , settimestamp] = useState([])
     },[data , refreshKey])
     return (
       //Client Dashboard Table
-      
         <div className="p-4">
           <h1 className='font-bold text-xl'>Recent Data</h1>
       {recentdata.length > 0 ? (

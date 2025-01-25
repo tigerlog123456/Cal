@@ -16,7 +16,6 @@ const Navbar = ({data , ontrigger}) =>{
     useEffect(()=>{
         if(data && fetcheddata){
           setfetchdd(fetcheddata)
-
         }
     },[data , fetcheddata , fetchedd , isConnectedToAgency ])
   const handleLogout= async()=>{
@@ -32,7 +31,6 @@ const Navbar = ({data , ontrigger}) =>{
     const handleconnect = () => {
         setShowOverlay(true); // Show the overlay when the connect button is clicked
       };
-    
       const handleOverlaySubmit = async() => {
         if (!data || !data.uid) {
             console.error("User data or UID is missing.");
@@ -72,7 +70,6 @@ const Navbar = ({data , ontrigger}) =>{
                     <SpecificUser agencycode={data.agencyId} agencydata={agencyInput} data={data.uid} setfetcheddata={setfetcheddata} />
                   {fetchedd && fetchedd.length > 1 && (
                     <>
-                    
                     <p>{fetchedd[1].agencyName}</p>
                     <Addrate data={fetchedd} />
                     </>
@@ -88,8 +85,6 @@ const Navbar = ({data , ontrigger}) =>{
             {data && (
               <p>profile</p>
             )}
-
-            
             {data &&(
                 // Logout Button
                 <button onClick={handleLogout}>

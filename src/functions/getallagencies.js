@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { doc, getDocs, query, collection, where } from "firebase/firestore";
+import { getDocs, query, collection, where } from "firebase/firestore";
 import { db } from "../firebase-config";
 
 const Getagencies = () => {
@@ -20,7 +20,6 @@ const Getagencies = () => {
           const agenciesData = querySnapshot.docs.map((doc) => doc.data());
           setAllAgencies(agenciesData); // Set agencies data
           setFilteredAgencies(agenciesData); // Initialize filtered data
-          
           // Now, fetch the ratings for each agency from AgencyRate
           await fetchRatesForAgencies(agenciesData);
         } else {
@@ -31,15 +30,12 @@ const Getagencies = () => {
         console.error(err);
       }
     };
-
     fetchAgenciesData();
   }, []);
-
   const fetchRatesForAgencies = async (agenciesData) => {
     // Fetch and calculate average rate for each agency
     const updatedAgencies = await Promise.all(agenciesData.map(async (agency) => {
       try {
-        console.log('Fetching rates for agency with UID:', agency.uid)
         // Query Firestore for the ratings of this agency
           const rateQuery = query(collection(db, "AgencyRate"), where("agencyId", "==", agency.uid));
         const rateSnapshot = await getDocs(rateQuery);
@@ -47,14 +43,11 @@ const Getagencies = () => {
         if (!rateSnapshot.empty) {
           const rates = rateSnapshot.docs.map(doc => doc.data().rate);
           const numericRates = rates.map(rate => parseFloat(rate));
-
-          console.log(rates)
          const averageRate = numericRates.reduce((acc, rate) => acc + rate, 0) / rates.length; /// Calculate average
           agency.averageRate = averageRate; // Add average rate to agency data
         } else {
           agency.averageRate = 0; // No rates found, set to 0
         }
-
         return agency;
       } catch (error) {
         console.error("Error fetching rates for agency", agency.uid, error);
@@ -62,11 +55,9 @@ const Getagencies = () => {
         return agency;
       }
     }));
-
     setAllAgencies(updatedAgencies); // Update the agencies state with the average rates
     setFilteredAgencies(updatedAgencies); // Also update filtered data
   };
-
   // Handle search
   useEffect(() => {
     const filtered = agencies.filter((agency) =>
@@ -74,7 +65,6 @@ const Getagencies = () => {
     );
     setFilteredAgencies(filtered);
   }, [searchTerm, agencies]);
-
   // Handle sorting
   const handleSort = (field) => {
     const sorted = [...filteredAgencies].sort((a, b) => {
@@ -90,7 +80,6 @@ const Getagencies = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc"); // Toggle sort order
     setSortField(field); // Update the sort field
   };
-
   return (
     <div className="p-4">
       <h1 className="text-xl font-bold">Top Gyms</h1>

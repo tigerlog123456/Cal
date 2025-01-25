@@ -22,7 +22,6 @@ const handlesubmit = async() =>{
         try {
           // Define a document reference for the AgencyRate collection
           const rateRef = doc(db, "AgencyRate" ,`${data[0].uid}_${data[1].uid}`);
-  
           // Set the rate data in Firestore
           await setDoc(rateRef, {
             userId: data[0].uid, // User's UID
@@ -32,7 +31,6 @@ const handlesubmit = async() =>{
           });   
           const agencyRef = doc(db, "users", data[1].uid); // Reference to the agency document
           const agencySnapshot = await getDoc(agencyRef);
-  
           if (agencySnapshot.exists()) {
             // Increment the rating count by 1
             await updateDoc(agencyRef, {
@@ -44,13 +42,10 @@ const handlesubmit = async() =>{
           setHasRated(true); // Mark as rated
           setrate("");
         } catch (error) {
-          
         }
       } else if (hasRated) {
-
       }
       else {
-
       }
 }
 return(
@@ -71,6 +66,5 @@ return(
       )}
     </div>
 )
-
 }
 export default Addrate

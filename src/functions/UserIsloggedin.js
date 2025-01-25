@@ -15,5 +15,4 @@ const UserisLoggedIn = ({data ,  setUserIsLogged }) => {
     // No UI rendered by this component
     return null;
 };
-
 export default UserisLoggedIn;

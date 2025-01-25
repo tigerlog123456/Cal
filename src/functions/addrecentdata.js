@@ -52,7 +52,6 @@ const Addrecentdata = ({data , onDataAdded}) =>{
         //Client Dashboard Inputs
         <div className="p-4">
             <h1 className="font-bold text-xl">Daily Data</h1>
-            
             <input
                 type="number"
                 placeholder="water"   

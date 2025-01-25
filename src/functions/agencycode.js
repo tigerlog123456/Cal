@@ -24,6 +24,5 @@ const Agencycode = ({agencycode}) =>{
     useEffect(()=>{
         generateUniqueAgencyCode()
     },[])
-
 }
 export default Agencycode

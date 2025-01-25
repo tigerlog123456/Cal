@@ -2,14 +2,11 @@ import { useEffect } from 'react';
 import '../App.css'
 import { useState } from 'react';
 import {db} from '../firebase-config';
-import {collection, doc, getDocs, query, where } from 'firebase/firestore';
+import {collection, getDocs, query, where } from 'firebase/firestore';
 
 const SpecificUser = ({agencycode, agencydata , data , setfetcheddata}) =>{
-
-
     const [error, setError] = useState(null);
     useEffect(() => {
-       
         if (data) { 
             const fetchUserData = async () => {
                 try {
@@ -33,7 +30,6 @@ const SpecificUser = ({agencycode, agencydata , data , setfetcheddata}) =>{
                     } else {
                         setError("No matching documents found.");
                     }
-
                 } catch (err) {
                     setError('Failed to fetch user data.');
                     console.error(err);
@@ -46,7 +42,6 @@ const SpecificUser = ({agencycode, agencydata , data , setfetcheddata}) =>{
     if (error) {
         return <p>{error}</p>;
     }
-
     return null; 
 }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-const Totaldatas = ({data , recentdata , refreshKey}) =>{
+const Totaldatas = ({ recentdata , refreshKey}) =>{
     const [totalCalories, setTotalCalories] = useState(0);
     const [totalWater, setTotalWater] = useState(0);
     const [totalCalculations, setTotalCalculations] = useState(0);
@@ -7,8 +7,7 @@ const Totaldatas = ({data , recentdata , refreshKey}) =>{
         if (recentdata && recentdata.length > 0) {
             const totalCaloriesBurned = recentdata.reduce((total, item) => total + item.caloriesburned, 0);
             const totalWaterConsumed = recentdata.reduce((total, item) => total + parseInt(item.water), 0);
-            const totalCount = recentdata.length;
-            
+            const totalCount = recentdata.length;   
             setTotalCalories(totalCaloriesBurned);
             setTotalWater(totalWaterConsumed);
             setTotalCalculations(totalCount);
@@ -24,7 +23,6 @@ const Totaldatas = ({data , recentdata , refreshKey}) =>{
                     <p>Total Entries: {totalCalculations}</p>
                 </>
             )}
-            
         </div>
     )
 }
