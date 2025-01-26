@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "../firebase-config";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc , getDoc } from "firebase/firestore";
 import Registerinfo from "../functions/RegisterInfo";
-import Agencycode from "../functions/agencycode";
 import '../App.css'; // Include your custom styles if necessary
 
 const RegisterComponent = ({ onLoginClick, darkMode }) => {
@@ -13,16 +12,50 @@ const RegisterComponent = ({ onLoginClick, darkMode }) => {
     const [error, setError] = useState("");
     const [registerdata, setRegisterdata] = useState("");
     const [agencycode, setAgencycode] = useState("");
-
     useEffect(() => {
         if (usertype === "client") {
             setAgencycode(""); // Clear the agency code when usertype is client
         }
     }, [usertype]);
 
+
     const handleRegister = async () => {
+            if(usertype ==="client"){
+            if (!registerdata || Object.keys(registerdata).length === 0 || !registerdata.Fullname || !registerdata.age || !registerdata.health || !registerdata.weight || !registerdata.height || registerdata.age <16) {
+                setError("Please complete all required fields before registering."); 
+                return;
+                }
+            }
+            if(usertype === "agency"){
+                if (!registerdata || Object.keys(registerdata).length === 0 || !registerdata.agencyname || !registerdata.location || !registerdata.ownername || !registerdata.phonenumber || !registerdata.price ) {
+                    setError("Please complete all required fields before registering."); 
+                    return;
+                    }
+            }
+            let generatedAgencyCode = "";
+            if (usertype === "agency" && (registerdata || registerdata.agencyname || registerdata.location || registerdata.ownername || registerdata.phonenumber || registerdata.price)) {
+                const generateUniqueAgencyCode = async () => {
+                    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                    let result = "";
+                    for (let i = 0; i < 5; i++) {
+                        result += characters.charAt(Math.floor(Math.random() * characters.length));
+                    }
+                    const docRef = doc(db, "agencyCodes", result);
+                    const docSnap = await getDoc(docRef);
+        
+                    if (docSnap.exists()) {
+                        return await generateUniqueAgencyCode(); // Recursively generate a new code if it already exists
+                    } else {
+                        await setDoc(docRef, { code: result }); // Save the generated code
+                        return result;
+                    }
+                };
+                generatedAgencyCode = await generateUniqueAgencyCode();
+                setAgencycode(generatedAgencyCode); 
+            }
+            
         const agencyData = {
-            agencyCode: agencycode,
+            agencyCode: generatedAgencyCode,
             agencyName: registerdata.agencyname,
             ownerName: registerdata.ownername,
             status: registerdata.status,
@@ -42,8 +75,8 @@ const RegisterComponent = ({ onLoginClick, darkMode }) => {
             weight: registerdata.weight,
             agencyId: "",
         };
-
-        try {
+      try {
+        
             const userCredential = await createUserWithEmailAndPassword(auth, email, password);
             const user = userCredential.user;
             // Base user data
@@ -101,18 +134,19 @@ const RegisterComponent = ({ onLoginClick, darkMode }) => {
 
                         {/* Usertype Dropdown */}
                         <select
-                            value={usertype}
-                            onChange={(e) => setUsertype(e.target.value)}
+                           value={usertype ?? "client"} // Fallback value for undefined/null
+                           onChange={(e) => {
+                               const newValue = e.target.value;
+                               if (["client", "agency"].includes(newValue)) {
+                                   setUsertype(newValue); // Only update with valid values
+                               } else {
+                               }
+                           }}
                            className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                         >
                             <option value="client">Client</option>
                             <option value="agency">Agency</option>
                         </select>
-
-                        {/* Conditional Render for Agency */}
-                        {usertype === "agency" && (
-                            <Agencycode agencycode={setAgencycode} />
-                        )}
                     </div>
 
                     {/* Right side (Register Info) */}

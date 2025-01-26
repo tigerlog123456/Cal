@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { HiUser, HiPhone, HiLocationMarker, HiDocumentText } from "react-icons/hi"; // Importing icons
+
 import '../App.css';
 
 const Registerinfo = ({ setusertype, registerdata }) => {
@@ -55,6 +55,7 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                                 type="number"
                                 placeholder="Age"
                                 value={age}
+                                min={10}
                                 onChange={(e) => setAge(e.target.value)}
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
@@ -114,8 +115,7 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
                         </div>
-                        <div className="flex items-center w-full">
-                       
+                        <div className="flex items-center w-full">                      
                             <input
                                 type="text"
                                 value={ownername}
@@ -124,8 +124,7 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
                         </div>
-                        <div className="flex items-center w-full">
-                           
+                        <div className="flex items-center w-full">                      
                             <input
                                 type="text"
                                 value={phonenumber}
@@ -134,8 +133,7 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
                         </div>
-                        <div className="flex items-center w-full">
-                         
+                        <div className="flex items-center w-full">                        
                             <input
                                 type="text"
                                 value={location}
@@ -145,10 +143,8 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                             />
                         </div>
                         <div className="flex items-center w-full">
-                          
                             <input
                                 type="number"
-                               
                                 placeholder="Price"
                                 onChange={(e) => setPrice(e.target.value)}
                               className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
