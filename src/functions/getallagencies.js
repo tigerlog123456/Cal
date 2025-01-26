@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getDocs, query, collection, where } from "firebase/firestore";
 import { db } from "../firebase-config";
 
-const Getagencies = () => {
+const Getagencies = ({ darkMode }) => {
   const [agencies, setAllAgencies] = useState([]);
   const [filteredAgencies, setFilteredAgencies] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,18 +32,19 @@ const Getagencies = () => {
     };
     fetchAgenciesData();
   }, []);
+
   const fetchRatesForAgencies = async (agenciesData) => {
     // Fetch and calculate average rate for each agency
     const updatedAgencies = await Promise.all(agenciesData.map(async (agency) => {
       try {
         // Query Firestore for the ratings of this agency
-          const rateQuery = query(collection(db, "AgencyRate"), where("agencyId", "==", agency.uid));
+        const rateQuery = query(collection(db, "AgencyRate"), where("agencyId", "==", agency.uid));
         const rateSnapshot = await getDocs(rateQuery);
 
         if (!rateSnapshot.empty) {
           const rates = rateSnapshot.docs.map(doc => doc.data().rate);
           const numericRates = rates.map(rate => parseFloat(rate));
-         const averageRate = numericRates.reduce((acc, rate) => acc + rate, 0) / rates.length; /// Calculate average
+          const averageRate = numericRates.reduce((acc, rate) => acc + rate, 0) / rates.length; /// Calculate average
           agency.averageRate = averageRate; // Add average rate to agency data
         } else {
           agency.averageRate = 0; // No rates found, set to 0
@@ -58,6 +59,7 @@ const Getagencies = () => {
     setAllAgencies(updatedAgencies); // Update the agencies state with the average rates
     setFilteredAgencies(updatedAgencies); // Also update filtered data
   };
+
   // Handle search
   useEffect(() => {
     const filtered = agencies.filter((agency) =>
@@ -65,6 +67,7 @@ const Getagencies = () => {
     );
     setFilteredAgencies(filtered);
   }, [searchTerm, agencies]);
+
   // Handle sorting
   const handleSort = (field) => {
     const sorted = [...filteredAgencies].sort((a, b) => {
@@ -80,86 +83,92 @@ const Getagencies = () => {
     setSortOrder(sortOrder === "asc" ? "desc" : "asc"); // Toggle sort order
     setSortField(field); // Update the sort field
   };
+
   return (
-    <div className="p-4 bg-white shadow-lg rounded-lg  mx-auto">
-  <h1 className="text-xl font-bold">Top Gyms</h1>
-  {error && <p>{error}</p>}
+    <div className={`p-4 shadow-lg rounded-lg mx-auto max-w-screen-lg dark:bg-gray-900 dark:text-white bg-white text-gray-800`}>
+      <h1 className="text-xl font-bold mb-4">Top Gyms</h1>
+      {error && <p>{error}</p>}
 
-  {/* Sort buttons at the top */}
-  <div className="mb-4 flex justify-between items-center">
-    <div className="flex space-x-2">
-      <button
-        className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
-        onClick={() => handleSort("agencyName")}
-      >
-        Sort by Name
-      </button>
-      <button
-        className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
-        onClick={() => handleSort("ownerName")}
-      >
-        Sort by Owner
-      </button>
-      <button
-        className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
-        onClick={() => handleSort("location")}
-      >
-        Sort by Location
-      </button>
-      <button
-        className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
-        onClick={() => handleSort("price")}
-      >
-        Sort by Price
-      </button>
-      <button
-        className="px-2 py-1 bg-blue-500 text-white rounded text-xs hover:bg-blue-600"
-        onClick={() => handleSort("averageRate")}
-      >
-        Sort by Rate
-      </button>
-    </div>
-    <input
-      type="text"
-      placeholder="Search agencies..."
-      className="p-2 border rounded w-1/4"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-    />
-  </div>
-
-  {/* Table headers with background color */}
-  <div className="overflow-x-auto mb-6">
-    <div className="flex justify-between p-2 font-bold border-b bg-gray-100">
-      <div className="w-1/6">Name</div>
-      <div className="w-1/6">Owner Name</div>
-      <div className="w-1/6">Phone Number</div>
-      <div className="w-1/6">Location</div>
-      <div className="w-1/6">Price</div>
-      <div className="w-1/6">Rate</div>
-    </div>
-
-    {/* Table rows with background and hover effect */}
-    {filteredAgencies && filteredAgencies.length > 0 ? (
-      filteredAgencies.map((agency, index) => (
-        <div
-          key={index}
-          className="flex justify-between p-2 border-b bg-white hover:bg-gray-50"
-        >
-          <div className="w-1/6">{agency.agencyName}</div>
-          <div className="w-1/6">{agency.ownerName}</div>
-          <div className="w-1/6">{agency.phonenumber}</div>
-          <div className="w-1/6">{agency.location}</div>
-          <div className="w-1/6">{agency.price}</div>
-          <div className="w-1/6">{agency.averageRate}</div>
+      {/* Sort buttons and search bar */}
+      <div className="mb-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+        <div className="flex flex-wrap gap-2">
+          <button
+            className={`px-3 py-1 rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white bg-blue-500 hover:bg-blue-600 text-white`}
+            onClick={() => handleSort("agencyName")}
+          >
+            Sort by Name
+          </button>
+          <button
+            className={`px-3 py-1 rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white bg-blue-500 hover:bg-blue-600 text-white`}
+            onClick={() => handleSort("ownerName")}
+          >
+            Sort by Owner
+          </button>
+          <button
+            className={`px-3 py-1 rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white bg-blue-500 hover:bg-blue-600 text-white`}
+            onClick={() => handleSort("location")}
+          >
+            Sort by Location
+          </button>
+          <button
+            className={`px-3 py-1 rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white bg-blue-500 hover:bg-blue-600 text-white`}
+            onClick={() => handleSort("price")}
+          >
+            Sort by Price
+          </button>
+          <button
+            className={`px-3 py-1 rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white bg-blue-500 hover:bg-blue-600 text-white`}
+            onClick={() => handleSort("averageRate")}
+          >
+            Sort by Rate
+          </button>
         </div>
-      ))
-    ) : (
-      <p>No agencies to display.</p>
-    )}
-  </div>
-</div>
+        <input
+          type="text"
+          placeholder="Search agencies..."
+          className={`p-2 border rounded w-full sm:w-1/3 dark:bg-gray-800 dark:border-gray-700 dark:text-white bg-white border-gray-300 text-gray-800`}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+      </div>
 
+      {/* Responsive Table */}
+      <div className="overflow-x-auto">
+        <div className={`min-w-full font-bold text-gray-600 hidden sm:grid grid-cols-6 p-2 dark:bg-gray-800 dark:text-white bg-gray-100 `}>
+          <div>Name</div>
+          <div>Owner Name</div>
+          <div>Phone Number</div>
+          <div>Location</div>
+          <div>Price</div>
+          <div>Rate</div>
+        </div>
+
+        {filteredAgencies && filteredAgencies.length > 0 ? (
+          filteredAgencies.map((agency, index) => (
+            <div
+              key={index}
+              className={`grid sm:grid-cols-6 grid-cols-1 gap-4 p-2 border-b dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white dark:border-gray-700 bg-white hover:bg-gray-50 text-gray-800 border-gray-200 `}
+            >
+              <div className="font-semibold sm:hidden">Name:</div>
+              <div>{agency.agencyName}</div>
+              <div className="font-semibold sm:hidden">Owner Name:</div>
+              <div>{agency.ownerName}</div>
+              <div className="font-semibold sm:hidden">Phone Number:</div>
+              <div>{agency.phonenumber}</div>
+              <div className="font-semibold sm:hidden">Location:</div>
+              <div>{agency.location}</div>
+              <div className="font-semibold sm:hidden">Price:</div>
+              <div>{agency.price}</div>
+              <div className="font-semibold sm:hidden">Rate:</div>
+              <div>{agency.averageRate}</div>
+            </div>
+          ))
+        ) : (
+          <p>No agencies to display.</p>
+        )}
+      </div>
+    </div>
   );
 };
+
 export default Getagencies;
