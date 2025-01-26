@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Cal/static/css/main.5bff7fc8.css",
+    "main.js": "/Cal/static/js/main.304c19a1.js",
+    "index.html": "/Cal/index.html",
+    "main.5bff7fc8.css.map": "/Cal/static/css/main.5bff7fc8.css.map",
+    "main.304c19a1.js.map": "/Cal/static/js/main.304c19a1.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.5bff7fc8.css",
+    "static/js/main.304c19a1.js"
+  ]
+}
