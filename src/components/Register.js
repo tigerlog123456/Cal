@@ -140,6 +140,7 @@ const RegisterComponent = ({ onLoginClick, darkMode }) => {
                                if (["client", "agency"].includes(newValue)) {
                                    setUsertype(newValue); // Only update with valid values
                                } else {
+                                   console.error("Invalid usertype value:", newValue);
                                }
                            }}
                            className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
