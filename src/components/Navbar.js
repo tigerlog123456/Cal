@@ -7,7 +7,7 @@ import { db } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 import Addrate from "../functions/Rateimport";
 
-const Navbar = ({ data, ontrigger }) => {
+const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick}) => {
   const navigate = useNavigate();
   const [fetcheddata, setfetcheddata] = useState();
   const [showOverlay, setShowOverlay] = useState(false);
@@ -16,7 +16,6 @@ const Navbar = ({ data, ontrigger }) => {
   const [isConnectedToAgency, setIsConnectedToAgency] = useState(data?.agencyId == ""); // Track if connected to agency
   const [darkMode, setDarkMode] = useState(false); // Manage dark mode state
   const [menuOpen, setMenuOpen] = useState(false); // Manage mobile menu state
-
   useEffect(() => {
     // Add or remove the 'dark' class on the document root based on the darkMode state
     if (darkMode) {
@@ -79,17 +78,18 @@ const Navbar = ({ data, ontrigger }) => {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/Cal");
-            }}
-            className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}
-          >
+        <button 
+          onClick={onHomeClick}
+          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
             Home
-          </a>
-          {data && <p className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>Profile</p>}
+            
+            </button>
+          {data && <button 
+          onClick={onProfileClick}
+          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
+            Profile
+            
+            </button>}
           {data && data.agencyId === "" && data.userType === "client" && !isConnectedToAgency && (
             <button
               onClick={handleconnect}
@@ -172,14 +172,18 @@ const Navbar = ({ data, ontrigger }) => {
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-white dark:bg-gray-900 px-4 py-3 shadow-md gap-4 flex-col flex justify-center">
-          <a
-            href="#"
-            onClick={(e) => {
-              e.preventDefault();
-              navigate("/Cal");
-            }}
-            className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>Home</a>
-          {data && <p className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>Profile</p>}
+           <button 
+          onClick={onHomeClick}
+          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
+            Home
+            
+            </button>
+          {data && <button 
+          onClick={onProfileClick}
+          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
+            Profile
+            
+            </button>}
           {data && data.agencyId === "" && data.userType === "client" && !isConnectedToAgency && (
             <button
               onClick={handleconnect}

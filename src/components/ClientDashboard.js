@@ -9,7 +9,7 @@ const ClientDashboard = ({ data }) => {
   const [refreshKey, setRefreshKey] = useState(0);
   const [refreshKay1, setRefreshKey1] = useState(0);
   const [recent, setrecent] = useState("");
-  const [darkMode, setDarkMode] = useState(false);
+
 // Update to refresh the key
   const handleDataAdded = () => {
     setRefreshKey((prevKey) => prevKey + 1);
@@ -33,17 +33,17 @@ const ClientDashboard = ({ data }) => {
 
           {/* Total Data Component */}
           <div className="max-w-4xl mx-auto px-4 mb-10">
-            <Totaldatas data={data} recentdata={recent} key={`total-${refreshKay1}`} darkMode={darkMode} />
+            <Totaldatas data={data} recentdata={recent} key={`total-${refreshKay1}`}/>
           </div>
 
           {/* Add Recent Data */}
           <div className="max-w-4xl mx-auto px-4 mb-10">
-            <Addrecentdata data={data} onDataAdded={handleDataAdded}  darkMode={darkMode}/>
+            <Addrecentdata data={data} onDataAdded={handleDataAdded}  />
           </div>
 
           {/* Get Recent Data */}
           <div className="max-w-4xl mx-auto px-4 ">
-            <Getrecentdata data={data} key={`recent-${refreshKey}`} Setrecent={setrecent} darkMode={darkMode}/>
+            <Getrecentdata data={data} key={`recent-${refreshKey}`} Setrecent={setrecent} />
           </div>
 
           {/* Get Agencies if No Agency Connected */}
