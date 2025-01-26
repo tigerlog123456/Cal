@@ -55,23 +55,33 @@ const Getrecentdata = ({ data, refreshKey, Setrecent, darkMode }) => {
       {recentdata.length > 0 ? (
         <div className={`overflow-y-auto max-h-96 border rounded-lg scrollbar-thin dark:border-gray-700 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800 border-gray-200 scrollbar-thumb-gray-400 scrollbar-track-gray-100`}>
           {/* Header Row */}
-          <div className={`flex justify-between p-3 font-semibold dark:bg-gray-700 dark:text-white bg-gray-50 text-gray-600 sticky top-0`}>
-            <div className="w-1/6">Water</div>
-            <div className="w-1/6">Steps</div>
-            <div className="w-1/6">Today's Weight</div>
-            <div className="w-1/6">Calories Burned</div>
-            <div className="w-1/6">Calories Needed</div>
-            <div className="w-1/6">Date / Time</div>
+          <div className={`hidden md:flex  justify-between p-3 font-semibold dark:bg-gray-700 dark:text-white bg-gray-50 text-gray-600 sticky top-0`}>
+            <div className="w-1/6 text-center">Water</div>
+            <div className="w-1/6 text-center">Steps</div>
+            <div className="w-1/6 text-center">Today's Weight</div>
+            <div className="w-1/6 text-center">Calories Burned</div>
+            <div className="w-1/6 text-center">Calories Needed</div>
+            <div className="w-1/6 text-center">Date / Time</div>
           </div>
           {recentdata.map((record, index) => (
-            <div key={index} className={`flex justify-between p-3 border-b dark:border-gray-700 dark:bg-gray-800 dark:text-white border-gray-200 bg-white text-gray-800}`}>
-              <div className="w-1/6">{record.water}</div>
-              <div className="w-1/6">{record.steps}</div>
-              <div className="w-1/6">{record.todayWeight}</div>
-              <div className="w-1/6">{record.caloriesburned}</div>
-              <div className="w-1/6">{record.caloriesneeded}</div>
-              <div className="w-1/6">
-                {record.timestamp ? formatDate(record.timestamp) : "N/A"}
+            <div key={index} className={`flex flex-col md:flex-row justify-between p-3 border-b dark:border-gray-700 dark:bg-gray-800 dark:text-white border-gray-200 bg-white text-gray-800`}>
+              <div className="md:w-1/6 text-center ">
+                <span className="block md:hidden font-semibold">Water:</span> {record.water}
+              </div>
+              <div className="md:w-1/6 text-center">
+                <span className="block md:hidden font-semibold">Steps:</span> {record.steps}
+              </div>
+              <div className="md:w-1/6 text-center">
+                <span className="block md:hidden font-semibold">Today's Weight:</span> {record.todayWeight}
+              </div>
+              <div className="md:w-1/6 text-center">
+                <span className="block md:hidden font-semibold">Calories Burned:</span> {record.caloriesburned}
+              </div>
+              <div className="md:w-1/6 text-center">
+                <span className="block md:hidden font-semibold">Calories Needed:</span> {record.caloriesneeded}
+              </div>
+              <div className="md:w-1/6 text-center">
+                <span className="block md:hidden font-semibold">Date / Time:</span> {record.timestamp ? formatDate(record.timestamp) : "N/A"}
               </div>
             </div>
           ))}

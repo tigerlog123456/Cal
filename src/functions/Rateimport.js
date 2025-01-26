@@ -50,7 +50,7 @@ const Addrate = ({ data }) => {
   return (
     <div className="flex items-center space-x-2">
       {hasRated ? (
-        <p className="text-green-600 font-medium text-sm">Rated</p>
+        <p className="text-green-600 font-medium text-md p-2">Rated</p>
       ) : (
         <div className="flex items-center space-x-2">
           <select

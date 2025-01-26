@@ -15,6 +15,7 @@ const Navbar = ({ data, ontrigger }) => {
   const [fetchedd, setfetchdd] = useState();
   const [isConnectedToAgency, setIsConnectedToAgency] = useState(data?.agencyId == ""); // Track if connected to agency
   const [darkMode, setDarkMode] = useState(false); // Manage dark mode state
+  const [menuOpen, setMenuOpen] = useState(false); // Manage mobile menu state
 
   useEffect(() => {
     // Add or remove the 'dark' class on the document root based on the darkMode state
@@ -75,21 +76,24 @@ const Navbar = ({ data, ontrigger }) => {
         <div className="flex items-center space-x-4">
           <p className="text-xl font-bold">Logo</p>
         </div>
-        <div className="flex items-center space-x-6">
+
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center space-x-6">
           <a
             href="#"
             onClick={(e) => {
               e.preventDefault();
               navigate("/Cal");
             }}
-            className={`hover:text-blue-500 ${darkMode ? "text-white" : "text-gray-700"}`}
+            className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}
           >
             Home
           </a>
+          {data && <p className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>Profile</p>}
           {data && data.agencyId === "" && data.userType === "client" && !isConnectedToAgency && (
             <button
               onClick={handleconnect}
-              className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+              className="bg-blue-500 text-white px-4 py-2  rounded-lg hover:bg-blue-600"
             >
               Connect to Agency
             </button>
@@ -112,7 +116,7 @@ const Navbar = ({ data, ontrigger }) => {
           {fetchedd && fetchedd.length > 1 && (
             <Addrate data={fetchedd} />
           )}
-          {data && <p className={`font-semibold ${darkMode ? "text-white" : "text-gray-700"}`}>Profile</p>}
+          
           {data && (
             <button
               onClick={handleLogout}
@@ -122,7 +126,6 @@ const Navbar = ({ data, ontrigger }) => {
             </button>
           )}
 
-          {/* Dark Mode Toggle Button */}
           <button
             onClick={() => setDarkMode(!darkMode)}
             className={`${
@@ -132,7 +135,84 @@ const Navbar = ({ data, ontrigger }) => {
             {darkMode ? "Light Mode" : "Dark Mode"}
           </button>
         </div>
+
+        {/* Burger Menu for Mobile */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="text-gray-800 dark:text-white focus:outline-none"
+          >
+            <svg
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {menuOpen ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M4 6h16M4 12h16m-7 6h7"
+                />
+              )}
+            </svg>
+          </button>
+        </div>
       </div>
+
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div className="md:hidden bg-white dark:bg-gray-900 px-4 py-3 shadow-md gap-4 flex-col flex justify-center">
+          <a
+            href="#"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/Cal");
+            }}
+            className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>Home</a>
+          {data && <p className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>Profile</p>}
+          {data && data.agencyId === "" && data.userType === "client" && !isConnectedToAgency && (
+            <button
+              onClick={handleconnect}
+              className="block w-full bg-blue-500 text-white px-4 py-2 p-2 rounded-lg hover:bg-blue-600 mt-2"
+            >
+              Connect to Agency
+            </button>
+          )}
+           {fetchedd && fetchedd.length > 1 && (
+                <>
+                  <p className={`font-semibold  p-2 ${darkMode ? "text-white" : "text-gray-700"}`}>{fetchedd[1].agencyName}</p>
+                </>
+              )}
+            {fetchedd && fetchedd.length > 1 && (
+            <Addrate data={fetchedd} />
+          )}
+          {data && (
+            <button
+              onClick={handleLogout}
+              className="block w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 mt-2"
+            >
+              Logout
+            </button>
+          )}
+          <button
+            onClick={() => setDarkMode(!darkMode)}
+            className="block w-full bg-gray-300 dark:bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 mt-2"
+          >
+            {darkMode ? "Light Mode" : "Dark Mode"}
+          </button>
+        </div>
+      )}
+
       {showOverlay && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96">
