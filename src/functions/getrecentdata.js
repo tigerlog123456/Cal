@@ -9,7 +9,6 @@ const Getrecentdata = ({ data, refreshKey, Setrecent }) => {
 
   const fetchdata = async () => {
     if (!data || !data.uid) {
-      console.log("Invalid data or UID not found");
       return;
     }
     try {

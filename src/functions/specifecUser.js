@@ -28,10 +28,8 @@ const SpecificUser = ({ agencycode, agencydata, data, setfetcheddata, agencyId }
                     setfetcheddata(results);
                     console.log(results); // Log the fetched results
                 } else {
-                    setError('No matching documents found.');
                 }
             } catch (err) {
-                setError('Failed to fetch user data.');
                 console.error(err);
             }
         };
