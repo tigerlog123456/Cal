@@ -3,7 +3,7 @@ import '../App.css';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { db } from "../firebase-config";
 
-const Getrecentdata = ({ data, refreshKey, Setrecent, darkMode }) => {
+const Getrecentdata = ({ data, refreshKey, Setrecent }) => {
   const [recentdata, setRecentdata] = useState([]);
   const [timestamp, settimestamp] = useState([]);
 

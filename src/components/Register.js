@@ -91,7 +91,6 @@ const RegisterComponent = ({ onLoginClick, darkMode }) => {
 
             // Save user data to Firestore
             await setDoc(doc(db, "users", user.uid), userDoc);
-            alert("Registration successful! Please log in.");
             onLoginClick(); // Navigate back to the login view
             setError("");
         } catch (err) {
