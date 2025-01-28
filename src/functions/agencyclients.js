@@ -1,13 +1,26 @@
 import { useState, useEffect } from "react";
 import SpecificUser from "./specifecUser";
-import Getrecentdata from "./getrecentdata"; // Import Getrecentdata component
+import Getrecentdata from "./getrecentdata";
 
-const Agencyclients = ({ data }) => {
+const Agencyclients = ({ data, setClient }) => {
     const [clientData, setClientData] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [sortOrder, setSortOrder] = useState("asc");
-    const [isOverlayVisible, setIsOverlayVisible] = useState(false);  // For overlay visibility
-    const [selectedUid, setSelectedUid] = useState(null);  // Store selected user's UID
+    const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+    const [selectedUid, setSelectedUid] = useState(null);
+
+    // Compute statistics
+    const connectedUsers = clientData.length;
+    const activeUsers = clientData.filter((client) => client.status === "active").length;
+
+    const validWeights = clientData
+    .map((client) => parseFloat(client.weight)) // Convert weights to numbers
+    .filter((weight) => !isNaN(weight) && weight > 0); 
+
+    const averageWeight =
+    validWeights.length > 0
+        ? (validWeights.reduce((sum, weight) => sum + weight, 0) / validWeights.length).toFixed(1)
+        : "N/A";
 
     // Filter and sort logic
     const filteredData = clientData
@@ -32,6 +45,22 @@ const Agencyclients = ({ data }) => {
 
             <h2 className="text-2xl font-semibold mb-4 text-center">Agency Clients</h2>
 
+            {/* Statistics Section */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div className="p-4 bg-indigo-600 text-white rounded-lg shadow-lg text-center">
+                    <h3 className="text-lg font-semibold">Connected Users</h3>
+                    <p className="text-3xl font-bold">{connectedUsers}</p>
+                </div>
+                <div className="p-4 bg-green-600 text-white rounded-lg shadow-lg text-center">
+                    <h3 className="text-lg font-semibold">Active Users</h3>
+                    <p className="text-3xl font-bold">{activeUsers}</p>
+                </div>
+                <div className="p-4 bg-blue-600 text-white rounded-lg shadow-lg text-center">
+                    <h3 className="text-lg font-semibold">Average Weight</h3>
+                    <p className="text-3xl font-bold">{averageWeight}</p>
+                </div>
+            </div>
+
             {/* Search and Filter Controls */}
             <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
                 <input
@@ -54,37 +83,10 @@ const Agencyclients = ({ data }) => {
             {/* Display filtered and sorted data */}
             {filteredData.length > 0 ? (
                 <div className="overflow-x-auto">
-                    <div className="grid grid-cols-1 gap-4 md:hidden">
-                        {/* Mobile-friendly column layout */}
-                        {filteredData.map((client, index) => (
-                            <div
-                                key={index}
-                                className="p-4 border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded-lg"
-                            >
-                                <div className="text-sm font-medium text-center">Email: <span>{client.email || "N/A"}</span></div>
-                                <div className="text-sm font-medium text-center">Full Name: <span>{client.fullName || "N/A"}</span></div>
-                                <div className="text-sm font-medium text-center">Age: <span>{client.age || "N/A"}</span></div>
-                                <div className="text-sm font-medium text-center">Height: <span>{client.height || "N/A"}</span></div>
-                                <div className="text-sm font-medium text-center">Weight: <span>{client.weight || "N/A"}</span></div>
-                                <div className="text-sm font-medium text-center">Target Weight: <span>{client.targetWeight || "N/A"}</span></div>
-                                <div className="text-sm font-medium text-center">Health Conditions: <span>{client.healthConditions || "N/A"}</span></div>
-                                <div className="text-sm font-medium text-center">Status: <span>{client.status || "N/A"}</span></div>
-                                <div className="text-sm font-medium text-center">
-                                <button
-                                    onClick={() => handleViewClick(client.uid)}  // Set the UID for fetching recent data
-                                    className="mt-4 p-2 bg-indigo-600 text-white rounded-lg text-center"
-                                >
-                                    View Recent Data
-                                </button></div>
-                            </div>
-                        ))}
-                    </div>
-
-                    {/* Desktop table layout */}
-                    <table className="table-auto w-full border-collapse border border-gray-300 dark:border-gray-700 hidden md:table text-center">
+                    <table className="table-auto w-full border-collapse border border-gray-300 dark:border-gray-700 text-center">
                         <thead>
-                            <tr className="bg-gray-100 dark:bg-gray-800 text-center">
-                                <th className="border border-gray-300 dark:border-gray-700 p-2 text-center">Email</th>
+                            <tr className="bg-gray-100 dark:bg-gray-800">
+                                <th className="border border-gray-300 dark:border-gray-700 p-2">Email</th>
                                 <th className="border border-gray-300 dark:border-gray-700 p-2">Full Name</th>
                                 <th className="border border-gray-300 dark:border-gray-700 p-2">Age</th>
                                 <th className="border border-gray-300 dark:border-gray-700 p-2">Height</th>
@@ -105,34 +107,18 @@ const Agencyclients = ({ data }) => {
                                             : "bg-gray-100 dark:bg-gray-800"
                                     }`}
                                 >
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
-                                        {client.email || "N/A"}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
-                                        {client.fullName || "N/A"}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
-                                        {client.age || "N/A"}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
-                                        {client.height || "N/A"}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
-                                        {client.weight || "N/A"}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
-                                        {client.targetWeight || "N/A"}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
-                                        {client.healthConditions || "N/A"}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
-                                        {client.status || "N/A"}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2 text-center">
+                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.email || "N/A"}</td>
+                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.fullName || "N/A"}</td>
+                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.age || "N/A"}</td>
+                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.height || "N/A"}</td>
+                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.weight || "N/A"}</td>
+                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.targetWeight || "N/A"}</td>
+                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.healthConditions || "N/A"}</td>
+                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.status || "N/A"}</td>
+                                    <td className="border border-gray-300 dark:border-gray-700 p-2">
                                         <button
-                                            onClick={() => handleViewClick(client.uid)}  // Trigger the overlay with the selected UID
-                                            className="p-2 md:px-8 bg-indigo-600 text-white rounded-lg"
+                                            onClick={() => handleViewClick(client.uid)}
+                                            className="p-2 bg-indigo-600 text-white rounded-lg"
                                         >
                                             View
                                         </button>

@@ -7,13 +7,13 @@ import { db } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 import Addrate from "../functions/Rateimport";
 
-const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick}) => {
+const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClick}) => {
   const navigate = useNavigate();
   const [fetcheddata, setfetcheddata] = useState();
   const [showOverlay, setShowOverlay] = useState(false);
   const [agencyInput, setAgencyInput] = useState("");
   const [fetchedd, setfetchdd] = useState();
-  const [isConnectedToAgency, setIsConnectedToAgency] = useState(data?.agencyId == ""); // Track if connected to agency
+  const [isConnectedToAgency, setIsConnectedToAgency] = useState(data?.agencyId === ""); // Track if connected to agency
   const [darkMode, setDarkMode] = useState(false); // Manage dark mode state
   const [menuOpen, setMenuOpen] = useState(false); // Manage mobile menu state
   useEffect(() => {
@@ -84,12 +84,21 @@ const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick}) => {
             Home
             
             </button>
+            {data && data.userType === "agency" && <button 
+          onClick={onMarketClick}
+          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
+            Market
+            
+            </button>
+            }
           {data && <button 
           onClick={onProfileClick}
           className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
             Profile
             
-            </button>}
+            </button>
+            }
+            
           {data && data.agencyId === "" && data.userType === "client" && !isConnectedToAgency && (
             <button
               onClick={handleconnect}

@@ -56,7 +56,7 @@ const Addrate = ({ data }) => {
           <select
             value={rate}
             onChange={(e) => setRate(e.target.value)}
-            className="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+            className="px-2 py-1 border border-gray-300 rounded dark:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
           >
             <option value="" disabled>
               Rate

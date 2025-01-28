@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import '../App.css'
-import SpecificUser from '../functions/specifecUser'
 import Agencyclients from '../functions/agencyclients'
 const AgencyDashboard = ({data})=>{
-   
+const [client  , setClient] = useState([])
+
 return(
 
     <div className='mt-14'>
-      <Agencyclients data={data}/>
+      <Agencyclients data={data} setClient={setClient}/>
     </div>
 )
 }

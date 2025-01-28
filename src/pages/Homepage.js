@@ -9,75 +9,84 @@ import Register from "../components/Register";
 import Profile from "../components/Profile";
 import '../App.css'
 import Navbar from "../components/Navbar";
+import Market from "../functions/addMarket";
 function Homepage ( {ontrigger}) {
-  const [user , setUser] = useState(null);
+  const [user, setUser] = useState(null);
   const [userislogged, setUserisLogged] = useState(null);
-  const [showRegister, setShowRegister] = useState(false); 
-  const [isProfileView, setIsProfileView] = useState(false); 
-  const [home , setHome] = useState(true)
-const handleDataFetched = useCallback((data) => {
-  setUser(data); // Store the fetched data
-}, []);
+  const [showRegister, setShowRegister] = useState(false);
+  const [isProfileView, setIsProfileView] = useState(false);
+  const [marketview, setMarketview] = useState(false);
+  const [home, setHome] = useState(true);
 
-const handleLoggedIn = useCallback((loggedData) => {
-  setUserisLogged(loggedData); // Update userislogged state
-}, []);
-const handleProfileView = () => {
-  setIsProfileView(true); // Set isProfileView to true
-  setHome(false); // Ensure home is false when viewing the profile
-};
+  const handleDataFetched = useCallback((data) => {
+    setUser(data); // Store fetched data
+  }, []);
 
-const handleHomeView = () => {
-  setHome(true); // Set home to true
-  setIsProfileView(false); // Ensure profile is false when viewing the home/dashboard
-};
-const renderDashboard = () => {
-  if (!user || !user.userType) return null;
-  switch (user.userType) {
-      case "client":
-          return (
-            <>
-            {isProfileView ? (
-              <Profile data={user} /> // Render Profile if isProfileView is true
-            ) : (
-              home && <ClientDashboard data={user} /> // Render ClientDashboard if home is true and isProfileView is false
-            )}
-          </>
-          )
-      case "agency":
-          return (
-            <>
-            {isProfileView ? (
-              <Profile data={user} /> // Render Profile if isProfileView is true
-            ) : (
-              home && <AgencyDashboard data={user} /> // Render ClientDashboard if home is true and isProfileView is false
-            )}
-          </>
-          );
-      case "admin":
-          return <AdminDashboard data={user} />;
-      default:
-          return <p>Invalid user type. Please contact support.</p>;
-  }
-};
+  const handleLoggedIn = useCallback((loggedData) => {
+    setUserisLogged(loggedData); // Update logged-in state
+  }, []);
+
+  const handleMarketClick = () => {
+    setIsProfileView(false);
+    setHome(false);
+    setMarketview(true); // Activate Market view
+  };
+  const handleProfileView = () => {
+    setIsProfileView(true);
+    setHome(false);
+    setMarketview(false); // Activate Profile view
+  };
+
+  const handleHomeView = () => {
+    setHome(true);
+    setIsProfileView(false);
+    setMarketview(false); // Activate Home view
+  };
+  const renderDashboard = () => {
+    if (!user || !user.userType) return null;
+
+    const renderContent = () => {
+      if (isProfileView) return <Profile data={user} />;
+      if (marketview) return <Market data={user} />;
+      if (home) {
+        switch (user.userType) {
+          case "client":
+            return <ClientDashboard data={user} />;
+          case "agency":
+            return <AgencyDashboard data={user} />;
+          case "admin":
+            return <AdminDashboard data={user} />;
+          default:
+            return <p>Invalid user type. Please contact support.</p>;
+        }
+      }
+      return null;
+    };
+
+    return renderContent();
+  };
     // Handle conditional rendering before the return statement
   return (
     
-   <div> 
-   <Navbar
-        data={user}
-        onProfileClick={handleProfileView} // Call handleProfileView when profile button is clicked
-      onHomeClick={handleHomeView} // Call handleHomeView when home button is clicked
-         // Pass callback to Navbar
-      />
+    <div className="dark:bg-gray-800">
+    <Navbar
+      data={user}
+      onProfileClick={handleProfileView}
+      onHomeClick={handleHomeView}
+      onMarketClick={handleMarketClick}
+    />
     <UserisLoggedIn data={user} setUserIsLogged={handleLoggedIn} />
-    {userislogged && (<UserData userdata={user} data={userislogged} onDataFetched={handleDataFetched} />)}
-    {!userislogged && !showRegister && <LoginComponent setUserData={setUserisLogged} onRegisterClick={() => setShowRegister(true)} />}
+    {userislogged && (
+      <UserData userdata={user} data={userislogged} onDataFetched={handleDataFetched} />
+    )}
+    {!userislogged && !showRegister && (
+      <LoginComponent setUserData={setUserisLogged} onRegisterClick={() => setShowRegister(true)} />
+    )}
     {!userislogged && showRegister && (
-    <Register onLoginClick={() => setShowRegister(false)} />
+      <Register onLoginClick={() => setShowRegister(false)} />
     )}
     {renderDashboard()}
-   </div>
+  </div>
   );
 }
 export default Homepage;

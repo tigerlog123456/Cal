@@ -4,7 +4,7 @@ import Addrecentdata from "../functions/addrecentdata";
 import Getrecentdata from "../functions/getrecentdata";
 import Getagencies from "../functions/getallagencies";
 import Totaldatas from "../functions/Totaldatas";
-
+import Marketdata from "../functions/getmarketdata"
 const ClientDashboard = ({ data }) => {
   const [refreshKey, setRefreshKey] = useState(0);
   const [refreshKay1, setRefreshKey1] = useState(0);
@@ -45,7 +45,12 @@ const ClientDashboard = ({ data }) => {
           <div className="max-w-4xl mx-auto px-4 ">
             <Getrecentdata data={data} key={`recent-${refreshKey}`} Setrecent={setrecent} />
           </div>
-
+          {data && data.agencyId && (
+            <div className="max-w-4xl mx-auto px-4 ">
+           <Marketdata data={data}/>
+          </div>
+          )}
+          
           {/* Get Agencies if No Agency Connected */}
           {data && data.agencyId === "" && (
             <div className="max-w-4xl mx-auto px-4 mt-10">

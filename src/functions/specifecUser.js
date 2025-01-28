@@ -25,8 +25,7 @@ const SpecificUser = ({ agencycode, agencydata, data, setfetcheddata, agencyId }
                 });
 
                 if (results.length > 0) {
-                    setfetcheddata(results);
-                    console.log(results); // Log the fetched results
+                    setfetcheddata(results); // Log the fetched results
                 } else {
                 }
             } catch (err) {
