@@ -84,12 +84,17 @@ const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClic
             Home
             
             </button>
-            {data && data.userType === "agency" && <button 
+            {data && data.userType === "agency" && <>
+           
+            
+           
+            
+            <button 
           onClick={onMarketClick}
           className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
             Market
             
-            </button>
+            </button> </>
             }
           {data && <button 
           onClick={onProfileClick}
@@ -97,8 +102,22 @@ const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClic
             Profile
             
             </button>
-            }
             
+            }
+            {data && data.userType =="agency" && (
+               <p className={`
+                text-center font-semibold text-sm px-4 py-2 rounded-lg transition-all duration-300
+                ${darkMode ? "text-white bg-gray-800 hover:bg-gray-700 shadow-lg shadow-gray-900/30" 
+                           : "text-gray-700 bg-gray-100 hover:bg-gray-200 shadow-md shadow-gray-400/20"}
+              `}>
+                <span className="uppercase tracking-wide text-xs text-gray-500 dark:text-gray-400">
+                  Agency Code:
+                </span> 
+                <span className="ml-2 font-bold text-lg">{data.agencyCode}</span>
+              </p>
+            )
+
+            }
           {data && data.agencyId === "" && data.userType === "client" && !isConnectedToAgency && (
             <button
               onClick={handleconnect}
@@ -187,12 +206,36 @@ const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClic
             Home
             
             </button>
+            {data && data.userType === "agency" && <>
+            
+            <button 
+          onClick={onMarketClick}
+          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
+            Market
+            
+            </button></>
+            }
           {data && <button 
           onClick={onProfileClick}
           className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
             Profile
             
             </button>}
+
+            {data && data.userType == "agency" && (
+                <p className={`
+                  text-center font-semibold text-sm px-4 py-2 rounded-lg transition-all duration-300
+                  ${darkMode ? "text-white bg-gray-800 hover:bg-gray-700 shadow-lg shadow-gray-900/30" 
+                             : "text-gray-700 bg-gray-100 hover:bg-gray-200 shadow-md shadow-gray-400/20"}
+                `}>
+                  <span className="uppercase tracking-wide text-xs text-gray-500 dark:text-gray-400">
+                    Agency Code:
+                  </span> 
+                  <span className="ml-2 font-bold text-lg">{data.agencyCode}</span>
+                </p>
+            )
+
+            }
           {data && data.agencyId === "" && data.userType === "client" && !isConnectedToAgency && (
             <button
               onClick={handleconnect}

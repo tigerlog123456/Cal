@@ -114,67 +114,67 @@ const Requestdata = () => {
   };
 
   return (
-    <div className=''>
-      {/* Show overlay when requested */}
-      <button
-        onClick={toggleOverlay}
-        className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300"
-      >
-        View Requests
-      </button>
-
-      {/* Overlay with all the requests */}
-      {overlayVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-lg w-11/12 sm:w-96 shadow-lg relative max-h-[90vh] overflow-auto">
-            <button
-              onClick={toggleOverlay}
-              className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition duration-300"
-            >
-              ×
-            </button>
-
-            <h3 className="text-2xl font-bold mb-4">Market Requests</h3>
-
-            {/* Display all market requests in one div */}
-            {loading ? (
-              <p>Loading market requests...</p>
-            ) : data.length > 0 ? (
-              <div>
-                {/* Loop through data and display all requests in one div */}
-                {data.map((item, index) => (
-                  <div key={index} className="mb-4 p-4 border-b border-gray-300">
-                    <p><strong>Product Name:</strong> {item.market?.name || 'N/A'}</p>
-                    <p><strong>User Name:</strong> {item.user?.fullName || 'N/A'}</p>
-                    <p><strong>Requested Quantity:</strong> {item.quantity || '0'}</p>
-
-                    {/* Buttons to confirm or reject each request */}
-                    <div className="mt-4 flex justify-start space-x-4">
-                      <button
-                        onClick={() => handleStatusUpdate(item, 'confirmed')}
-                        disabled={updatingStatus}
-                        className="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600 transition duration-300 disabled:opacity-50"
-                      >
-                        {updatingStatus ? 'Updating...' : 'Confirm'}
-                      </button>
-                      <button
-                        onClick={() => handleStatusUpdate(item, 'declined')}
-                        disabled={updatingStatus}
-                        className="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600 transition duration-300 disabled:opacity-50"
-                      >
-                        {updatingStatus ? 'Updating...' : 'Decline'}
-                      </button>
-                    </div>
+    <div className='mt-2 md:mt-0'>
+    {/* Show overlay when requested */}
+    <button
+      onClick={toggleOverlay}
+      className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300 dark:bg-blue-800 dark:hover:bg-blue-900"
+    >
+      View Requests
+    </button>
+  
+    {/* Overlay with all the requests */}
+    {overlayVisible && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center dark:bg-opacity-70">
+        <div className="bg-white p-6 rounded-lg w-11/12 sm:w-96 shadow-lg relative max-h-[90vh] overflow-auto dark:bg-gray-800 dark:text-white">
+          <button
+            onClick={toggleOverlay}
+            className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition duration-300 dark:bg-red-600 dark:hover:bg-red-700"
+          >
+            ×
+          </button>
+  
+          <h3 className="text-2xl font-bold mb-4 dark:text-white">Market Requests</h3>
+  
+          {/* Display all market requests in one div */}
+          {loading ? (
+            <p className="dark:text-gray-300">Loading market requests...</p>
+          ) : data.length > 0 ? (
+            <div>
+              {/* Loop through data and display all requests in one div */}
+              {data.map((item, index) => (
+                <div key={index} className="mb-4 p-4 border-b border-gray-300 dark:border-gray-600">
+                  <p><strong className="dark:text-gray-300">Product Name:</strong> <span className="dark:text-gray-300">{item.market?.name || 'N/A'}</span></p>
+                  <p><strong className="dark:text-gray-300">User Name:</strong> <span className="dark:text-gray-300">{item.user?.fullName || 'N/A'}</span></p>
+                  <p><strong className="dark:text-gray-300">Requested Quantity:</strong> <span className="dark:text-gray-300">{item.quantity || '0'}</span></p>
+  
+                  {/* Buttons to confirm or reject each request */}
+                  <div className="mt-4 flex justify-start space-x-4">
+                    <button
+                      onClick={() => handleStatusUpdate(item, 'confirmed')}
+                      disabled={updatingStatus}
+                      className="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600 transition duration-300 disabled:opacity-50 dark:bg-green-600 dark:hover:bg-green-700"
+                    >
+                      {updatingStatus ? 'Updating...' : 'Confirm'}
+                    </button>
+                    <button
+                      onClick={() => handleStatusUpdate(item, 'declined')}
+                      disabled={updatingStatus}
+                      className="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600 transition duration-300 disabled:opacity-50 dark:bg-red-600 dark:hover:bg-red-700"
+                    >
+                      {updatingStatus ? 'Updating...' : 'Decline'}
+                    </button>
                   </div>
-                ))}
-              </div>
-            ) : (
-              <p className='dark:text-black'>No market requests found.</p>
-            )}
-          </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className='dark:text-gray-300'>No market requests found.</p>
+          )}
         </div>
-      )}
-    </div>
+      </div>
+    )}
+  </div>
   );
 };
 

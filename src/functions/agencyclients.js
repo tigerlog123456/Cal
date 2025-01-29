@@ -39,7 +39,7 @@ const Agencyclients = ({ data, setClient }) => {
     };
 
     return (
-        <div className="p-6 dark:bg-gray-900 dark:text-white min-h-screen">
+        <div className="p-6 dark:bg-gray-900 dark:text-white h-auto">
             {/* Fetch client data */}
             <SpecificUser agencyId={data.agencyCode} setfetcheddata={setClientData} />
 
@@ -82,55 +82,90 @@ const Agencyclients = ({ data, setClient }) => {
 
             {/* Display filtered and sorted data */}
             {filteredData.length > 0 ? (
-                <div className="overflow-x-auto">
-                    <table className="table-auto w-full border-collapse border border-gray-300 dark:border-gray-700 text-center">
-                        <thead>
-                            <tr className="bg-gray-100 dark:bg-gray-800">
-                                <th className="border border-gray-300 dark:border-gray-700 p-2">Email</th>
-                                <th className="border border-gray-300 dark:border-gray-700 p-2">Full Name</th>
-                                <th className="border border-gray-300 dark:border-gray-700 p-2">Age</th>
-                                <th className="border border-gray-300 dark:border-gray-700 p-2">Height</th>
-                                <th className="border border-gray-300 dark:border-gray-700 p-2">Weight</th>
-                                <th className="border border-gray-300 dark:border-gray-700 p-2">Target Weight</th>
-                                <th className="border border-gray-300 dark:border-gray-700 p-2">Health Conditions</th>
-                                <th className="border border-gray-300 dark:border-gray-700 p-2">Status</th>
-                                <th className="border border-gray-300 dark:border-gray-700 p-2">Recent Data</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredData.map((client, index) => (
-                                <tr
-                                    key={index}
-                                    className={`${
-                                        index % 2 === 0
-                                            ? "bg-white dark:bg-gray-900"
-                                            : "bg-gray-100 dark:bg-gray-800"
-                                    }`}
-                                >
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.email || "N/A"}</td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.fullName || "N/A"}</td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.age || "N/A"}</td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.height || "N/A"}</td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.weight || "N/A"}</td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.targetWeight || "N/A"}</td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.healthConditions || "N/A"}</td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2">{client.status || "N/A"}</td>
-                                    <td className="border border-gray-300 dark:border-gray-700 p-2">
-                                        <button
-                                            onClick={() => handleViewClick(client.uid)}
-                                            className="p-2 bg-indigo-600 text-white rounded-lg"
-                                        >
-                                            View
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </div>
-            ) : (
-                <p className="text-gray-500 dark:text-gray-400">No matching clients found.</p>
-            )}
+  <>
+    {/* Card View for Mobile and Small Screens */}
+    <div className="max-h-96 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:hidden gap-4">
+      {filteredData.map((client, index) => (
+        <div
+          key={index}
+          className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md p-4"
+        >
+          <div className="text-center">
+            <h3 className="font-semibold text-lg">{client.fullName || "N/A"}</h3>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{client.email || "N/A"}</p>
+          </div>
+          <div className="mt-4">
+            <p className="text-sm"><strong>Age:</strong> {client.age || "N/A"}</p>
+            <p className="text-sm"><strong>Height:</strong> {client.height || "N/A"}</p>
+            <p className="text-sm"><strong>Weight:</strong> {client.weight || "N/A"}</p>
+            <p className="text-sm"><strong>Target Weight:</strong> {client.targetWeight || "N/A"}</p>
+            <p className="text-sm"><strong>Health Conditions:</strong> {client.healthConditions || "N/A"}</p>
+            <p className="text-sm"><strong>Status:</strong> {client.status || "N/A"}</p>
+          </div>
+          <div className="mt-4 text-center">
+            <button
+              onClick={() => handleViewClick(client.uid)}
+              className="p-2 bg-indigo-600 text-white rounded-lg"
+            >
+              View Recent Data
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+
+   {/* Table View for Medium Screens and Larger */}
+<div className="hidden md:block max-h-96 overflow-y-auto">
+  <table className="table-auto w-full border-separate border-spacing-0 shadow-lg rounded-lg overflow-hidden">
+    <thead className="bg-gray-100 text-black dark:bg-gradient-to-r dark:from-gray-600 dark:to-gray-800 dark:text-white">
+      <tr>
+        <th className="p-4 text-left">Email</th>
+        <th className="p-4 text-left">Full Name</th>
+        <th className="p-4 text-left">Age</th>
+        <th className="p-4 text-left">Height</th>
+        <th className="p-4 text-left">Weight</th>
+        <th className="p-4 text-left">Target Weight</th>
+        <th className="p-4 text-left">Health Conditions</th>
+        <th className="p-4 text-left">Status</th>
+        <th className="p-4 text-left">Recent Data</th>
+      </tr>
+    </thead>
+    <tbody>
+      {filteredData.map((client, index) => (
+        <tr
+          key={index}
+          className={`${
+            index % 2 === 0
+              ? "bg-white dark:bg-gray-900 text-gray-800 dark:text-white"
+              : "bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-white"
+          } hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200`}
+        >
+          <td className="p-4">{client.email || "N/A"}</td>
+          <td className="p-4">{client.fullName || "N/A"}</td>
+          <td className="p-4">{client.age || "N/A"}</td>
+          <td className="p-4">{client.height || "N/A"}</td>
+          <td className="p-4">{client.weight || "N/A"}</td>
+          <td className="p-4">{client.targetWeight || "N/A"}</td>
+          <td className="p-4">{client.healthConditions || "N/A"}</td>
+          <td className="p-4">{client.status || "N/A"}</td>
+          <td className="p-4">
+            <button
+              onClick={() => handleViewClick(client.uid)}
+              className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-md hover:bg-indigo-700 transition-all duration-200"
+            >
+              View
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+  </>
+) : (
+  <p className="text-gray-500 dark:text-gray-400 text-center">No matching clients found.</p>
+)}
 
             {/* Overlay for recent data */}
             {isOverlayVisible && selectedUid && (

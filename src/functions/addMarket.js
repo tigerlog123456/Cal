@@ -90,7 +90,7 @@ const Market = ({ data }) => {
   };
 
   return (
-    <div className={`p-4 mt-10 max-w-4xl mx-auto`}>
+    <div className={`p-4 mt-10 md:mt-14 max-w-4xl mx-auto`}>
         
       {/* Form Section */}
       <div className="bg-white shadow-md rounded-lg p-6 mb-8 dark:bg-gray-800 dark:text-white">
@@ -101,7 +101,7 @@ const Market = ({ data }) => {
         </div>
       
         
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 mt-2">
           <div>
             <label className="block text-sm font-medium mb-2">Picture URL</label>
             <input
@@ -184,39 +184,71 @@ const Market = ({ data }) => {
       </div>
 
       {/* Cards Section */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {marketData.map((item, index) => (
-          <div
-            key={index}
-            className="bg-white shadow-lg rounded-lg overflow-hidden dark:bg-gray-800 dark:text-white"
-          >
-            {item.picture && (
-              <img
-                src={item.picture}
-                alt={item.name}
-                className="w-full h-40 object-cover"
-              />
-            )}
-            <div className="p-4">
-              <h3 className="text-lg font-bold mb-2 text-center">{item.name}</h3>
-              <p className="text-sm mb-2 text-gray-700 dark:text-gray-300 text-center" >
-                {item.description}
-              </p>
-              <p className="text-sm mb-2 text-center">Price: ${item.price}</p>
-              <p className="text-sm mb-2 text-center">
-                Quantity: {item.quantity === 0 ? "Sold Out" : item.quantity}
-              </p>
-              <p className="text-sm mb-4 text-center">Status: {item.status}</p>
-              <button
-                onClick={() => handleEdit(index)}
-                className="w-full  bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-300"
-              >
-                Edit
-              </button>
-            </div>
+      <div className="p-6 max-w-7xl mx-auto">
+  <h1 className="text-2xl font-semibold text-center text-gray-900 dark:text-white mb-6">
+    Market Products
+  </h1>
+
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {marketData.map((item, index) => (
+      <div
+        key={index}
+        className="bg-white shadow-lg rounded-lg overflow-hidden dark:bg-gray-800 dark:text-white transition-transform hover:scale-105 hover:shadow-xl transform"
+      >
+        {/* Product Image */}
+        {item.picture && (
+          <img
+            src={item.picture}
+            alt={item.name}
+            className="w-full h-48 object-cover rounded-t-lg"
+          />
+        )}
+
+        <div className="p-4">
+          {/* Product Name */}
+          <h3 className="font-semibold text-gray-900 dark:text-white mb-2 text-center">
+            {item.name}
+          </h3>
+
+          {/* Product Description */}
+          <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 text-center line-clamp-2">
+            {item.description}
+          </p>
+
+          {/* Price */}
+          <p className="text-lg font-bold text-gray-900 dark:text-white text-center mb-3">
+            ${item.price}
+          </p>
+
+          {/* Quantity and Status */}
+          <div className="flex flex-col items-center mb-3">
+            <p
+              className={`text-sm ${
+                item.quantity === 0 ? 'text-red-500' : 'text-green-500'
+              } text-center`}
+            >
+              {item.quantity === 0 ? 'Sold Out' : `${item.quantity} Available`}
+            </p>
+
+            <p className="text-xs text-center text-gray-600 dark:text-gray-400">
+              Status: {item.status}
+            </p>
           </div>
-        ))}
+
+          {/* Edit Button */}
+          <button
+            onClick={() => handleEdit(index)}
+            className="w-full py-2 px-4 bg-green-600 text-white font-semibold rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all"
+          >
+            Edit
+          </button>
+        </div>
       </div>
+    ))}
+  </div>
+</div>
+
+
     </div>
   );
 };

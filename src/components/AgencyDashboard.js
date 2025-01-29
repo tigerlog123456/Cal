@@ -1,13 +1,15 @@
 import { useState } from 'react'
 import '../App.css'
 import Agencyclients from '../functions/agencyclients'
+import Transactiondata from '../functions/Transactiondata'
 const AgencyDashboard = ({data})=>{
 const [client  , setClient] = useState([])
 
 return(
 
-    <div className='mt-14'>
+    <div className='mt-10 md:mt-14'>
       <Agencyclients data={data} setClient={setClient}/>
+      <Transactiondata data={data}/>
     </div>
 )
 }
