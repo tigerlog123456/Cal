@@ -119,15 +119,15 @@ const Agencyclients = ({ data, setClient }) => {
   <table className="table-auto w-full border-separate border-spacing-0 shadow-lg rounded-lg overflow-hidden">
     <thead className="bg-gray-100 text-black dark:bg-gradient-to-r dark:from-gray-600 dark:to-gray-800 dark:text-white">
       <tr>
-        <th className="p-4 text-left">Email</th>
-        <th className="p-4 text-left">Full Name</th>
-        <th className="p-4 text-left">Age</th>
-        <th className="p-4 text-left">Height</th>
-        <th className="p-4 text-left">Weight</th>
-        <th className="p-4 text-left">Target Weight</th>
-        <th className="p-4 text-left">Health Conditions</th>
-        <th className="p-4 text-left">Status</th>
-        <th className="p-4 text-left">Recent Data</th>
+        <th className="p-4 text-center">Email</th>
+        <th className="p-4 text-center">Full Name</th>
+        <th className="p-4 text-center">Age</th>
+        <th className="p-4 text-center">Height</th>
+        <th className="p-4 text-center">Weight</th>
+        <th className="p-4 text-center">Target Weight</th>
+        <th className="p-4 text-center">Health Conditions</th>
+        <th className="p-4 text-center">Status</th>
+        <th className="p-4 text-center">Recent Data</th>
       </tr>
     </thead>
     <tbody>
@@ -140,15 +140,15 @@ const Agencyclients = ({ data, setClient }) => {
               : "bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-white"
           } hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200`}
         >
-          <td className="p-4">{client.email || "N/A"}</td>
-          <td className="p-4">{client.fullName || "N/A"}</td>
-          <td className="p-4">{client.age || "N/A"}</td>
-          <td className="p-4">{client.height || "N/A"}</td>
-          <td className="p-4">{client.weight || "N/A"}</td>
-          <td className="p-4">{client.targetWeight || "N/A"}</td>
-          <td className="p-4">{client.healthConditions || "N/A"}</td>
-          <td className="p-4">{client.status || "N/A"}</td>
-          <td className="p-4">
+          <td className="p-4 text-center">{client.email || "N/A"}</td>
+          <td className="p-4 text-center">{client.fullName || "N/A"}</td>
+          <td className="p-4 text-center">{client.age || "N/A"}</td>
+          <td className="p-4 text-center">{client.height || "N/A"}</td>
+          <td className="p-4 text-center">{client.weight || "N/A"}</td>
+          <td className="p-4 text-center">{client.targetWeight || "N/A"}</td>
+          <td className="p-4 text-center">{client.healthConditions || "N/A"}</td>
+          <td className="p-4 text-center">{client.status || "N/A"}</td>
+          <td className="p-4 text-center">
             <button
               onClick={() => handleViewClick(client.uid)}
               className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-md hover:bg-indigo-700 transition-all duration-200"

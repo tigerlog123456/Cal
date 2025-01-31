@@ -11,7 +11,7 @@ const Addrecentdata = ({ data, onDataAdded, darkMode }) => {
 
   const calculation = async () => {
     const validateInputs = () => {
-      if (steps <= 10 || todayWeight <= 10 || water <= 1) {
+      if (steps < 10 || todayWeight < 10 || water < 0) {
         return false;
       }
       return true;
