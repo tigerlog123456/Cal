@@ -1,8 +1,10 @@
 import '../App.css'
-const AdminDashboard = ()=>{
+import Admin from '../functions/admindata'
+const AdminDashboard = (data)=>{
+
     return(
         <div>
-            <h1>Admin Dashboard</h1>
+            <Admin data={data} />
         </div>
     )
     }

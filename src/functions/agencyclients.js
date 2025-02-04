@@ -11,7 +11,7 @@ const Agencyclients = ({ data, setClient }) => {
 
     // Compute statistics
     const connectedUsers = clientData.length;
-    const activeUsers = clientData.filter((client) => client.status === "active").length;
+    const activeUsers = clientData.filter((client) => client.status === "Active").length;
 
     const validWeights = clientData
     .map((client) => parseFloat(client.weight)) // Convert weights to numbers

@@ -10,20 +10,13 @@ const ClientDashboard = ({ data }) => {
   const [refreshKey, setRefreshKey] = useState(0);
   const [refreshKay1, setRefreshKey1] = useState(0);
   const [recent, setrecent] = useState("");
-
 // Update to refresh the key
   const handleDataAdded = () => {
     setRefreshKey((prevKey) => prevKey + 1);
     setRefreshKey1((prevKey) => prevKey + 1);
   };
-
   return (
     <div className="bg-gray-50 dark:bg-gray-800 min-h-screen h-full pt-20 dark:text-white">
-      {(data.status === "deactivated") ? (
-        <div className="text-center mt-10 text-red-500 text-lg font-semibold">
-          <p>Account is Banned. Please contact the support team.</p>
-        </div>
-      ) : (
         <>
           {/* Welcome Section */}
           <div className="text-center mt-10 mb-8">
@@ -60,7 +53,6 @@ const ClientDashboard = ({ data }) => {
             </div>
           )}
         </>
-      )}
     </div>
   );
 };

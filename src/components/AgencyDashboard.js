@@ -9,6 +9,7 @@ const [client  , setClient] = useState([])
 return(
 
     <div className='mt-10 md:mt-14'>
+      
       <Agencyclients data={data} setClient={setClient}/> 
       <PT data={data}/>
       <Transactiondata data={data}/>
