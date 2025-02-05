@@ -161,12 +161,12 @@ const GetPT = (data) => {
         <table className="min-w-full rounded-lg overflow-hidden">
           <thead className="dark:bg-gray-700 bg-gray-200 dark:text-gray-300 text-gray-700">
             <tr>
-              <th className="p-3 text-left">Name</th>
-              <th className="p-3 text-left">Date</th>
-              <th className="p-3 text-left">Duration</th>
-              <th className="p-3 text-left">Capacity</th>
-              <th className="p-3 text-left">Price</th>
-              <th className="p-3 text-left">Action</th>
+              <th className="p-3 text-center">Name</th>
+              <th className="p-3 text-center">Date</th>
+              <th className="p-3 text-center">Duration</th>
+              <th className="p-3 text-center">Capacity</th>
+              <th className="p-3 text-center">Price</th>
+              <th className="p-3 text-center">Action</th>
             </tr>
           </thead>
           <tbody className="dark:bg-gray-800 bg-white divide-y divide-gray-300 dark:divide-gray-700">
@@ -176,15 +176,15 @@ const GetPT = (data) => {
 
               return (
                 <tr key={session.id} className="hover:bg-gray-100 dark:hover:bg-gray-600 transition-all">
-                  <td className="p-3 dark:text-white">{session.name}</td>
-                  <td className="p-3 dark:text-white">{session.date}</td>
-                  <td className="p-3 dark:text-white">{session.duration}</td>
-                  <td className="p-3 dark:text-white">{session.capacity}</td>
-                  <td className="p-3 dark:text-white">{session.price}</td>
-                  <td className="p-3">
+                  <td className="p-3 dark:text-white text-center">{session.name}</td>
+                  <td className="p-3 dark:text-white text-center">{session.date}</td>
+                  <td className="p-3 dark:text-white text-center">{session.duration}</td>
+                  <td className="p-3 dark:text-white text-center">{session.capacity}</td>
+                  <td className="p-3 dark:text-white text-center">{session.price}</td>
+                  <td className="p-3 text-center">
                     <button
                       onClick={() => addToParticipated(session)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
+                      className="bg-blue-600  hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
                       disabled={isFull || isJoined} // Disable if full or already joined
                     >
                       {isJoined ? (

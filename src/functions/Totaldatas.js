@@ -20,7 +20,7 @@ const Totaldatas = ({ recentdata, refreshKey }) => {
     <div className="p-4">
         
       {recentdata && recentdata.length > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-blue-500 text-white p-6 rounded-lg shadow-lg text-center">
             <h2 className="text-lg font-semibold">Calories Burned</h2>
             <p className="text-2xl font-bold">{totalCalories}</p>
@@ -28,10 +28,6 @@ const Totaldatas = ({ recentdata, refreshKey }) => {
           <div className="bg-green-500 text-white p-6 rounded-lg shadow-lg text-center">
             <h2 className="text-lg font-semibold">Water Consumed</h2>
             <p className="text-2xl font-bold">{totalWater} L</p>
-          </div>
-          <div className="bg-yellow-500 text-white p-6 rounded-lg shadow-lg text-center">
-            <h2 className="text-lg font-semibold">Total Entries</h2>
-            <p className="text-2xl font-bold">{totalCalculations}</p>
           </div>
         </div>
       )}

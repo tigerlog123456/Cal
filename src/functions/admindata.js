@@ -137,7 +137,7 @@ const Admin = () => {
     );
 
     return (
-        <div className="flex flex-col items-center min-h-screen bg-white dark:bg-gray-900 p-4 md:mt-16 mt-10">
+        <div className="flex flex-col items-center min-h-screen bg-white dark:bg-gray-900 p-4 md:mt-16 mt-16">
             {/* Dashboard Count Boxes */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full max-w-4xl mb-8">
                 {[{

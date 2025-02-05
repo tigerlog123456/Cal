@@ -73,12 +73,12 @@ const Marketdata = ({ data }) => {
           )}
           <div className="p-4">
             {/* Product Name */}
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 transition-colors hover:text-blue-600 dark:hover:text-blue-400">
+            <h3 className="text-xl font-semibold text-center text-gray-900 dark:text-white mb-2 transition-colors hover:text-blue-600 dark:hover:text-blue-400">
               {item.name}
             </h3>
             
             {/* Product Description */}
-            <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
+            <p className="text-sm text-gray-600 text-center dark:text-gray-300 mb-3 line-clamp-2">
               {item.description}
             </p>
   
@@ -118,7 +118,7 @@ const Marketdata = ({ data }) => {
               </div>
             </div>
   
-            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
               {item.quantity > 0 ? `${item.quantity} available` : "Sold Out"}
             </p>
   

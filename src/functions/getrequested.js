@@ -2,12 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { db } from '../firebase-config';
 import { collection, getDocs, getDoc, doc, updateDoc, deleteDoc, setDoc, onSnapshot } from 'firebase/firestore';
 
-const Requestdata = () => {
+const Requestdata = (agencydata) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [updatingStatus, setUpdatingStatus] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
-
   // Fetch data automatically on component mount using onSnapshot for real-time updates
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "Marketrequests"), async (marketRequestsSnapshot) => {
@@ -60,6 +59,7 @@ const Requestdata = () => {
         await setDoc(transactionRef, {
           productId: item.productId,
           userId: item.userId,
+          agencyname : agencydata.data.agencyName,
           quantity: item.quantity,
           status: 'confirmed',
           price: item.market.price,
@@ -94,6 +94,7 @@ const Requestdata = () => {
         await setDoc(declinedRequestRef, {
           productId: item.productId,
           userId: item.userId,
+          agencyname : agencydata.data.agencyName,
           quantity: item.quantity,
           status: 'declined',
           price: item.market.price,
