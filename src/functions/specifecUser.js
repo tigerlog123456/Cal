@@ -1,10 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { db } from '../firebase-config';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 
 const SpecificUser = ({ agencycode, agencydata, data, setfetcheddata, agencyId }) => {
-    const [error, setError] = useState(null);
-
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -37,10 +35,6 @@ const SpecificUser = ({ agencycode, agencydata, data, setfetcheddata, agencyId }
     }, [data, agencycode, agencydata, agencyId, setfetcheddata]);
 
     // Optionally, handle error rendering
-    if (error) {
-        return <p>{error}</p>;
-    }
-
     return null;
 };
 

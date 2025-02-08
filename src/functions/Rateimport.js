@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { doc, setDoc, getDoc, updateDoc, increment } from "firebase/firestore"; // Import Firestore methods
 import { db } from "../firebase-config";
-
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 const Addrate = ({ data }) => {
   const [rate, setRate] = useState("");
   const [hasRated, setHasRated] = useState(false);
 
   useEffect(() => {
     checkIfRated();
-  }, [data]);
+  }, [data , hasRated , rate]);
 
   const checkIfRated = async () => {
     if (data[0] && data[1]) {
@@ -48,31 +49,32 @@ const Addrate = ({ data }) => {
   };
 
   return (
-    <div className="flex items-center space-x-2">
+    <div className="flex justify-center space-x-2">
       {hasRated ? (
-        <p className="text-green-600 font-medium text-md p-2">Rated</p>
+        <Typography className="text-green-600 font-medium w-full text-md p-2 text-center">Rated</Typography>
       ) : (
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-2 aligm-center">
           <select
             value={rate}
             onChange={(e) => setRate(e.target.value)}
-            className="px-2 py-1 border border-gray-300 rounded dark:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+            className="px-2 py-1 border border-gray-300 rounded dark:hover:bg-gray-800 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
           >
-            <option value="" disabled>
+            <option className="text-center dark:bg-gray-800" value="" disabled>
               Rate
             </option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+            <option className="text-center dark:hover:bg-gray-800 dark:bg-gray-800" value="1">1</option>
+            <option className="text-center dark:hover:bg-gray-800 dark:bg-gray-800" value="2">2</option>
+            <option className="text-center dark:hover:bg-gray-800 dark:bg-gray-800" value="3">3</option>
+            <option className="text-center dark:hover:bg-gray-800 dark:bg-gray-800" value="4">4</option>
+            <option className="text-center dark:hover:bg-gray-800 dark:bg-gray-800" value="5">5</option>
           </select>
-          <button
+          <Button
+          variant=""
             onClick={handleSubmit}
-            className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-sm"
+            className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-sm hover:text-white"
           >
             Submit
-          </button>
+          </Button>
         </div>
       )}
     </div>

@@ -54,7 +54,7 @@ const Getrecentdata = ({ data, refreshKey, Setrecent }) => {
     {recentdata.length > 0 ? (
       <div className={`overflow-y-auto max-h-96 border rounded-lg scrollbar-thin dark:border-gray-700 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800 border-gray-200 scrollbar-thumb-gray-400 scrollbar-track-gray-100 dark:bg-gray-900 bg-gray-200`}>
         {/* Header Row */}
-        <div className={`hidden md:flex justify-between p-4 font-semibold dark:bg-gray-800 dark:text-white bg-gray-100 text-gray-600 sticky top-0`}>
+        <div className={`hidden md:flex justify-between p-4 font-semibold dark:bg-gray-700 dark:text-white bg-gray-100 text-gray-600 sticky top-0`}>
           <div className="w-1/6 text-center">Water</div>
           <div className="w-1/6 text-center">Steps</div>
           <div className="w-1/6 text-center">Today's Weight</div>
@@ -63,8 +63,8 @@ const Getrecentdata = ({ data, refreshKey, Setrecent }) => {
           <div className="w-1/6 text-center">Date / Time</div>
         </div>
         {recentdata.map((record, index) => (
-          <div key={index} className={`flex flex-col shadow-md mb-4 md:flex-row justify-between p-4 border-b dark:border-gray-700 dark:bg-gray-800 dark:text-white border-gray-200 bg-white text-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-200`}>
-            <div className="md:w-1/6 text-center">
+          <div key={index} className={`flex flex-col rounded-lg md:rounded-sm divide-gray-400 shadow-md mb-4 md:mb-0 md:flex-row justify-between p-4 dark:border-gray-700 dark:bg-gray-800 dark:text-white border-gray-200 bg-white text-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-200`}>
+            <div className="md:w-1/6 divide-gray-700 divide-y text-center">
               <span className="block md:hidden font-semibold">Water:</span> {record.water}
             </div>
             <div className="md:w-1/6 text-center">

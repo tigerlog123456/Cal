@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getFirestore, collection, onSnapshot, query, where, addDoc, getDocs } from "firebase/firestore";
+import { getFirestore, collection, onSnapshot, query, where, addDoc } from "firebase/firestore";
 
 const Marketdata = ({ data }) => {
   const [marketData, setMarketData] = useState([]);

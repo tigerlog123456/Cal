@@ -36,11 +36,11 @@ const ClientDashboard = ({ data }) => {
           </div>
 
           {/* Get Recent Data */}
-          <div className="max-w-4xl mx-auto px-4 ">
+          <div className="max-w-4xl mx-auto px-4">
             <Getrecentdata data={data} key={`recent-${refreshKey}`} Setrecent={setrecent} />
           </div>
           {data && data.agencyId && (
-            <div className="max-w-4xl mx-auto px-4 ">
+            <div className="max-w-4xl mx-auto px-4 mt-10">
             <GetPT data={data}/>
            <Marketdata data={data}/>
           </div>

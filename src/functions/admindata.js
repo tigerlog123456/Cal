@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase-config";
-import { collection, getDocs, query, where, doc, updateDoc, getDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, doc, updateDoc } from "firebase/firestore";
 
 const Admin = () => {
     const [userCount, setUserCount] = useState(0);

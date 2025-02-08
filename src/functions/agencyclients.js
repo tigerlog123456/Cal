@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import SpecificUser from "./specifecUser";
 import Getrecentdata from "./getrecentdata";
 
-const Agencyclients = ({ data, setClient }) => {
+const Agencyclients = ({ data }) => {
     const [clientData, setClientData] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
     const [sortOrder, setSortOrder] = useState("asc");

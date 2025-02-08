@@ -4,7 +4,7 @@ import { auth, db } from "../firebase-config";
 import { doc, setDoc , getDoc } from "firebase/firestore";
 import Registerinfo from "../functions/RegisterInfo";
 import '../App.css'; // Include your custom styles if necessary
-
+import Button from '@mui/material/Button';
 const RegisterComponent = ({ onLoginClick, darkMode }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -22,13 +22,13 @@ const RegisterComponent = ({ onLoginClick, darkMode }) => {
     const handleRegister = async () => {
             if(usertype ==="client"){
             if (!registerdata || Object.keys(registerdata).length === 0 || !registerdata.Fullname || !registerdata.age || !registerdata.health || !registerdata.weight || !registerdata.height || registerdata.age <16) {
-                setError("Please complete all required fields before registering."); 
+                setError("Please Complete All Required Fields Before Registering."); 
                 return;
                 }
             }
             if(usertype === "agency"){
                 if (!registerdata || Object.keys(registerdata).length === 0 || !registerdata.agencyname || !registerdata.location || !registerdata.ownername || !registerdata.phonenumber || !registerdata.price ) {
-                    setError("Please complete all required fields before registering."); 
+                    setError("Please Complete All Required Fields Before Registering."); 
                     return;
                     }
             }
@@ -95,14 +95,14 @@ const RegisterComponent = ({ onLoginClick, darkMode }) => {
             setError("");
         } catch (err) {
             const errorMessages = {
-                'auth/user-not-found': 'No account found with this email.',
-                'auth/wrong-password': 'Incorrect password. Please try again.',
-                'auth/invalid-email': 'Invalid email format.',
-                'auth/too-many-requests': 'Too many failed login attempts. Please try again later.',
-                'auth/invalid-credential': 'Invalid credentials provided. Please check your email and password.',
+                'auth/user-not-found': 'No Account Found With This Email.',
+                'auth/wrong-password': 'Incorrect Password. Please Try Again.',
+                'auth/invalid-email': 'Invalid Email Format.',
+                'auth/too-many-requests': 'Too Many Failed Login Attempts. Please Try Again Later.',
+                'auth/invalid-credential': 'Invalid Credentials Provided. Please Check Your Email And Password.',
             };
             // Set error message based on error code, or default to Firebase error message
-            setError(errorMessages[err.code] || 'An unexpected error occurred. Please try again.');
+            setError(errorMessages[err.code] || 'An Unexpected Error Occurred. Please Try Again.');
         }
     };
 
@@ -155,19 +155,21 @@ const RegisterComponent = ({ onLoginClick, darkMode }) => {
                     </div>
                 </div>
 
-                {/* Register Button */}
-                <button
+                {/* Register Button */}  
+                {error && <p className="text-red-500 font-bold text-sm text-center mt-4">{error}</p>}
+                <Button
+                    variant="contained"
                     onClick={handleRegister}
                     className={`w-full py-3 font-semibold rounded-lg hover:bg-blue-600 transition-all duration-200 mt-4 ${darkMode ? 'bg-blue-600 text-white' : 'bg-blue-500 text-white'}`}
                 >
                     Register
-                </button>
+                </Button>
 
                 {/* Error Message */}
-                {error && <p className="text-red-500 text-sm text-center mt-4">{error}</p>}
+              
 
                 {/* Login Link */}
-                <p className="text-center text-sm mt-4 text-gray-600">
+                <p className="text-center font-bold text-sm mt-4 text-gray-600">
                     Already have an account?{" "}
                     <a
                         href="#"

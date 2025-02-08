@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase-config";
-import { collection, query, where, onSnapshot } from "firebase/firestore";
+import { collection, query, onSnapshot } from "firebase/firestore";
 import { jsPDF } from "jspdf";
 const  AdminTransaction = ({ data }) => {
     const [transactions, setTransactions] = useState([]);

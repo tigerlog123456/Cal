@@ -17,10 +17,10 @@ import { doc, getDoc } from 'firebase/firestore';
                             const userData = docSnap.data();
                             onDataFetched(userData); // Pass the fetched data to Homepage
                         } else {
-                            setError('No user data found.');
+                            setError('No User Data Found.');
                         }
                     } catch (err) {
-                        setError('Failed to fetch user data.');
+                        setError('Failed To Fetch User Data.');
                         console.error(err);
                     }
                 };         

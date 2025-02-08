@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { getFirestore, collection, addDoc, getDocs, updateDoc, doc, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot } from "firebase/firestore";
 import moment from "moment";
-import Requestdata from "./getrequested";
 
 const Market = ({ data }) => {
   const [formData, setFormData] = useState({

@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import SpecificUser from "../functions/specifecUser";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase-config"; // Import your Firebase auth instance
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc} from "firebase/firestore";
 import { db } from "../firebase-config";
-import { useNavigate } from "react-router-dom";
 import Addrate from "../functions/Rateimport";
-
-const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClick}) => {
-  const navigate = useNavigate();
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+const Navbar = ({ data , onProfileClick , onHomeClick , onMarketClick}) => {
   const [fetcheddata, setfetcheddata] = useState();
   const [showOverlay, setShowOverlay] = useState(false);
   const [agencyInput, setAgencyInput] = useState("");
@@ -39,7 +38,7 @@ const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClic
       console.error("Error during logout:", error);
     }
   };
-
+  
   const handleconnect = () => {
     setShowOverlay(true); // Show the overlay when the connect button is clicked
   };
@@ -61,7 +60,6 @@ const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClic
         console.error("Error updating agency ID:", error);
       }
     } else {
-      console.log("fetchedd is undefined, not an array, or doesn't have a second element.");
     }
   };
 
@@ -73,38 +71,35 @@ const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClic
     <div className={`fixed top-0 left-0 w-full z-50 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-800"} shadow-md`}>
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <p className="text-xl font-bold">Logo</p>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+           Fitnix
+          </Typography>
         </div>
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-6">
-        <button 
+        <Button 
           onClick={onHomeClick}
-          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
+          variant=""
+          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-300 dark:hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
             Home
-            
-            </button>
+            </Button>
             {data && data.userType === "agency" && <>
-           
-            
-           
-            
-            <button 
+            <Button 
           onClick={onMarketClick}
-          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
+          variant=""
+          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-300 dark:hover:dark-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
             Market
-            
-            </button> </>
+            </Button> </>
             }
-          {data && <button 
+          {data && <Button 
+          variant=""
           onClick={onProfileClick}
-          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
+          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-300 dark:hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
             Profile
-            
-            </button>
-            
+            </Button>
             }
-            {data && data.userType =="agency" && (
+            {data && data.userType === "agency" && (
                <p className={`
                 text-center font-semibold text-sm px-4 py-2 rounded-lg transition-all duration-300
                 ${darkMode ? "text-white bg-gray-800 hover:bg-gray-700 shadow-lg shadow-gray-900/30" 
@@ -119,12 +114,13 @@ const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClic
 
             }
           {data && data.agencyId === "" && data.userType === "client" && !isConnectedToAgency && (
-            <button
+            <Button
+             variant="contained"
               onClick={handleconnect}
               className="bg-blue-500 text-white px-4 py-2  rounded-lg hover:bg-blue-600"
             >
               Connect to Agency
-            </button>
+            </Button>
           )}
           {data && data.agencyId !== " " && data.userType === "client" && (
             <div className="flex flex-col">
@@ -136,7 +132,7 @@ const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClic
               />
               {fetchedd && fetchedd.length > 1 && (
                 <>
-                  <p className={`font-semibold ${darkMode ? "text-white" : "text-gray-700"}`}>{fetchedd[1].agencyName}</p>
+                  <Typography className={`font-semibold ${darkMode ? "text-white" : "text-gray-700"}`}>{fetchedd[1].agencyName}</Typography>
                 </>
               )}
             </div>
@@ -146,27 +142,31 @@ const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClic
           )}
           
           {data && (
-            <button
+            <Button
               onClick={handleLogout}
-              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+              variant="contained"
+              color="#FF0000"
+              className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white"
             >
               Logout
-            </button>
+            </Button>
           )}
 
-          <button
+          <Button
             onClick={() => setDarkMode(!darkMode)}
+            variant="contained"
+            color=""
             className={`${
               darkMode ? "bg-gray-800" : "bg-gray-300"
-            } text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition-colors`}
+            } text-white px-4 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 transition-colors`}
           >
             {darkMode ? "Light Mode" : "Dark Mode"}
-          </button>
+          </Button>
         </div>
 
         {/* Burger Menu for Mobile */}
         <div className="md:hidden">
-          <button
+          <Button
             onClick={() => setMenuOpen(!menuOpen)}
             className="text-gray-800 dark:text-white focus:outline-none"
           >
@@ -193,36 +193,37 @@ const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClic
                 />
               )}
             </svg>
-          </button>
+          </Button>
         </div>
       </div>
 
       {/* Mobile Menu */}
       {menuOpen && (
         <div className="md:hidden bg-white dark:bg-gray-900 px-4 py-3 shadow-md gap-4 flex-col flex justify-center">
-           <button 
+           <Button 
+          variant=""
           onClick={onHomeClick}
-          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
+          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-300 dark:hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
             Home
             
-            </button>
+            </Button>
             {data && data.userType === "agency" && <>
             
-            <button 
+            <Button 
+            variant=""
           onClick={onMarketClick}
-          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
+          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-300 dark:hover:bg-gray-500${darkMode ? "text-white" : "text-gray-700"}`}>
             Market
             
-            </button></>
+            </Button></>
             }
-          {data && <button 
+          {data && <Button 
+          variant=""
           onClick={onProfileClick}
-          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
+          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-300 dark:hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
             Profile
-            
-            </button>}
-
-            {data && data.userType == "agency" && (
+            </Button>}
+            {data && data.userType === "agency" && (
                 <p className={`
                   text-center font-semibold text-sm px-4 py-2 rounded-lg transition-all duration-300
                   ${darkMode ? "text-white bg-gray-800 hover:bg-gray-700 shadow-lg shadow-gray-900/30" 
@@ -234,38 +235,40 @@ const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClic
                   <span className="ml-2 font-bold text-lg">{data.agencyCode}</span>
                 </p>
             )
-
             }
           {data && data.agencyId === "" && data.userType === "client" && !isConnectedToAgency && (
-            <button
+            <Button
+            variant="contained"
               onClick={handleconnect}
               className="block w-full bg-blue-500 text-white px-4 py-2 p-2 rounded-lg hover:bg-blue-600 mt-2"
             >
               Connect to Agency
-            </button>
+            </Button>
           )}
            {fetchedd && fetchedd.length > 1 && (
                 <>
-                  <p className={`font-semibold  p-2 ${darkMode ? "text-white" : "text-gray-700"}`}>{fetchedd[1].agencyName}</p>
+                  <Typography variant="" disabled={true} className={`font-semibold text-center p-2 ${darkMode ? "text-white" : "text-gray-700"}`}>{fetchedd[1].agencyName}</Typography>
                 </>
               )}
             {fetchedd && fetchedd.length > 1 && (
             <Addrate data={fetchedd} />
           )}
           {data && (
-            <button
+            <Button
+            variant=""
               onClick={handleLogout}
-              className="block w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 mt-2"
+              className="block w-full bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 mt-2 hover:text-white"
             >
               Logout
-            </button>
+            </Button>
           )}
-          <button
+          <Button
             onClick={() => setDarkMode(!darkMode)}
-            className="block w-full bg-gray-300 dark:bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 mt-2"
+            variant=""
+            className="block w-full bg-gray-300 dark:bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-500 mt-2"
           >
             {darkMode ? "Light Mode" : "Dark Mode"}
-          </button>
+          </Button>
         </div>
       )}
 
@@ -274,25 +277,27 @@ const Navbar = ({ data, ontrigger  , onProfileClick , onHomeClick , onMarketClic
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-96">
             <h2 className="text-xl font-bold mb-4">Connect to Agency</h2>
             <input
+              placeholder="Agency ID"
               type="text"
-              placeholder="Enter Agency ID"
               value={agencyInput}
               onChange={(e) => setAgencyInput(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
             />
-            <div className="flex justify-between">
-              <button
+            <div className="flex justify-between ">
+              <Button
+                variant=""
                 onClick={handleOverlaySubmit}
-                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 hover:text-white"
               >
                 Submit
-              </button>
-              <button
+              </Button>
+              <Button
+                variant=""
                 onClick={handleOverlayClose}
-                className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+                className="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700"
               >
                 Close
-              </button>
+              </Button>
             </div>
           </div>
         </div>

@@ -136,7 +136,7 @@ const Transactiondata = ({ data }) => {
                     onChange={(e) => setSelectedDate(e.target.value)}
                     className="p-3 border border-gray-300 dark:border-gray-600 rounded-lg w-full sm:w-1/3 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500"
                 />
-                <Requestdata data={data} />
+                <Requestdata agencydata={data} />
             </div>
 
             {/* Mobile View - Cards */}

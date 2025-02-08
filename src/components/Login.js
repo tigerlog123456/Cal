@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase-config';
 import '../App.css'; // Include your custom styles if necessary
-
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 const LoginComponent = ({ setUserData, onRegisterClick }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -20,14 +21,14 @@ const LoginComponent = ({ setUserData, onRegisterClick }) => {
             })
             .catch((error) => {
                 const errorMessages = {
-                    'auth/user-not-found': 'No account found with this email.',
-                    'auth/wrong-password': 'Incorrect password. Please try again.',
-                    'auth/invalid-email': 'Invalid email format.',
-                    'auth/too-many-requests': 'Too many failed login attempts. Please try again later.',
-                    'auth/invalid-credential': 'Invalid credentials provided. Please check your email and password.',
+                    'auth/user-not-found': 'No Account Found With This Email.',
+                    'auth/wrong-password': 'Incorrect Password. Please Try Again.',
+                    'auth/invalid-email': 'Invalid Email Format.',
+                    'auth/too-many-requests': 'Too Many Failed Login Attempts. Please Try Again Later.',
+                    'auth/invalid-credential': 'Invalid Credentials Provided. Please Check Your Email And Password.',
                 };
                 // Set error message based on error code, or default to Firebase error message
-                setError(errorMessages[error.code] || 'An unexpected error occurred. Please try again.');
+                setError(errorMessages[error.code] || 'An Unexpected Error Occurred. Please Try Again.');
             });
     };
 
@@ -70,16 +71,17 @@ const LoginComponent = ({ setUserData, onRegisterClick }) => {
                     />
                 </div>
                 {/* Error Message */}
-                {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+                {error && <p className="text-red-500 font-bold text-sm text-center">{error}</p>}
                 {/* Login Button */}
-                <button
+                <Button
+                    variant="contained"
                     onClick={handleLogin}
-                    className="w-full py-3 bg-blue-500 text-white font-semibold rounded-lg hover:bg-blue-600 transition-all duration-200 dark:bg-blue-700 dark:hover:bg-blue-800"
+                    className="w-full py-3 bg-blue-500 text-white dark:text-white font-semibold rounded-lg hover:bg-blue-600 transition-all duration-200 dark:bg-blue-700 dark:hover:bg-blue-800"
                 >
                     Login
-                </button>
+                </Button>
                 {/* Register Link */}
-                <p className="text-center text-sm mt-4 text-gray-600 dark:text-gray-400">
+                <p className="text-center font-bold text-sm mt-4 text-gray-600 dark:text-gray-400">
                     Don't have an account?{" "}
                     <a
                         href="#"

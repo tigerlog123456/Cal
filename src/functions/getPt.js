@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { db } from "../firebase-config";
 import { collection, query, where, onSnapshot, addDoc, getCountFromServer, doc, updateDoc, getDoc, getDocs } from "firebase/firestore";
+import Button from '@mui/material/Button';
 
 const GetPT = (data) => {
   const [sessions, setSessions] = useState([]);
@@ -24,7 +25,7 @@ const GetPT = (data) => {
           collection(db, "participatedsession"),
           where("sessionId", "==", sessionId)
         );
-
+        
         const participantsSnapshot = await getCountFromServer(participantsQuery);
         const numParticipants = participantsSnapshot.data().count;
 
@@ -67,7 +68,18 @@ const GetPT = (data) => {
     // Cleanup function to unsubscribe when component unmounts
     return () => unsubscribe();
   }, [data.data.agencyId, data.data.uid]);
-
+  const formatDate = (timestamp) => {
+    if (!timestamp) return ""; // Handle undefined timestamps
+    const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+    return date.toLocaleString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    }).replace(",", "");
+  };
   const addToParticipated = async (session) => {
     try {
       // Check the capacity first
@@ -106,7 +118,6 @@ const GetPT = (data) => {
         await updateDoc(sessionRef, { status: "Full" }); // Set status to "Full" if capacity is reached
       }
 
-      alert("Added to Participated Sessions!");
     } catch (error) {
       console.error("Error adding session:", error);
     }
@@ -129,28 +140,29 @@ const GetPT = (data) => {
           return (
             <div
               key={session.id}
-              className={`p-5 border rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700 bg-gray-100 border-gray-300`}
+              className={`p-5 border rounded-lg flex flex-col md:flex-row gap-2 justify-between  shadow-md dark:bg-gray-800 dark:border-gray-700 bg-gray-100 border-gray-300`}
             >
               <h3 className="text-lg font-semibold dark:text-white">{session.name}</h3>
-              <p className="text-gray-400 dark:text-gray-300"><strong>Date:</strong> {session.date}</p>
-              <p className="text-gray-400 dark:text-gray-300"><strong>Duration:</strong> {session.duration} {(session.duration > 1) ? "Hours" : "Hour"}</p>
-              <p className="text-gray-400 dark:text-gray-300"><strong>Capacity:</strong> {session.capacity}</p>
-              <p className="text-gray-400 dark:text-gray-300"><strong>Price:</strong> {session.price}</p>
+              <p className="text-gray-400 dark:text-gray-300 font-bold"><strong>Date:</strong> {formatDate(session.date)}</p>
+              <p className="text-gray-400 dark:text-gray-300 font-bold"><strong>Duration:</strong> {session.duration} {(session.duration > 1) ? "Hours" : "Hour"}</p>
+              <p className="text-gray-400 dark:text-gray-300 font-bold"><strong>Capacity:</strong> {session.capacity}</p>
+              <p className="text-gray-400 dark:text-gray-300 font-bold"><strong>Price:</strong> {session.price + " $"}</p>
 
               {/* Show "Already Joined", "Full", or "Join Session" */}
-              <button
-                onClick={() => addToParticipated(session)}
-                className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
-                disabled={isFull || isJoined} // Disable if full or already joined
-              >
-                {isJoined ? (
-                  <p>Already Joined</p>
-                ) : isFull ? (
-                  <p>Full</p>
-                ) : (
-                  <p>Join Session</p>
-                )}
-              </button>
+              <Button
+                    variant="contained"
+                      onClick={() => addToParticipated(session)}
+                      className="bg-blue-600 text-white  hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
+                      disabled={isFull || isJoined} // Disable if full or already joined
+                    >
+                      {isJoined ? (
+                        <p className="font-bold dark:text-white">Already Joined</p>
+                      ) : isFull ? (
+                        <p className="font-bold dark:text-white">Full</p>
+                      ) : (
+                        <p>Join Session</p>
+                      )}
+                    </Button>
             </div>
           );
         })}
@@ -177,24 +189,25 @@ const GetPT = (data) => {
               return (
                 <tr key={session.id} className="hover:bg-gray-100 dark:hover:bg-gray-600 transition-all">
                   <td className="p-3 dark:text-white text-center">{session.name}</td>
-                  <td className="p-3 dark:text-white text-center">{session.date}</td>
-                  <td className="p-3 dark:text-white text-center">{session.duration}</td>
-                  <td className="p-3 dark:text-white text-center">{session.capacity}</td>
-                  <td className="p-3 dark:text-white text-center">{session.price}</td>
+                  <td className="p-3 dark:text-white text-center">{formatDate(session.date)}</td>
+                  <td className="p-3 dark:text-white text-center">{session.duration} {(session.duration > 1) ? ("Hours"):("Hour")}</td>
+                  <td className="p-3 dark:text-white text-center font-bold">{session.capacity}</td>
+                  <td className="p-3 dark:text-white text-center font-bold">{session.price + " $"}</td>
                   <td className="p-3 text-center">
-                    <button
+                    <Button
+                    variant="contained"
                       onClick={() => addToParticipated(session)}
-                      className="bg-blue-600  hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
+                      className="bg-blue-600 text-white  hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
                       disabled={isFull || isJoined} // Disable if full or already joined
                     >
                       {isJoined ? (
-                        <p>Already Joined</p>
+                        <p className="font-bold dark:text-white">Already Joined</p>
                       ) : isFull ? (
-                        <p>Full</p>
+                        <p className="font-bold dark:text-white">Full</p>
                       ) : (
                         <p>Join Session</p>
                       )}
-                    </button>
+                    </Button>
                   </td>
                 </tr>
               );

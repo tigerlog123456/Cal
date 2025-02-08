@@ -37,6 +37,7 @@ const Requestdata = (agencydata) => {
         setData(combinedData);
 
       } catch (error) {
+        console.log(error)
       } finally {
         setLoading(false);
       }
@@ -53,21 +54,20 @@ const Requestdata = (agencydata) => {
         // Remove the request from Marketrequests
         const marketRequestDoc = doc(db, "Marketrequests", item.id);
         await deleteDoc(marketRequestDoc);
-
+        
         // Add the request to the Transactions collection
         const transactionRef = doc(collection(db, "Transactions"), item.id); // Use item.id for unique transaction ID
         await setDoc(transactionRef, {
           productId: item.productId,
           userId: item.userId,
-          agencyname : agencydata.data.agencyName,
+          agencyname : agencydata.agencydata.agencyName,
           quantity: item.quantity,
           status: 'confirmed',
           price: item.market.price,
           createdAt: new Date(),
           user: item.user,
           market: item.market,
-        });
-
+         });
         // Reduce the quantity in the Market collection if the status is confirmed
         const marketDoc = doc(db, "Market", item.productId);
         const marketSnapshot = await getDoc(marketDoc);
@@ -79,7 +79,7 @@ const Requestdata = (agencydata) => {
           // Ensure the quantity doesn't go below 0
           if (newQuantity >= 0) {
             await updateDoc(marketDoc, { quantity: newQuantity });
-           
+
           } else {
           }
         } else {
@@ -94,7 +94,7 @@ const Requestdata = (agencydata) => {
         await setDoc(declinedRequestRef, {
           productId: item.productId,
           userId: item.userId,
-          agencyname : agencydata.data.agencyName,
+          agencyname : agencydata.agencydata.agencyName,
           quantity: item.quantity,
           status: 'declined',
           price: item.market.price,
@@ -105,6 +105,7 @@ const Requestdata = (agencydata) => {
       }
 
     } catch (error) {
+
     } finally {
       setUpdatingStatus(false);
     }
