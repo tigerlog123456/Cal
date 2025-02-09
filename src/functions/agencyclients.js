@@ -1,7 +1,7 @@
 import { useState } from "react";
 import SpecificUser from "./specifecUser";
 import Getrecentdata from "./getrecentdata";
-
+import Button from '@mui/material/Button';
 const Agencyclients = ({ data }) => {
     const [clientData, setClientData] = useState([]);
     const [searchQuery, setSearchQuery] = useState("");
@@ -68,16 +68,17 @@ const Agencyclients = ({ data }) => {
                     placeholder="Search by email"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full md:w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400"
+                    className="w-full md:w-1/2 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:border-gray-700 dark:placeholder-gray-400"
                 />
-                <button
+                <Button
+                variant="contained"
                     onClick={() =>
                         setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
                     }
-                    className="p-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-200 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+                    className="p-2 bg-indigo-600 text-white !hover:bg-blue-700 rounded-lg transition duration-200 dark:bg-blue-500 dark:hover:bg-blue-600"
                 >
                     Sort: {sortOrder === "asc" ? "Ascending" : "Descending"}
-                </button>
+                </Button>
             </div>
 
             {/* Display filtered and sorted data */}
@@ -94,7 +95,7 @@ const Agencyclients = ({ data }) => {
             <h3 className="font-semibold text-lg">{client.fullName || "N/A"}</h3>
             <p className="text-sm text-gray-500 dark:text-gray-400">{client.email || "N/A"}</p>
           </div>
-          <div className="mt-4">
+          <div className="mt-4 text-center">
             <p className="text-sm"><strong>Age:</strong> {client.age || "N/A"}</p>
             <p className="text-sm"><strong>Height:</strong> {client.height || "N/A"}</p>
             <p className="text-sm"><strong>Weight:</strong> {client.weight || "N/A"}</p>
@@ -103,12 +104,13 @@ const Agencyclients = ({ data }) => {
             <p className="text-sm"><strong>Status:</strong> {client.status || "N/A"}</p>
           </div>
           <div className="mt-4 text-center">
-            <button
+            <Button
+              variant="contained"
               onClick={() => handleViewClick(client.uid)}
-              className="p-2 bg-indigo-600 text-white rounded-lg"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 transition-all duration-200"
             >
               View Recent Data
-            </button>
+            </Button>
           </div>
         </div>
       ))}
@@ -117,7 +119,7 @@ const Agencyclients = ({ data }) => {
    {/* Table View for Medium Screens and Larger */}
 <div className="hidden md:block max-h-96 overflow-y-auto">
   <table className="table-auto w-full border-separate border-spacing-0 shadow-lg rounded-lg overflow-hidden">
-    <thead className="bg-gray-100 text-black dark:bg-gradient-to-r dark:from-gray-600 dark:to-gray-800 dark:text-white">
+    <thead className="bg-gray-100 text-black dark:bg-gray-700 dark:text-white bg-gray-100 text-gray-600">
       <tr>
         <th className="p-4 text-center">Email</th>
         <th className="p-4 text-center">Full Name</th>
@@ -134,11 +136,7 @@ const Agencyclients = ({ data }) => {
       {filteredData.map((client, index) => (
         <tr
           key={index}
-          className={`${
-            index % 2 === 0
-              ? "bg-white dark:bg-gray-900 text-gray-800 dark:text-white"
-              : "bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-white"
-          } hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200`}
+          className={`dark:bg-gray-800 rounded-lg md:rounded-sm divide-gray-400 shadow-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200`}
         >
           <td className="p-4 text-center">{client.email || "N/A"}</td>
           <td className="p-4 text-center">{client.fullName || "N/A"}</td>
@@ -149,12 +147,13 @@ const Agencyclients = ({ data }) => {
           <td className="p-4 text-center">{client.healthConditions || "N/A"}</td>
           <td className="p-4 text-center">{client.status || "N/A"}</td>
           <td className="p-4 text-center">
-            <button
+            <Button
+              variant="contained"
               onClick={() => handleViewClick(client.uid)}
-              className="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-md hover:bg-indigo-700 transition-all duration-200"
+              className="px-4 py-2 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 transition-all duration-200"
             >
               View
-            </button>
+            </Button>
           </td>
         </tr>
       ))}
@@ -164,7 +163,7 @@ const Agencyclients = ({ data }) => {
 
   </>
 ) : (
-  <p className="text-gray-500 dark:text-gray-400 text-center">No matching clients found.</p>
+  <p className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Matching Clients Found.</p>
 )}
 
             {/* Overlay for recent data */}

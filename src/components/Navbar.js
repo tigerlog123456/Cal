@@ -88,7 +88,7 @@ const Navbar = ({ data , onProfileClick , onHomeClick , onMarketClick}) => {
             <Button 
           onClick={onMarketClick}
           variant=""
-          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-300 dark:hover:dark-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
+          className={`hover:text-white-500 p-2 rounded-lg transition-colors hover:bg-gray-300 dark:hover:bg-gray-500 ${darkMode ? "text-white" : "text-gray-700"}`}>
             Market
             </Button> </>
             }
@@ -285,9 +285,9 @@ const Navbar = ({ data , onProfileClick , onHomeClick , onMarketClick}) => {
             />
             <div className="flex justify-between ">
               <Button
-                variant=""
+                variant="contained"
                 onClick={handleOverlaySubmit}
-                className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 hover:text-white"
+                className="!bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-red-800 hover:text-white"
               >
                 Submit
               </Button>

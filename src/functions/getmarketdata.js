@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getFirestore, collection, onSnapshot, query, where, addDoc } from "firebase/firestore";
-
+import Button from '@mui/material/Button';
 const Marketdata = ({ data }) => {
   const [marketData, setMarketData] = useState([]);
   const [quantity, setQuantity] = useState("");
@@ -58,11 +58,11 @@ const Marketdata = ({ data }) => {
   return (
     <div className="p-6 mt-8 max-w-5xl mx-auto">
     <h1 className="text-2xl font-semibold text-center text-gray-900 dark:text-white mb-6">Market Products</h1>
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
       {marketData.map((item) => (
         <div
           key={item.id}
-          className="bg-white shadow-lg rounded-lg overflow-hidden dark:bg-gray-800 dark:text-white transition-transform hover:scale-105 hover:shadow-xl transform"
+          className="bg-white shadow-lg  rounded-lg overflow-hidden dark:bg-gray-900 dark:text-white transition-transform hover:scale-105 hover:shadow-xl transform"
         >
           {item.picture && (
             <img
@@ -83,10 +83,7 @@ const Marketdata = ({ data }) => {
             </p>
   
             {/* Price Section */}
-            <div className="flex justify-between items-center mb-4">
-              <p className="text-lg font-semibold text-gray-800 dark:text-gray-100">Price:</p>
-              <p className="text-xl font-bold text-blue-600 dark:text-blue-400">${item.price}</p>
-            </div>
+           
   
             {/* Quantity Section */}
             <div className="flex items-center justify-between mb-4">
@@ -117,22 +114,26 @@ const Marketdata = ({ data }) => {
                 </button>
               </div>
             </div>
-  
+            <div className="flex justify-between items-center mb-4">
+              <p className="text-lg font-semibold text-gray-800 dark:text-gray-100">Price:</p>
+              <p className="text-xl font-bold text-blue-600 dark:text-blue-400">${item.price}</p>
+            </div>
             <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
-              {item.quantity > 0 ? `${item.quantity} available` : "Sold Out"}
+              {item.quantity > 0 ? (<span className="text-green-500 font-bold">{item.quantity} AVAILABLE</span>) : (<span className="text-red-500 font-bold">SOLD OUT</span>)}
             </p>
   
-            <button
+            <Button
               onClick={() => handleRequestProduct(item.id, item.quantity)}
               disabled={item.quantity <= 0}
+              variant="contained"
               className={`w-full px-4 py-2 text-white font-medium rounded-md shadow-sm transition-all ${
                 item.quantity > 0
                   ? "bg-blue-600 hover:bg-blue-700"
                   : "bg-gray-400 cursor-not-allowed"
               }`}
             >
-              {item.quantity > 0 ? "Request Product" : "Out of Stock"}
-            </button>
+              {item.quantity > 0 ? (<p>Request Product</p>) : (<p className="text-red-500">Out Of Stock</p>)}
+            </Button>
           </div>
         </div>
       ))}

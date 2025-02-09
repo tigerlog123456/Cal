@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase-config';
-
+import Button from '@mui/material/Button';
 const Profile = ({ data }) => {
     const [formData, setFormData] = useState({});
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -9,7 +9,7 @@ const Profile = ({ data }) => {
     // Initialize formData based on user type
     useEffect(() => {
         const initialClientData = {
-            email: data.email || '',
+            fullName: data.fullName || '',
             age: data.age || '',
             height: data.height || '',
             weight: data.weight || '',
@@ -18,7 +18,6 @@ const Profile = ({ data }) => {
         };
 
         const initialAgencyData = {
-            email: data.email || '',
             ownerName: data.ownerName || '',
             location: data.location || '',
             phoneNumber: data.phonenumber || '',
@@ -57,7 +56,7 @@ const Profile = ({ data }) => {
         <div className="min-h-screen flex items-center justify-center dark:bg-gray-900 gray-100 transition duration-300 mt-8">
             <div className="max-w-lg w-full p-6 dark:bg-gray-800 bg-white rounded-lg shadow-lg space-y-6">
                 <h1 className="text-2xl font-semibold text-center dark:text-white gray-800">
-                    Hello, {formData.email}
+                    Hello, {formData.fullName || formData.ownerName}
                 </h1>
 
                 {/* Render form inputs based on user type */}
@@ -71,21 +70,22 @@ const Profile = ({ data }) => {
                                 .replace(/([A-Z])/g, ' $1')
                                 .replace(/^./, (str) => str.toUpperCase())}
                             onChange={handleInputChange}
-                            className="w-full p-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-200"
+                            className="w-full p-3 border-2 dark:bg-gray-900 dark:border-gray-800 dark:text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                         />
                     ))}
                 </div>
 
                 {/* Update Button */}
-                <button
+                <Button
                     onClick={handleUpdate}
+                    variant='contained'
                     disabled={isButtonDisabled}
-                    className={`w-full p-3 text-white font-semibold rounded-lg ${
-                        isButtonDisabled ? 'bg-gray-500 cursor-not-allowed' : 'bg-indigo-600 hover:bg-indigo-700'
+                    className={` w-full p-3 !text-white  font-semibold rounded-lg ${
+                        isButtonDisabled ? '!bg-gray-600 !cursor-not-allowed' : ' !hover:bg-indigo-700'
                     } transition duration-200`}
                 >
                     Update Profile
-                </button>
+                </Button>
             </div>
         </div>
     );

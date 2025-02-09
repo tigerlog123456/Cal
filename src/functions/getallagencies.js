@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { getDocs, query, collection, where } from "firebase/firestore";
 import { db } from "../firebase-config";
-
+import Button from '@mui/material/Button';
 const Getagencies = ({ darkMode }) => {
   const [agencies, setAllAgencies] = useState([]);
   const [filteredAgencies, setFilteredAgencies] = useState([]);
@@ -85,86 +85,100 @@ const Getagencies = ({ darkMode }) => {
   };
 
   return (
-    <div className={`p-4 shadow-lg rounded-lg mx-auto max-w-screen-lg dark:bg-gray-900 dark:text-white bg-white text-gray-800`}>
-      <h1 className="text-xl font-bold mb-4">Top Gyms</h1>
-      {error && <p>{error}</p>}
+    <div className={`p-6 shadow-lg rounded-lg mx-auto max-w-screen-lg dark:bg-gray-900 dark:text-white bg-white text-gray-800`}>
+      <h1 className="font-bold text-2xl mb-6 dark:text-white text-gray-800">Top Gyms</h1>
+      {error && <p className="text-red-500 font-bold">{error}</p>}
 
       {/* Sort buttons and search bar */}
-      <div className="mb-4 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="mb-4 flex flex-col sm:flex-Col justify-between items-center gap-4">
+      <input
+          type="text"
+          placeholder="Search agencies..."
+          className={` w-1/2 px-4 py-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-white border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
         <div className="flex flex-wrap gap-2">
-          <button
+          <Button
+          variant="contained"
             className={`px-3 py-1 rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white bg-blue-500 hover:bg-blue-600 text-white`}
             onClick={() => handleSort("agencyName")}
           >
             Sort by Name
-          </button>
-          <button
+          </Button>
+          <Button
+          variant="contained"
             className={`px-3 py-1 rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white bg-blue-500 hover:bg-blue-600 text-white`}
             onClick={() => handleSort("ownerName")}
           >
             Sort by Owner
-          </button>
-          <button
+          </Button>
+          <Button
+          variant="contained"
             className={`px-3 py-1 rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white bg-blue-500 hover:bg-blue-600 text-white`}
             onClick={() => handleSort("location")}
           >
             Sort by Location
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="contained"
             className={`px-3 py-1 rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white bg-blue-500 hover:bg-blue-600 text-white`}
             onClick={() => handleSort("price")}
           >
             Sort by Price
-          </button>
-          <button
+          </Button>
+          <Button
+            variant="contained"
             className={`px-3 py-1 rounded text-sm dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-white bg-blue-500 hover:bg-blue-600 text-white`}
             onClick={() => handleSort("averageRate")}
           >
             Sort by Rate
-          </button>
+          </Button>
         </div>
-        <input
-          type="text"
-          placeholder="Search agencies..."
-          className={`p-2 border rounded w-full sm:w-1/3 dark:bg-gray-800 dark:border-gray-700 dark:text-white bg-white border-gray-300 text-gray-800`}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      
       </div>
 
       {/* Responsive Table */}
-      <div className="overflow-x-auto">
-        <div className={`min-w-full font-bold text-gray-600 hidden sm:grid grid-cols-6 p-2 dark:bg-gray-800 dark:text-white bg-gray-100 `}>
-          <div>Name</div>
-          <div>Owner Name</div>
-          <div>Phone Number</div>
-          <div>Location</div>
-          <div>Price</div>
-          <div>Rate</div>
+      <div className="overflow-y-auto max-h-96 border rounded-lg scrollbar-thin dark:border-gray-700 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800 border-gray-200 scrollbar-thumb-gray-400 scrollbar-track-gray-100 dark:bg-gray-900 bg-gray-200">
+        <div className={`hidden md:flex justify-between p-4 font-semibold dark:bg-gray-700 dark:text-white bg-gray-100 text-gray-600 sticky top-0 `}>
+          <div className="w-1/6 text-center">Name</div>
+          <div  className="w-1/6 text-center">Owner Name</div>
+          <div  className="w-1/6 text-center">Phone Number</div>
+          <div  className="w-1/6 text-center">Location</div>
+          <div  className="w-1/6 text-center">Price</div>
+          <div  className="w-1/6 text-center">Rate</div>
         </div>
 
         {filteredAgencies && filteredAgencies.length > 0 ? (
           filteredAgencies.map((agency, index) => (
             <div
               key={index}
-              className={`grid sm:grid-cols-6 grid-cols-1 gap-4 p-2 border-b dark:bg-gray-900 dark:hover:bg-gray-800 dark:text-white dark:border-gray-700 bg-white hover:bg-gray-50 text-gray-800 border-gray-200 `}
+              className={`flex flex-col rounded-lg md:rounded-sm divide-gray-400 shadow-md mb-4 md:mb-0 md:flex-row justify-between p-4 dark:border-gray-700 dark:bg-gray-800 dark:text-white border-gray-200 bg-white text-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-200`}
             >
-              <div className="font-semibold sm:hidden">Name:</div>
-              <div>{agency.agencyName}</div>
-              <div className="font-semibold sm:hidden">Owner Name:</div>
-              <div>{agency.ownerName}</div>
-              <div className="font-semibold sm:hidden">Phone Number:</div>
-              <div>{agency.phonenumber}</div>
-              <div className="font-semibold sm:hidden">Location:</div>
-              <div>{agency.location}</div>
-              <div className="font-semibold sm:hidden">Price:</div>
-              <div>{agency.price}</div>
-              <div className="font-semibold sm:hidden">Rate:</div>
-              <div>{agency.averageRate}</div>
+              <div className="md:w-1/6 divide-gray-700 divide-y text-center">
+              <span className="block md:hidden font-semibold">Name:</span>{agency.agencyName}
+              </div>
+              
+              <div className="md:w-1/6 divide-gray-700 divide-y text-center">
+              <span className="block md:hidden font-semibold">Owner Name:</span>{agency.ownerName}
+              </div>
+
+              <div className="md:w-1/6 divide-gray-700 divide-y text-center">
+              <span className="block md:hidden font-semibold">Phone Number:</span>{agency.phonenumber}
+              </div>
+              <div className="md:w-1/6 divide-gray-700 divide-y text-center">
+              <span className="block md:hidden font-semibold">Location:</span>{agency.location}
+              </div>
+              <div className="md:w-1/6 divide-gray-700 divide-y text-center">
+              <span className="block md:hidden font-semibold">Price:</span>{agency.price} $
+              </div>
+              <div className="md:w-1/6 divide-gray-700 divide-y text-center">
+              <span className="block md:hidden font-semibold">Rate:</span>{agency.averageRate}
+              </div>
             </div>
           ))
         ) : (
-          <p>No agencies to display.</p>
+          <p className="text-red-500 font-bold text-center">No Agencies To Display</p>
         )}
       </div>
     </div>
