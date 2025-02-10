@@ -89,10 +89,10 @@ const Market = ({ data }) => {
   };
 
   return (
-    <div className={`p-4 mt-10 md:mt-14 max-w-4xl mx-auto`}>
+    <div className={`p-4  max-w-4xl mx-auto`}>
         
       {/* Form Section */}
-      <div className="bg-white shadow-md rounded-lg p-6 mb-2 dark:bg-gray-800 dark:text-white">
+      <div className="bg-white shadow-md mt-10 md:mt-14 rounded-lg p-6 mb-2 dark:bg-gray-800 dark:text-white">
         <div className="flex flex-col md:flex-row align-center items-center justify-between">  <>
        
         <h2 className="text-xl font-bold ">{editingIndex !== null ? "Edit Market Data" : "Add Market Data"}</h2>
