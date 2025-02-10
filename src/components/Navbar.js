@@ -35,7 +35,6 @@ const Navbar = ({ data , onProfileClick , onHomeClick , onMarketClick}) => {
       await signOut(auth); // Logs the user out of Firebase
       window.location.reload();
     } catch (error) {
-      console.error("Error during logout:", error);
     }
   };
   
@@ -45,7 +44,6 @@ const Navbar = ({ data , onProfileClick , onHomeClick , onMarketClick}) => {
 
   const handleOverlaySubmit = async () => {
     if (!data || !data.uid) {
-      console.error("User data or UID is missing.");
       return;
     }
     if (fetchedd && fetchedd.length > 1) {
@@ -57,7 +55,6 @@ const Navbar = ({ data , onProfileClick , onHomeClick , onMarketClick}) => {
         setShowOverlay(false); // Hide the overlay after submission
         setIsConnectedToAgency(true);
       } catch (error) {
-        console.error("Error updating agency ID:", error);
       }
     } else {
     }
@@ -68,7 +65,7 @@ const Navbar = ({ data , onProfileClick , onHomeClick , onMarketClick}) => {
   };
 
   return (
-    <div className={`fixed top-0 left-0 w-full z-50 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-800"} shadow-md`}>
+    <div className={`fixed top-0 left-0 w-full z-50 ${darkMode ? "bg-gray-900 text-white" : "bg-white text-gray-800"} shadow-md opacity-90`}>
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center space-x-4">
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
@@ -130,14 +127,14 @@ const Navbar = ({ data , onProfileClick , onHomeClick , onMarketClick}) => {
                 data={data.uid}
                 setfetcheddata={setfetcheddata}
               />
-              {fetchedd && fetchedd.length > 1 && (
+              {fetchedd && fetchedd[0].agencyId && (
                 <>
                   <Typography className={`font-semibold ${darkMode ? "text-white" : "text-gray-700"}`}>{fetchedd[1].agencyName}</Typography>
                 </>
               )}
             </div>
           )}
-          {fetchedd && fetchedd.length > 1 && (
+          {fetchedd && fetchedd[0].agencyId && (
             <Addrate data={fetchedd} />
           )}
           

@@ -39,11 +39,11 @@ const Agencyclients = ({ data }) => {
     };
 
     return (
-        <div className="p-6 dark:bg-gray-900 dark:text-white h-auto">
+        <div className="p-6 dark:bg-gray-900 dark:text-white h-auto ">
             {/* Fetch client data */}
             <SpecificUser agencyId={data.agencyCode} setfetcheddata={setClientData} />
 
-            <h2 className="text-2xl font-semibold mb-4 text-center">Agency Clients</h2>
+            <h2 className="text-2xl font-semibold mb-4 text-center mt-14 ">Agency Clients</h2>
 
             {/* Statistics Section */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -101,7 +101,7 @@ const Agencyclients = ({ data }) => {
             <p className="text-sm"><strong>Weight:</strong> {client.weight || "N/A"}</p>
             <p className="text-sm"><strong>Target Weight:</strong> {client.targetWeight || "N/A"}</p>
             <p className="text-sm"><strong>Health Conditions:</strong> {client.healthConditions || "N/A"}</p>
-            <p className="text-sm"><strong>Status:</strong> {client.status || "N/A"}</p>
+            <p className={(client.status == "Active")? "text-green-500 font-bold text-sm" : "text-red-500 font-bold text-sm" }><strong>Status:</strong> {client.status || "N/A"}</p>
           </div>
           <div className="mt-4 text-center">
             <Button
@@ -145,7 +145,7 @@ const Agencyclients = ({ data }) => {
           <td className="p-4 text-center">{client.weight || "N/A"}</td>
           <td className="p-4 text-center">{client.targetWeight || "N/A"}</td>
           <td className="p-4 text-center">{client.healthConditions || "N/A"}</td>
-          <td className="p-4 text-center">{client.status || "N/A"}</td>
+          <td className={(client.status == "Active")? "text-green-500 font-bold p-4 text-center" : "text-red-500 font-bold p-4 text-center" }>{client.status || "N/A"}</td>
           <td className="p-4 text-center">
             <Button
               variant="contained"
@@ -163,7 +163,7 @@ const Agencyclients = ({ data }) => {
 
   </>
 ) : (
-  <p className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Matching Clients Found.</p>
+  <p className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Client Available</p>
 )}
 
             {/* Overlay for recent data */}
@@ -172,7 +172,7 @@ const Agencyclients = ({ data }) => {
                     <div className="bg-white p-6 rounded-lg max-w-4xl w-full dark:bg-gray-800">
                         <button
                             onClick={() => setIsOverlayVisible(false)}
-                            className="absolute top-4 right-4 p-2 text-gray-700 dark:text-black bg-gray-200 rounded-full"
+                            className="absolute top-4 right-4 w-8 h-8 bg-red-500 text-gray-700 dark:text-black bg-gray-200 rounded-full"
                         >
                             X
                         </button>

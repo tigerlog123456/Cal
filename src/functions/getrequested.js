@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '../firebase-config';
 import { collection, getDocs, getDoc, doc, updateDoc, deleteDoc, setDoc, onSnapshot } from 'firebase/firestore';
-
+import Button from '@mui/material/Button';
 const Requestdata = (agencydata) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -37,7 +37,6 @@ const Requestdata = (agencydata) => {
         setData(combinedData);
 
       } catch (error) {
-        console.log(error)
       } finally {
         setLoading(false);
       }
@@ -118,20 +117,21 @@ const Requestdata = (agencydata) => {
   return (
     <div className='mt-2 md:mt-0'>
     {/* Show overlay when requested */}
-    <button
+    <Button
+    variant='contained'
       onClick={toggleOverlay}
-      className="bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300 dark:bg-blue-800 dark:hover:bg-blue-900"
+      className="bg-blue-500 text-white py-2 px-6 rounded-lg hover:bg-blue-700 transition duration-300 dark:bg-blue-500 dark:hover:bg-blue-900"
     >
       View Requests
-    </button>
+    </Button>
   
     {/* Overlay with all the requests */}
     {overlayVisible && (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center dark:bg-opacity-70">
-        <div className="bg-white p-6 rounded-lg w-11/12 sm:w-96 shadow-lg relative max-h-[90vh] overflow-auto dark:bg-gray-800 dark:text-white">
+        <div className="bg-white p-6 rounded-lg w-11/12 sm:w-96 shadow-lg relative mt-16 max-h-[80vh] overflow-auto dark:bg-gray-800 dark:text-white">
           <button
             onClick={toggleOverlay}
-            className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 transition duration-300 dark:bg-red-600 dark:hover:bg-red-700"
+            className="absolute top-2 right-2 bg-red-500 text-white rounded-full  w-8 h-8 hover:bg-red-600 transition duration-300 dark:bg-red-600 dark:hover:bg-red-700"
           >
             ×
           </button>
@@ -139,9 +139,7 @@ const Requestdata = (agencydata) => {
           <h3 className="text-2xl font-bold mb-4 dark:text-white">Market Requests</h3>
   
           {/* Display all market requests in one div */}
-          {loading ? (
-            <p className="dark:text-gray-300">Loading market requests...</p>
-          ) : data.length > 0 ? (
+          { data.length > 0 ? (
             <div>
               {/* Loop through data and display all requests in one div */}
               {data.map((item, index) => (
@@ -152,26 +150,29 @@ const Requestdata = (agencydata) => {
   
                   {/* Buttons to confirm or reject each request */}
                   <div className="mt-4 flex justify-start space-x-4">
-                    <button
+                    <Button
+                      variant='contained'
+                      color="success"
                       onClick={() => handleStatusUpdate(item, 'confirmed')}
                       disabled={updatingStatus}
-                      className="bg-green-500 text-white py-2 px-6 rounded-lg hover:bg-green-600 transition duration-300 disabled:opacity-50 dark:bg-green-600 dark:hover:bg-green-700"
+                      className="bg-green-500 !text-white py-2 px-6 rounded-lg hover:bg-green-800 transition duration-300 disabled:opacity-50 dark:bg-green-600 dark:hover:bg-green-700"
                     >
                       {updatingStatus ? 'Updating...' : 'Confirm'}
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                      variant='contained'
                       onClick={() => handleStatusUpdate(item, 'declined')}
                       disabled={updatingStatus}
-                      className="bg-red-500 text-white py-2 px-6 rounded-lg hover:bg-red-600 transition duration-300 disabled:opacity-50 dark:bg-red-600 dark:hover:bg-red-700"
+                      className="!bg-red-500 !text-white py-2 px-6 rounded-lg ! hover:bg-red-600 transition duration-300 disabled:opacity-50 dark:bg-red-600 dark:hover:bg-red-700"
                     >
                       {updatingStatus ? 'Updating...' : 'Decline'}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p className='dark:text-gray-300'>No market requests found.</p>
+            <p className='text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg'>No Requests Available.</p>
           )}
         </div>
       </div>

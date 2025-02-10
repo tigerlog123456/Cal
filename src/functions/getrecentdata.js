@@ -86,7 +86,7 @@ const Getrecentdata = ({ data, refreshKey, Setrecent }) => {
         ))}
       </div>
       ) : (
-        <p className={`text-gray-600 dark:text-gray-300 `}>No data available for this user.</p>
+        <p className={`text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg `}>No Data Available</p>
       )}
     </div>
   );

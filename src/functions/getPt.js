@@ -91,7 +91,6 @@ const GetPT = (data) => {
       const currentParticipants = sessionData.currentParticipants || 0;
 
       if (currentParticipants >= sessionData.capacity) {
-        alert("Sorry, this session is full.");
         return;
       }
 
@@ -119,7 +118,6 @@ const GetPT = (data) => {
       }
 
     } catch (error) {
-      console.error("Error adding session:", error);
     }
   };
 
@@ -133,39 +131,44 @@ const GetPT = (data) => {
 
       {/* Mobile View - Cards */}
       <div className="grid grid-cols-1 md:hidden gap-4 max-h-[500px] overflow-y-auto">
-        {sessions.map((session) => {
-          const isJoined = userParticipatedSessions.has(session.id);
-          const isFull = session.currentParticipants >= session.capacity;
-
-          return (
-            <div
-              key={session.id}
-              className={`p-5 border rounded-lg flex flex-col md:flex-row gap-2 justify-between  shadow-md dark:bg-gray-800 dark:border-gray-700 bg-gray-100 border-gray-300`}
-            >
-              <h3 className="text-lg font-semibold dark:text-white">{session.name}</h3>
-              <p className="text-gray-400 dark:text-gray-300 font-bold"><strong>Date:</strong> {formatDate(session.date)}</p>
-              <p className="text-gray-400 dark:text-gray-300 font-bold"><strong>Duration:</strong> {session.duration} {(session.duration > 1) ? "Hours" : "Hour"}</p>
-              <p className="text-gray-400 dark:text-gray-300 font-bold"><strong>Capacity:</strong> {session.capacity}</p>
-              <p className="text-gray-400 dark:text-gray-300 font-bold"><strong>Price:</strong> {session.price + " $"}</p>
-
-              {/* Show "Already Joined", "Full", or "Join Session" */}
-              <Button
-                    variant="contained"
-                      onClick={() => addToParticipated(session)}
-                      className="bg-blue-600 text-white  hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
-                      disabled={isFull || isJoined} // Disable if full or already joined
-                    >
-                      {isJoined ? (
-                        <p className="font-bold dark:text-white">Already Joined</p>
-                      ) : isFull ? (
-                        <p className="font-bold dark:text-white">Full</p>
-                      ) : (
-                        <p>Join Session</p>
-                      )}
-                    </Button>
-            </div>
-          );
-        })}
+        {(sessions && sessions.length >0) ?(
+          sessions.map((session) => {
+            const isJoined = userParticipatedSessions.has(session.id);
+            const isFull = session.currentParticipants >= session.capacity;
+  
+            return (
+              <div
+                key={session.id}
+                className={`p-5 border rounded-lg flex flex-col md:flex-row gap-2 justify-between  shadow-md dark:bg-gray-800 dark:border-gray-700 bg-gray-100 border-gray-300`}
+              >
+                <h3 className="text-lg font-semibold dark:text-white">{session.name}</h3>
+                <p className="text-gray-400 dark:text-gray-300 font-bold"><strong>Date:</strong> {formatDate(session.date)}</p>
+                <p className="text-gray-400 dark:text-gray-300 font-bold"><strong>Duration:</strong> {session.duration} {(session.duration > 1) ? "Hours" : "Hour"}</p>
+                <p className="text-gray-400 dark:text-gray-300 font-bold"><strong>Capacity:</strong> {session.capacity}</p>
+                <p className="text-gray-400 dark:text-gray-300 font-bold"><strong>Price:</strong> {session.price + " $"}</p>
+  
+                {/* Show "Already Joined", "Full", or "Join Session" */}
+                <Button
+                      variant="contained"
+                        onClick={() => addToParticipated(session)}
+                        className="bg-blue-600 text-white  hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
+                        disabled={isFull || isJoined} // Disable if full or already joined
+                      >
+                        {isJoined ? (
+                          <p className="font-bold dark:text-white">Already Joined</p>
+                        ) : isFull ? (
+                          <p className="font-bold dark:text-white">Full</p>
+                        ) : (
+                          <p>Join Session</p>
+                        )}
+                      </Button>
+              </div>
+            );
+          })
+        ):(
+          <p  className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Sessions Available</p>
+        )}
+        
       </div>
 
       {/* Desktop View - Table */}
@@ -182,36 +185,42 @@ const GetPT = (data) => {
             </tr>
           </thead>
           <tbody className="dark:bg-gray-800 bg-white divide-y divide-gray-300 dark:divide-gray-700">
-            {sessions.map((session) => {
-              const isJoined = userParticipatedSessions.has(session.id);
-              const isFull = session.currentParticipants >= session.capacity;
+            {(sessions && sessions.length > 0 ) ? (
+              sessions.map((session) => {
+                const isJoined = userParticipatedSessions.has(session.id);
+                const isFull = session.currentParticipants >= session.capacity;
+  
+                return (
+                  <tr key={session.id} className="hover:bg-gray-100 dark:hover:bg-gray-600 transition-all">
+                    <td className="p-3 dark:text-white text-center">{session.name}</td>
+                    <td className="p-3 dark:text-white text-center">{formatDate(session.date)}</td>
+                    <td className="p-3 dark:text-white text-center">{session.duration} {(session.duration > 1) ? ("Hours"):("Hour")}</td>
+                    <td className="p-3 dark:text-white text-center font-bold">{session.capacity}</td>
+                    <td className="p-3 dark:text-white text-center font-bold">{session.price + " $"}</td>
+                    <td className="p-3 text-center">
+                      <Button
+                      variant="contained"
+                        onClick={() => addToParticipated(session)}
+                        className="bg-blue-600 text-white  hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
+                        disabled={isFull || isJoined} // Disable if full or already joined
+                      >
+                        {isJoined ? (
+                          <p className="font-bold dark:text-white">Already Joined</p>
+                        ) : isFull ? (
+                          <p className="font-bold dark:text-white">Full</p>
+                        ) : (
+                          <p>Join Session</p>
+                        )}
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <td colSpan="7" className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Sessions Available</td>
+            )}
 
-              return (
-                <tr key={session.id} className="hover:bg-gray-100 dark:hover:bg-gray-600 transition-all">
-                  <td className="p-3 dark:text-white text-center">{session.name}</td>
-                  <td className="p-3 dark:text-white text-center">{formatDate(session.date)}</td>
-                  <td className="p-3 dark:text-white text-center">{session.duration} {(session.duration > 1) ? ("Hours"):("Hour")}</td>
-                  <td className="p-3 dark:text-white text-center font-bold">{session.capacity}</td>
-                  <td className="p-3 dark:text-white text-center font-bold">{session.price + " $"}</td>
-                  <td className="p-3 text-center">
-                    <Button
-                    variant="contained"
-                      onClick={() => addToParticipated(session)}
-                      className="bg-blue-600 text-white  hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
-                      disabled={isFull || isJoined} // Disable if full or already joined
-                    >
-                      {isJoined ? (
-                        <p className="font-bold dark:text-white">Already Joined</p>
-                      ) : isFull ? (
-                        <p className="font-bold dark:text-white">Full</p>
-                      ) : (
-                        <p>Join Session</p>
-                      )}
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
+            {}
           </tbody>
         </table>
       </div>

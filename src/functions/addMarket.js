@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { getFirestore, collection, addDoc, updateDoc, doc, onSnapshot } from "firebase/firestore";
 import moment from "moment";
-
+import Button from '@mui/material/Button';
 const Market = ({ data }) => {
   const [formData, setFormData] = useState({
     picture: "", // Store the URL of the image
@@ -166,18 +166,19 @@ const Market = ({ data }) => {
               name="status"
               value={formData.status}
               onChange={handleInputChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+              className={(formData.status == "active") ? "w-full px-4 py-2 text-green-500 font-bold border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:text-green-500" : "w-full px-4 py-2 text-red-500 font-bold border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:text-red-500"}
             >
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
+              <option className="text-green-500 font-bold" value="active">Active</option>
+              <option className="text-red-500 font-bold" value="inactive">Inactive</option>
             </select>
           </div>
-          <button
+          <Button
+            variant="contained"
             type="submit"
             className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300"
           >
             {editingIndex !== null ? "Update" : "Submit"}
-          </button>
+          </Button>
         </form>
       </div>
 
@@ -214,32 +215,30 @@ const Market = ({ data }) => {
           </p>
 
           {/* Price */}
-          <p className="text-lg font-bold text-gray-900 dark:text-white text-center mb-3">
-            ${item.price}
-          </p>
+          <div className="flex justify-between items-center mb-4">
+                <p className="text-lg font-semibold text-gray-800 dark:text-gray-100">Price:</p>
+                <p className="text-xl font-bold text-blue-600 dark:text-blue-400">${item.price}</p>
+              </div>
 
           {/* Quantity and Status */}
           <div className="flex flex-col items-center mb-3">
-            <p
-              className={`text-sm ${
-                item.quantity === 0 ? 'text-red-500' : 'text-green-500'
-              } text-center`}
-            >
-              {item.quantity === 0 ? 'Sold Out' : `${item.quantity} Available`}
-            </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
+                {item.quantity > 0 ? (<span className="text-green-500 font-bold">{item.quantity} AVAILABLE</span>) : (<span className="text-red-500 font-bold">SOLD OUT</span>)}
+              </p>
 
-            <p className="text-xs text-center text-gray-600 dark:text-gray-400">
-              Status: {item.status}
+            <p className="text-center text-gray-600 dark:text-gray-400">
+              Status: {(item.status == "active") ? (<span className="text-green-500 font-bold"> Active</span> ):(<span className="text-red-500 font-bold"> Inactive</span>)}
             </p>
           </div>
 
           {/* Edit Button */}
-          <button
+          <Button
+            variant="contained"
             onClick={() => handleEdit(index)}
-            className="w-full py-2 px-4 bg-green-600 text-white font-semibold rounded-md shadow-sm hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all"
+            className="w-full py-2 px-4 !bg-green-600 text-white font-semibold rounded-md shadow-sm !hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-300 transition-all"
           >
             Edit
-          </button>
+          </Button>
         </div>
       </div>
     ))}

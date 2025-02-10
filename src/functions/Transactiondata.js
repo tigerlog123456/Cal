@@ -3,6 +3,7 @@ import { db } from "../firebase-config";
 import { collection, query, where, onSnapshot } from "firebase/firestore";
 import { jsPDF } from "jspdf";
 import Requestdata from "./getrequested";
+import Button from '@mui/material/Button';
 const Transactiondata = ({ data }) => {
     const [transactions, setTransactions] = useState([]);
     const [search, setSearch] = useState("");
@@ -141,22 +142,28 @@ const Transactiondata = ({ data }) => {
 
             {/* Mobile View - Cards */}
             <div className="grid grid-cols-1 md:hidden gap-4 max-h-[500px] overflow-y-auto scrollbar-hide">
-        {filteredTransactions.map((transaction) => (
-            <div key={transaction.id} className="bg-white p-5 border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{transaction.userFullname}</h3>
-                <p className="text-gray-600 dark:text-gray-300"><strong>Market:</strong> {transaction.marketName}</p>
-                <p className="text-gray-600 dark:text-gray-300"><strong>Price:</strong> ${transaction.marketPrice}</p>
-                <p className="text-gray-600 dark:text-gray-300"><strong>Quantity:</strong> {transaction.quantity}</p>
-                <p className="text-gray-800 font-semibold dark:text-white"><strong>Total:</strong> ${transaction.marketPrice * transaction.quantity}</p>
-                <p className="text-gray-500 dark:text-gray-400 text-sm"><strong>Confirmed At: </strong> {formatDate(transaction.createdAt)}</p>
-                <button
-                    onClick={() => generateTransactionPDF(transaction)}
-                    className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
-                >
-                    Download PDF
-                </button>
-            </div>
-        ))}
+
+                {(filteredTransactions && filteredTransactions.length > 0 ) ? (
+                    filteredTransactions.map((transaction) => (
+                        <div key={transaction.id} className="bg-white p-5 border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{transaction.userFullname}</h3>
+                            <p className="text-gray-600 dark:text-gray-300"><strong>Market:</strong> {transaction.marketName}</p>
+                            <p className="text-gray-600 dark:text-gray-300"><strong>Price:</strong> ${transaction.marketPrice}</p>
+                            <p className="text-gray-600 dark:text-gray-300"><strong>Quantity:</strong> {transaction.quantity}</p>
+                            <p className="text-gray-800 font-semibold dark:text-white"><strong>Total:</strong> ${transaction.marketPrice * transaction.quantity}</p>
+                            <p className="text-gray-500 dark:text-gray-400 text-sm"><strong>Confirmed At: </strong> {formatDate(transaction.createdAt)}</p>
+                            <Button
+                                variant="contained"
+                                onClick={() => generateTransactionPDF(transaction)}
+                                className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
+                            >
+                                Download PDF
+                            </Button>
+                        </div>
+                    ))
+                ):(
+                    <p className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Transaction Available</p>
+                )}
     </div>
 
             {/* Desktop View - Table */}
@@ -175,7 +182,8 @@ const Transactiondata = ({ data }) => {
                         </tr>
                     </thead>
                     <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700 ">
-                        {filteredTransactions.map((transaction) => (
+                        {(filteredTransactions && filteredTransactions.length > 0 ) ? (
+                        filteredTransactions.map((transaction) => (
                             <tr key={transaction.id} className="hover:bg-gray-100 dark:hover:bg-gray-700 transition-all max-h-96 overflow-y-auto">
                                 <td className="p-3 text-center">{transaction.id}</td>
                                 <td className="p-3 text-center">{transaction.userFullname}</td>
@@ -185,15 +193,23 @@ const Transactiondata = ({ data }) => {
                                 <td className="p-3 text-center font-semibold">${transaction.marketPrice * transaction.quantity}</td>
                                 <td className="p-3  text-center text-gray-500 dark:text-gray-400 text-sm">{formatDate(transaction.createdAt)}</td>
                                 <td className="p-3 text-center">
-                                    <button
+                                    <Button
+                                        variant="contained"
                                         onClick={() => generateTransactionPDF(transaction)}
                                         className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
                                     >
                                         Download PDF
-                                    </button>
+                                    </Button>
                                 </td>
                             </tr>
-                        ))}
+                        ))
+                        ):(
+                            <tr>
+                                <td colSpan="100%" className="text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">
+                                        No Transaction Available
+                                </td>
+                             </tr>
+                        )}
                     </tbody>
                 </table>
             </div>

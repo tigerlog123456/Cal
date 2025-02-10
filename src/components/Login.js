@@ -3,7 +3,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase-config';
 import '../App.css'; // Include your custom styles if necessary
 import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import background from '../images/gym-equipment-illustration-background-landscape-free-photo.jpg'
 const LoginComponent = ({ setUserData, onRegisterClick }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -49,7 +49,7 @@ const LoginComponent = ({ setUserData, onRegisterClick }) => {
     };
 
     return (
-        <div className={`min-h-screen flex items-center justify-center dark:bg-gray-900  bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500`}>
+        <div className={`min-h-screen flex items-center justify-center dark:bg-gray-900 bg-center bg-cover`} style={{ backgroundImage: `url(${background})` }}>
             <div className="bg-white dark:bg-gray-900 p-8 rounded-lg shadow-lg w-full sm:w-96 space-y-6 animate__animated animate__fadeIn">
                 <h2 className="text-3xl font-semibold text-center text-gray-800 dark:text-white mb-4">Login</h2>
                 <div className="space-y-4">

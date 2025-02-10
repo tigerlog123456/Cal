@@ -18,10 +18,10 @@ const Profile = ({ data }) => {
         };
 
         const initialAgencyData = {
+            agencyName: data.agencyName || '',
             ownerName: data.ownerName || '',
             location: data.location || '',
             phoneNumber: data.phonenumber || '',
-            agencyName: data.agencyName || '',
             price: data.price || '',
         };
 
@@ -47,21 +47,35 @@ const Profile = ({ data }) => {
             await updateDoc(userRef, formData);
             setIsButtonDisabled(true);
         } catch (error) {
-            console.error('Error updating user data:', error);
-            alert('Error updating data');
         }
     };
-
     return (
-        <div className="min-h-screen flex items-center justify-center dark:bg-gray-900 gray-100 transition duration-300 mt-8">
-            <div className="max-w-lg w-full p-6 dark:bg-gray-800 bg-white rounded-lg shadow-lg space-y-6">
+        <div className="min-h-screen flex items-center justify-center dark:bg-gray-900 gray-100 transition duration-300">
+            <div className="max-w-lg mt-20 w-full p-6 dark:bg-gray-800 bg-white rounded-lg shadow-lg space-y-6">
                 <h1 className="text-2xl font-semibold text-center dark:text-white gray-800">
                     Hello, {formData.fullName || formData.ownerName}
                 </h1>
-
                 {/* Render form inputs based on user type */}
-                <div className="space-y-4">
+                <div className="flex flex-col  ">
                     {Object.keys(formData).map((key) => (
+                        <>
+                        <label className='p-3 dark:text-white'>
+                        {
+                            {
+                                'agencyName': "Agency Name",
+                                'location' : 'Location',
+                                'ownerName' : 'Owner Name',
+                                'phoneNumber' : 'Phone Number',
+                                'price' : 'Price',
+                                'age' : 'Age',
+                                'fullName' : 'Full Name',
+                                'healthConditions' : 'Health Condition',
+                                'height' : 'Height',
+                                'targetWeight' : 'Target Weight',
+                                'weight': 'Weight'
+                            }[key]
+                        }
+                        </label>
                         <input
                             key={key}
                             name={key}
@@ -71,7 +85,8 @@ const Profile = ({ data }) => {
                                 .replace(/^./, (str) => str.toUpperCase())}
                             onChange={handleInputChange}
                             className="w-full p-3 border-2 dark:bg-gray-900 dark:border-gray-800 dark:text-white border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
-                        />
+                        /></>
+                        
                     ))}
                 </div>
 

@@ -5,6 +5,7 @@ import { doc, setDoc , getDoc } from "firebase/firestore";
 import Registerinfo from "../functions/RegisterInfo";
 import '../App.css'; // Include your custom styles if necessary
 import Button from '@mui/material/Button';
+import background from '../images/gym-equipment-illustration-background-landscape-free-photo.jpg'
 const RegisterComponent = ({ onLoginClick, darkMode }) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -107,8 +108,8 @@ const RegisterComponent = ({ onLoginClick, darkMode }) => {
     };
 
     return (
-        <div className={`min-h-screen flex items-center justify-center dark:bg-gray-900  bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500`}>
-            <div className={`bg-white p-6 rounded-lg shadow-lg w-full sm:w-1/2 space-y-6 animate__animated animate__fadeIn dark:bg-gray-800 dark:text-white mt-20`}>
+        <div className={`min-h-screen flex items-center justify-center dark:bg-gray-900 bg-center bg-cover`} style={{ backgroundImage: `url(${background})` }}>
+            <div className={`bg-white p-6 rounded-lg shadow-lg w-full sm:w-1/2 space-y-6 animate__animated animate__fadeIn dark:bg-gray-900 dark:text-white mt-14`}>
                 <h2 className="text-3xl font-semibold text-center mb-4">Register</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:w-2/3">
                     {/* Left side (email, password, usertype) */}
@@ -160,14 +161,10 @@ const RegisterComponent = ({ onLoginClick, darkMode }) => {
                 <Button
                     variant="contained"
                     onClick={handleRegister}
-                    className={`w-full py-3 font-semibold rounded-lg hover:bg-blue-600 transition-all duration-200 mt-4 ${darkMode ? 'bg-blue-600 text-white' : 'bg-blue-500 text-white'}`}
+                    className={`w-full py-3 bg-blue-500 text-white dark:text-white font-semibold rounded-lg hover:bg-blue-600 transition-all duration-200 dark:bg-blue-700 dark:hover:bg-blue-800`}
                 >
                     Register
                 </Button>
-
-                {/* Error Message */}
-              
-
                 {/* Login Link */}
                 <p className="text-center font-bold text-sm mt-4 text-gray-600">
                     Already have an account?{" "}
