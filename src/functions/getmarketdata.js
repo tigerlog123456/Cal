@@ -139,7 +139,7 @@ const Marketdata = ({ data }) => {
           </div>
         ))
       ):(
-        <td  className="text-center col-span-3 font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Products Available</td>
+        <div className="text-center col-span-3 font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-900 rounded-lg">No Products Available</div>
       )}
     </div>
   </div>  

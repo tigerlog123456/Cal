@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc , query , where , onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase-config'; // Adjust the import path as needed
 import Button from '@mui/material/Button';
 const PT = (data) => {
   const [sessions, setSessions] = useState([]); // State to store fetched sessions
   const [showForm, setShowForm] = useState(false); // State to toggle form visibility
+  const [Participants , setParticipants] = useState([]) 
+  const [showparticipants , setshowparticipants] = useState(false)
   const [newSession, setNewSession] = useState({
     name: '',
     date: '',
@@ -12,6 +14,19 @@ const PT = (data) => {
     price: '',
     capacity: ''
   });
+
+  useEffect(()=>{
+    const unsubscribeSessions = onSnapshot(collection(db, "Personalsessions"), (snapshot) => {
+      setSessions(snapshot.docs.map(doc => ({ 
+        id: doc.id, 
+        agencyId: doc.data().agencyId, // Include agencyId
+        createdAt: doc.data().createdAt, 
+        ...doc.data()
+      })));
+    });
+    unsubscribeSessions()
+
+  },[db])
 
   // Fetch sessions from Firestore
   useEffect(() => {
@@ -72,6 +87,25 @@ const PT = (data) => {
       console.error('Error adding document: ', error);
     }
   };
+  const fetchParticipants = async(sessionid) =>{
+    
+     if(sessionid){
+     
+      try{
+        const participantSnapshot = await getDocs(
+          query(collection(db, "participatedsession"), where("sessionId", "==", sessionid))
+        );          
+        const participantlist = participantSnapshot.docs.map(doc => ({
+            id: doc.id, // Document ID
+            agencyId: doc.data().agencyId, // Include agencyId
+            sessions: sessions.find(session => session.id === sessionid) || null,
+            ...doc.data() // Spread the document data
+          }));
+          setParticipants(participantlist)
+          setshowparticipants(true)
+      }catch(error){}
+     } 
+  }
   const formatDate = (timestamp) => {
     if (!timestamp) return ""; // Handle undefined timestamps
     const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
@@ -158,7 +192,7 @@ const PT = (data) => {
       )}
 
       {/* Table to display sessions (hidden on mobile) */}
-      <div className="overflow-x-auto overflow-y-auto hidden sm:block max-h-96">
+      <div className="overflow-x-auto overflow-y-auto hidden md:block max-h-96">
         <table className="table-auto w-full border-separate border-spacing-0 shadow-lg rounded-lg ">
           <thead className="bg-gray-200 dark:bg-gray-700">
             <tr className=''>
@@ -167,12 +201,13 @@ const PT = (data) => {
               <th className="p-2 sm:p-3 text-center">Duration</th>
               <th className="p-2 sm:p-3 text-center">Price</th>
               <th className="p-2 sm:p-3 text-center">Capacity</th>
+              <th className="p-2 sm:p-3 text-center">Participated</th>
               <th className="p-2 sm:p-3 text-center">Status</th>
               <th className="p-2 sm:p-3 text-center">Created At</th>
+              <th className="p-2 sm:p-3 text-center">Action</th>
             </tr>
           </thead>
           <tbody>
-
           {sessions && sessions.length > 0 ? (
             sessions.map(session => (
                 <tr key={session.id} className="dark:bg-gray-800 rounded-lg md:rounded-sm divide-gray-400 shadow-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200">
@@ -181,15 +216,22 @@ const PT = (data) => {
                 <td className="p-2 sm:p-3 text-center">{session.duration}</td>
                 <td className="p-2 sm:p-3 text-center">{session.price}</td>
                 <td className="p-2 sm:p-3 text-center">{session.capacity}</td>
+                <td className="p-2 sm:p-3 text-center">{session.currentParticipants || 0}</td>
                 <td className={(session.status === "Active") ? "text-green-500 p-2 sm:p-3 text-center font-bold" : "text-red-500 p-2 sm:p-3 text-center font-bold"}>
                   {session.status}
                 </td>
                 <td className="p-2 sm:p-3 text-center">{formatDate(session.createdAt)}</td>
+                <td className="p-2 sm:p-3 text-center">
+                  <Button
+                   variant="contained"
+                   onClick={()=> fetchParticipants(session.id)}
+                  >Participants</Button>
+                  </td>
               </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="7" className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Sessions Available</td>
+                <td colSpan="9" className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Sessions Available</td>
               </tr>
                 )}
           </tbody>
@@ -197,7 +239,6 @@ const PT = (data) => {
       </div>
       {/* Card view for mobile (hidden on larger screens) */}
       <div className="max-h-96 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:hidden gap-4">
-        
       {sessions && sessions.length > 0 ? (
         sessions.map(session => (
           <div key={session.id} className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">
@@ -207,17 +248,59 @@ const PT = (data) => {
               <p><span className="font-medium text-center">Duration:</span> {session.duration} {(session.duration > 1) ? "Hours" : "Hour"}</p>
               <p><span className="font-medium text-center">Price:</span> {session.price} $</p>
               <p><span className="font-medium text-center" >Capacity:</span> {session.capacity}</p>
+              <p><span className="font-medium text-center" >Participated:</span> {session.currentParticipants || 0}</p>
               <p className={(session.status == "Active")? "text-green-500 font-bold" : "text-red-500 font-bold"}><span className="font-medium text-center" >Status:</span> {session.status}</p>
               <p><span className="font-medium text-center">Created At:</span> {formatDate(session.createdAt)}</p>
+              <Button
+                   variant="contained"
+                   onClick={()=> fetchParticipants(session.id)}>
+                    Participants
+              </Button>
             </div>
           </div>
         ))
       ):(
         <div className='text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg'>No Sessions Available</div>
       )}
-
       </div>
-      
+      {showparticipants && Participants && (
+                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
+                    <div className="bg-white p-6 rounded-lg max-w-4xl w-full dark:bg-gray-800">
+                        <button
+                            onClick={() => setshowparticipants(false)}
+                            className="absolute top-4 right-4 w-8 h-8 bg-red-500 text-gray-700 dark:text-black bg-gray-200 rounded-full"
+                        >
+                            X
+                        </button>
+                        <div className="overflow-x-auto overflow-y-auto sm:block max-h-96">
+                         <table className="table-auto w-full border-separate border-spacing-0 shadow-lg rounded-lg ">
+                           <thead className="bg-gray-200 dark:bg-gray-700">
+                            <tr className=''>
+                               <th className="p-2 sm:p-3 text-center">Name</th>
+                               <th className="p-2 sm:p-3 text-center">Email</th>
+                               <th className="p-2 sm:p-3 text-center">Price</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                        {Participants && Participants.length > 0 ? (
+                          Participants.map(Participant => (
+                            <tr key={Participant.id} className="dark:bg-gray-800 rounded-lg md:rounded-sm divide-gray-400 shadow-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200">
+                              <td className="p-2 sm:p-3 text-center">{Participant.clientName}</td>
+                              <td className="p-2 sm:p-3 text-center">{Participant.email}</td>
+                              <td className="p-2 sm:p-3 text-center">{Participant.sessions.price}</td>
+                            </tr>
+                            ))
+                          ) : (
+                            <tr>
+                              <td colSpan="3" className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Participants Available</td>
+                            </tr>
+                            )}
+                            </tbody>
+                          </table>
+                        </div>
+                    </div>
+                </div>
+            )}
     </div>
   );
 };

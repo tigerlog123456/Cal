@@ -217,7 +217,9 @@ const GetPT = (data) => {
                 );
               })
             ) : (
+              <tr>
               <td colSpan="7" className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Sessions Available</td>
+              </tr>
             )}
 
             {}

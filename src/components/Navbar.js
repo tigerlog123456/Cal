@@ -242,12 +242,13 @@ const Navbar = ({ data , onProfileClick , onHomeClick , onMarketClick}) => {
               Connect to Agency
             </Button>
           )}
-           {fetchedd && fetchedd.length > 1 && (
+           {fetchedd && fetchedd[0].agencyId && (
                 <>
                   <Typography variant="" disabled={true} className={`font-semibold text-center p-2 ${darkMode ? "text-white" : "text-gray-700"}`}>{fetchedd[1].agencyName}</Typography>
                 </>
+               
               )}
-            {fetchedd && fetchedd.length > 1 && (
+            {fetchedd && fetchedd[0].agencyId && (
             <Addrate data={fetchedd} />
           )}
           {data && (
