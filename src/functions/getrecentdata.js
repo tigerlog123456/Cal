@@ -64,7 +64,7 @@ const Getrecentdata = ({ data, refreshKey, Setrecent }) => {
         </div>
         {recentdata.map((record, index) => (
           <div key={index} className={`flex flex-col rounded-lg md:rounded-sm divide-gray-400 shadow-md mb-4 md:mb-0 md:flex-row justify-between p-4 dark:border-gray-700 dark:bg-gray-800 dark:text-white border-gray-200 bg-white text-gray-800 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-all duration-200`}>
-            <div className="md:w-1/6 divide-gray-700 divide-y text-center">
+            <div className="md:w-1/6 text-center">
               <span className="block md:hidden font-semibold">Water:</span> {record.water}
             </div>
             <div className="md:w-1/6 text-center">

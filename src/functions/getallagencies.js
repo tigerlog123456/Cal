@@ -9,7 +9,7 @@ const Getagencies = ({ darkMode }) => {
   const [sortField, setSortField] = useState("agencyName"); // Default sorting field
   const [sortOrder, setSortOrder] = useState("asc"); // Default sorting order
   const [error, setError] = useState(null);
-
+  const [clientrates , setclientrates ] = useState([])
   useEffect(() => {
     const fetchAgenciesData = async () => {
       try {
@@ -32,7 +32,9 @@ const Getagencies = ({ darkMode }) => {
     };
     fetchAgenciesData();
   }, []);
+  useEffect(() =>{
 
+  },[clientrates])
   const fetchRatesForAgencies = async (agenciesData) => {
     // Fetch and calculate average rate for each agency
     const updatedAgencies = await Promise.all(agenciesData.map(async (agency) => {
@@ -40,12 +42,13 @@ const Getagencies = ({ darkMode }) => {
         // Query Firestore for the ratings of this agency
         const rateQuery = query(collection(db, "AgencyRate"), where("agencyId", "==", agency.uid));
         const rateSnapshot = await getDocs(rateQuery);
-
         if (!rateSnapshot.empty) {
           const rates = rateSnapshot.docs.map(doc => doc.data().rate);
+          const ratescount = rateSnapshot.docs.map(doc => doc.data());
           const numericRates = rates.map(rate => parseFloat(rate));
           const averageRate = numericRates.reduce((acc, rate) => acc + rate, 0) / rates.length; /// Calculate average
           agency.averageRate = averageRate; // Add average rate to agency data
+          setclientrates(ratescount)
         } else {
           agency.averageRate = 0; // No rates found, set to 0
         }
@@ -58,6 +61,7 @@ const Getagencies = ({ darkMode }) => {
     }));
     setAllAgencies(updatedAgencies); // Update the agencies state with the average rates
     setFilteredAgencies(updatedAgencies); // Also update filtered data
+    
   };
 
   // Handle search
@@ -66,7 +70,7 @@ const Getagencies = ({ darkMode }) => {
       agency.agencyName.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredAgencies(filtered);
-  }, [searchTerm, agencies]);
+  }, [searchTerm, agencies , clientrates]);
 
   // Handle sorting
   const handleSort = (field) => {
@@ -147,6 +151,7 @@ const Getagencies = ({ darkMode }) => {
           <div  className="w-1/6 text-center">Location</div>
           <div  className="w-1/6 text-center">Price</div>
           <div  className="w-1/6 text-center">Rate</div>
+          <div  className="w-1/6 text-center">Reviews</div>
         </div>
 
         {filteredAgencies && filteredAgencies.length > 0 ? (
@@ -175,10 +180,20 @@ const Getagencies = ({ darkMode }) => {
               <div className="md:w-1/6 divide-gray-700 divide-y text-center">
               <span className="block md:hidden font-semibold">Rate:</span>{agency.averageRate}
               </div>
+              <div className="md:w-1/6 divide-gray-700 divide-y text-center">
+              <span className="text-sm md:hidden font-semibold">Reviews:</span>
+                {(clientrates && clientrates.length > 0 ) ? (
+                  <>
+                    {(agency.uid == clientrates[0].agencyId ) ? (clientrates.length) : "0" }
+                    </>
+                ) : (
+                  <>0</>
+                )}
+                </div>
             </div>
           ))
         ) : (
-          <p className="text-red-500 font-bold text-center">No Agencies To Display</p>
+          <p className="text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Agencies To Display</p>
         )}
       </div>
     </div>

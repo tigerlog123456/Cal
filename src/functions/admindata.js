@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { db } from "../firebase-config";
 import { collection, getDocs, query, where, doc, updateDoc } from "firebase/firestore";
-
+import Button from '@mui/material/Button';
 const Admin = () => {
     const [userCount, setUserCount] = useState(0);
     const [recentDataCount, setRecentDataCount] = useState(0);
@@ -16,6 +16,8 @@ const Admin = () => {
     const [clientRecentData, setClientRecentData] = useState(null);
     const [searchQuery, setSearchQuery] = useState(""); // Search query state for filtering
     const [overlaySearchQuery, setOverlaySearchQuery] = useState(""); // Separate search query for overlay
+    const [Inactiveuserstatuscount , setinactiveuserstatuscount] = useState("")
+    const [activeusercount , setactiveusercount] = useState("")
     const [version, setVersion] = useState(0);
 
     useEffect(() => {
@@ -42,7 +44,19 @@ const Admin = () => {
                         agencyClients[user.agencyCode] = [];
                     }
                 });
-
+                let activeCount = 0;
+                let inactiveCount = 0;
+                
+                usersData.forEach(user => {
+                    if (user.status === "Inactive") {
+                        inactiveCount++;
+                    } else if (user.status === "Active") {
+                        activeCount++;
+                    }
+                });
+                
+                setinactiveuserstatuscount(inactiveCount);
+                setactiveusercount(activeCount);
                 usersData.forEach(user => {
                     if (user.userType === "client" && user.agencyId && agencyClients[user.agencyId]) {
                         agencyClients[user.agencyId].push(user);
@@ -61,7 +75,7 @@ const Admin = () => {
         };
 
         fetchCounts();
-    }, [version]);
+    }, [version ]);
 
     const fetchClientRecentData = async (clientId) => {
         try {
@@ -73,7 +87,18 @@ const Admin = () => {
             console.error("Error fetching recent data:", error);
         }
     };
-
+    const formatDate = (timestamp) => {
+        if (!timestamp) return ""; // Handle undefined timestamps
+        const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+        return date.toLocaleString("en-GB", {
+          day: "2-digit",
+          month: "short",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        }).replace(",", "");
+      };
     const handleViewClients = (clients) => {
         setSelectedClients(clients);
         setIsOverlayVisible(true);
@@ -137,9 +162,9 @@ const Admin = () => {
     );
 
     return (
-        <div className="flex flex-col items-center min-h-screen bg-white dark:bg-gray-900 p-4 md:mt-16 mt-16">
+        <div className="flex flex-col items-center min-h-screen bg-white dark:bg-gray-900 p-4 dark:text-white">
             {/* Dashboard Count Boxes */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full max-w-4xl mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 w-full max-w-4xl mb-8 md:mt-16 mt-16">
                 {[{
                     title: "Users",
                     count: userCount
@@ -153,8 +178,16 @@ const Admin = () => {
                     title: "Declined Requests",
                     count: Declinedrequests
                 }, {
-                    title:"Unconnected Users",
+                    title:" Unconnected Users",
                     count:unconnectedUsers.length
+                },
+                {
+                    title:" Active Users",
+                    count:activeusercount
+                },
+                {
+                    title:" Inactive Users",
+                    count:Inactiveuserstatuscount
                 }
                 
             ].map((item, index) => (
@@ -181,72 +214,96 @@ const Admin = () => {
                 </div>
 
                 {/* Table View for Desktop */}
-                <div className="overflow-x-auto max-h-[400px] dark:bg-gray-800 rounded-lg shadow-md hidden sm:block">
-                    <table className="w-full table-auto dark:text-white">
-                        <thead className="bg-gray-200 dark:bg-gray-700">
+                <div className="hidden md:block max-h-96 overflow-y-auto">
+                    <table className="table-auto w-full border-separate border-spacing-0 shadow-lg rounded-lg overflow-hidden">
+                        <thead className="bg-gray-100 text-black dark:bg-gray-700 dark:text-white bg-gray-100 text-gray-600">
                             <tr>
-                                <th className="border-b border-gray-300 p-2 text-center">Agency Name</th>
-                                <th className="border-b border-gray-300 p-2 text-center">Owner</th>
-                                <th className="border-b border-gray-300 p-2 text-center">Agency Code</th>
-                                <th className="border-b border-gray-300 p-2 text-center">Email</th>
-                                <th className="border-b border-gray-300 p-2 text-center">Status</th>
-                                <th className="border-b border-gray-300 p-2 text-center">Action</th>
+                                <th className="p-4 text-center font-bold">Agency Name</th>
+                                <th className="p-4 text-center font-bold">Owner</th>
+                                <th className="p-4 text-center font-bold">Email</th>
+                                <th className="p-4 text-center font-boldr">Agency Code</th>
+                                <th className="p-4 text-center font-bold">Participants</th>
+                                <td className="p-4 text-center font-bold">Rate</td>
+                                <th className="p-4 text-center font-bold">Status</th>
+                                <th className="p-4 text-center font-bold">Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {filteredAgencies.map((agency, index) => (
-                                <tr key={index} className="hover:bg-gray-100 dark:hover:bg-gray-700">
-                                    <td className="border-b border-gray-300 p-2 text-center">{agency.agencyName}</td>
-                                    <td className="border-b border-gray-300 p-2 text-center">{agency.ownerName}</td>
-                                    <td className="border-b border-gray-300 p-2 text-center">{agency.agencyCode}</td>
-                                    <td className="border-b border-gray-300 p-2 text-center">{agency.email}</td>
-                                    <td className="border-b border-gray-300 p-2 text-center">{agency.status}</td>
-                                    <td className="border-b border-gray-300 p-2 flex flex-row text-center justify-around">
-                                        <button className="bg-blue-500  text-white px-2 py-1 rounded" onClick={() => handleViewClients(agency.clients)}>
-                                            View Clients
-                                        </button>
-                                        <button
-                                            className={`px-3 py-1 rounded-md ml-4 ${
-                                                agency.status === "Active" ? "bg-red-500" : "bg-green-500"
-                                            } text-white`}
-                                            onClick={() => handleStatus(agency.uid, agency.status)}
-                                        >
-                                            {agency.status === "Active" ? "Inactive" : "Active"}
-                                        </button>
-                                    </td>
+                            {(filteredAgencies && filteredAgencies.length > 0) ? (
+                                filteredAgencies.map((agency, index) => (
+                                    <tr key={index} className="dark:bg-gray-800 rounded-lg md:rounded-sm divide-gray-400 shadow-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200">
+                                        <td className="p-4 text-center">{agency.agencyName}</td>
+                                        <td className="p-4 text-center">{agency.ownerName}</td>
+                                        <td className="p-4 text-center">{agency.email}</td>
+                                        <td className="p-4 text-center">{agency.agencyCode}</td>
+                                        <td className="p-4 text-center">{agency.clients.length}</td>
+                                        <td className="p-4 text-center">{agency.rate}</td>
+                                        <td className={(agency.status == "Active")? "text-green-500 font-bold p-4 text-center" : "text-red-500 font-bold p-4 text-center" }>{agency.status || "N/A"}</td>
+                                        <td className="p-4 text-center flex flex-row justify-around gap-2">
+                                            <Button variant="contained" className="bg-blue-500  text-white px-2 py-1 rounded" onClick={() => handleViewClients(agency.clients)}>
+                                                View Clients
+                                            </Button>
+                                            <Button
+                                                variant="contained"
+                                                className={`px-3 py-1 rounded-md ml-4 ${
+                                                    agency.status === "Active" ? "!bg-red-500" : "!bg-green-500"
+                                                } text-white`}
+                                                onClick={() => handleStatus(agency.uid, agency.status)}
+                                            >
+                                                {agency.status === "Active" ? "Inactive" : "Active"}
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                ))
+                            ) : (
+                                <tr>
+                                    <td colSpan="100%" className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Agencies Available</td>
                                 </tr>
-                            ))}
+                            ) }
+
                         </tbody>
                     </table>
                 </div>
 
                 {/* Card View for Mobile */}
-                <div className="sm:hidden flex flex-wrap gap-4 overflow-y-auto max-h-[80vh]" >
-                    {filteredAgencies.map((agency, index) => (
-                        <div key={index} className="bg-gray-200 dark:bg-gray-800 text-black dark:text-white p-4 rounded-lg shadow-md w-full max-w-sm ">
-                            <h3 className="font-semibold text-lg">{agency.agencyName}</h3>
-                            <p><strong>Owner:</strong> {agency.ownerName}</p>
-                            <p><strong>Agency Code:</strong> {agency.agencyCode}</p>
-                            <p><strong>Email:</strong> {agency.email}</p>
-                            <p><strong>Status:</strong> {agency.status}</p>
-                            <div className="mt-2">
-                                <button
-                                    className="bg-blue-500 text-white px-4 py-2 rounded"
-                                    onClick={() => handleViewClients(agency.clients)}
-                                >
-                                    View Clients
-                                </button>
-                                <button
-                                    className={`px-3 py-1 rounded-md ml-4 ${
-                                        agency.status === "Active" ? "bg-red-500" : "bg-green-500"
-                                    } text-white`}
-                                    onClick={() => handleStatus(agency.uid, agency.status)}
-                                >
-                                    {agency.status === "Active" ? "Inactive" : "Active"}
-                                </button>
+                <div className="max-h-96 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:hidden gap-4" >
+                    {(filteredAgencies && filteredAgencies.length >0)? (
+                        filteredAgencies.map((agency, index) => (
+                            <div key={index} className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md p-4 ">
+                                <div className="text-center">
+                                 <h3 className="font-semibold text-lg">{agency.agencyName || "N/A"}</h3>
+                                 <p className="text-sm text-gray-500 dark:text-gray-400"><strong>Email:</strong> {agency.email || "N/A"}</p>
+                                </div>
+                                <div className="mt-4 text-center">
+                                <p className="text-sm"><strong>Owner:</strong> {agency.ownerName}</p>
+                                <p className="text-sm"><strong>Agency Code:</strong> {agency.agencyCode}</p>
+                                <p className="text-sm"><strong>Participants:</strong> {agency.clients.length}</p>
+                                <p className="text-sm"><strong>Rate:</strong> {agency.rate}</p>
+                                <p className={(agency.status == "Active")? "text-green-500 font-bold text-sm" : "text-red-500 font-bold text-sm" }><strong>Status:</strong> {agency.status || "N/A"}</p>
+                                </div>
+                                <div className="mt-2 text-center flex flex-row gap-2 justify-center">
+                                    <Button
+                                        variant="contained"
+                                        className="bg-blue-500 text-white px-4 py-2 rounded"
+                                        onClick={() => handleViewClients(agency.clients)}
+                                    >
+                                        View Clients
+                                    </Button>
+                                    <Button
+                                        variant="contained"
+                                        className={`px-3 py-1 rounded-md ml-4 ${
+                                            agency.status === "Active" ? "!bg-red-500" : "!bg-green-500"
+                                        } text-white`}
+                                        onClick={() => handleStatus(agency.uid, agency.status)}
+                                    >
+                                        {agency.status === "Active" ? "Inactive" : "Active"}
+                                    </Button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))
+                    ) : (
+                        <p className="text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Agencies Available</p>
+                    )}
                 </div>
             </div>
 
@@ -256,11 +313,11 @@ const Admin = () => {
                     <div className="bg-white p-6 rounded-lg max-w-lg sm:max-w-full w-full dark:bg-gray-800 overflow-y-auto max-h-[80vh]">
                         <button
                             onClick={() => setIsOverlayVisible(false)}
-                            className="absolute top-4 right-4 p-2 text-gray-700 dark:text-black bg-gray-200 rounded-full"
+                            className="absolute top-4 right-4 w-8 h-8 bg-red-500 text-gray-700 dark:text-black bg-gray-200 rounded-full"
                         >
                             X
                         </button>
-                        <h2 className="text-xl font-bold mb-4 dark:text-white">Clients</h2>
+                        <h2 className="text-xl font-bold mb-2 dark:text-white">Clients</h2>
 
                         {/* Search Bar for Clients */}
                         <div className="mb-4 w-full max-w-lg">
@@ -272,78 +329,100 @@ const Admin = () => {
                                 className="w-full p-2 bg-gray-200 dark:bg-gray-800 text-black dark:text-white rounded-lg shadow-md"
                             />
                         </div>
-                        <div className="grid grid-cols-1 gap-4 sm:hidden dark:text-white">
-                            {filteredClients.map((client, index) => (
-                                <div key={index} className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                                    <p className="text-lg font-bold">{client.fullName}</p>
-                                    <p>Email: {client.email}</p>
-                                    <p>Age: {client.age}</p>
-                                    <p>Weight: {client.weight}</p>
-                                    <p>Height: {client.height}</p>
-                                    <p>Target Weight: {client.targetWeight}</p>
-                                    <p>Health Conditions: {client.healthConditions}</p>
-                                    <p>Status: {client.status}</p>
-                                    <button
-                                        className="mt-2 bg-blue-500 text-white px-3 py-1 rounded"
-                                        onClick={() => fetchClientRecentData(client.uid)}
-                                    >
-                                        Show Recent Data
-                                    </button>
-                                    <button
-                                        className={`px-3 py-1 rounded-md ml-4 ${
-                                            client.status === "Active" ? "bg-red-500" : "bg-green-500"
-                                        } text-white`}
-                                        onClick={() => handleStatus(client.uid, client.status)}
-                                    >
-                                        {client.status === "Active" ? "Inactive" : "Active"}
-                                    </button>
-                                </div>
-                            ))}
+                        <div className="max-h-96 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:hidden gap-4">
+                            {(filteredClients && filteredClients.length > 0)? (
+                                filteredClients.map((client, index) => (
+                                    <div key={index} className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md p-4">
+                                        <div className="text-center">
+                                     <h3 className="font-semibold text-lg">{client.fullName || "N/A"}</h3>
+                                     <p className="text-sm text-gray-500 dark:text-gray-400"><strong>Email:</strong> {client.email || "N/A"}</p>
+                                    </div>
+                                    <div className="mt-4 text-center">
+                                        <p className="text-sm">Age: {client.age}</p>
+                                        <p className="text-sm">Weight: {client.weight}</p>
+                                        <p className="text-sm">Height: {client.height}</p>
+                                        <p className="text-sm">Target Weight: {client.targetWeight}</p>
+                                        <p className="text-sm">Health Conditions: {client.healthConditions}</p>
+                                        <p className={(client.status == "Active")? "text-green-500 font-bold text-sm" : "text-red-500 font-bold text-sm" }><strong>Status:</strong> {client.status || "N/A"}</p>
+                                   </div>
+                                        <div className="mt-2 text-center flex flex-row gap-2 justify-center">
+                                        <Button
+                                            variant="contained"
+                                            className="mt-2 bg-blue-500 text-white px-3 py-1 rounded"
+                                            onClick={() => fetchClientRecentData(client.uid)}
+                                        >
+                                            Show Recent Data
+                                        </Button>
+                                        <Button
+                                            variant="contained"
+                                            className={`px-3 py-1 rounded-md ml-4 ${
+                                                client.status === "Active" ? "!bg-red-500" : "!bg-green-500"
+                                            } text-white`}
+                                            onClick={() => handleStatus(client.uid, client.status)}
+                                        >
+                                            {client.status === "Active" ? "Inactive" : "Active"}
+                                        </Button>
+                                        </div>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Clients Available</p>
+                            ) }
                         </div>
-                        <div className="hidden sm:block overflow-x-auto max-h-[400px] dark:bg-gray-800 rounded-lg shadow-md">
-                            <table className="w-full table-auto dark:text-white">
-                                <thead className="bg-gray-200 dark:bg-gray-700">
+                        <div className="hidden md:block max-h-96 overflow-y-auto">
+                            <table className="table-auto w-full border-separate border-spacing-0 shadow-lg rounded-lg overflow-hidden">
+                                <thead className="bg-gray-100 text-black dark:bg-gray-700 dark:text-white bg-gray-100 text-gray-600">
                                     <tr>
-                                        <th className="border-b p-2 text-center">Client Name</th>
-                                        <th className="border-b p-2 text-center">Email</th>
-                                        <th className="border-b p-2 text-center">Age</th>
-                                        <th className="border-b p-2 text-center">Weight</th>
-                                        <th className="border-b p-2 text-center">Height</th>
-                                        <th className="border-b p-2 text-center">Target Weight</th>
-                                        <th className="border-b p-2 text-center">Health Conditions</th>
-                                        <th className="border-b p-2 text-center">Status</th>
-                                        <th className="border-b p-2 text-center">Recent Data</th>
+                                        <th className="p-4 text-center">Client Name</th>
+                                        <th className="p-4 text-center">Email</th>
+                                        <th className="p-4 text-center">Age</th>
+                                        <th className="p-4 text-center">Weight</th>
+                                        <th className="p-4 text-center">Height</th>
+                                        <th className="p-4 text-center">Target Weight</th>
+                                        <th className="p-4 text-center">Health Conditions</th>
+                                        <th className="p-4 text-center">Status</th>
+                                        <th className="p-4 text-center">Recent Data</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {filteredClients.map((client, index) => (
-                                        <tr key={index} className="hover:bg-gray-100 dark:hover:bg-gray-700">
-                                            <td className="border-b p-2 text-center">{client.fullName}</td>
-                                            <td className="border-b p-2 text-center">{client.email}</td>
-                                            <td className="border-b p-2 text-center">{client.age}</td>
-                                            <td className="border-b p-2 text-center">{client.weight}</td>
-                                            <td className="border-b p-2 text-center">{client.height}</td>
-                                            <td className="border-b p-2 text-center">{client.targetWeight}</td>
-                                            <td className="border-b p-2 text-center">{client.healthConditions}</td>
-                                            <td className="border-b p-2 text-center">{client.status}</td>
-                                            <td className="border-b p-2 text-center">
-                                                <button
+                                    {(filteredClients && filteredClients.length > 0 ) ? (
+                                        filteredClients.map((client, index) => (
+                                            <tr key={index} className="dark:bg-gray-800 rounded-lg md:rounded-sm divide-gray-400 shadow-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200">
+                                                <td className="p-4 text-center">{client.fullName}</td>
+                                                <td className="p-4 text-center">{client.email}</td>
+                                                <td className="p-4 text-center">{client.age}</td>
+                                                <td className="p-4 text-center">{client.weight}</td>
+                                                <td className="p-4 text-center">{client.height}</td>
+                                                <td className="p-4 text-center">{client.targetWeight}</td>
+                                                <td className="p-4 text-center">{client.healthConditions}</td>
+                                                <td className={(client.status == "Active")? "text-green-500 font-bold p-4 text-center" : "text-red-500 font-bold p-4 text-center" }>{client.status || "N/A"}</td>
+                                                <td className="p-4 text-center">
+                                                    <div className="text-center flex flex-row gap-2 justify-around">
+                                                    <Button
+                                                    variant="contained"
                                                     className="bg-blue-500 text-white px-2 py-1 rounded"
                                                     onClick={() => fetchClientRecentData(client.uid)}
-                                                >
-                                                    Show Recent Data
-                                                </button>
-                                                <button
-                                        className={`px-3 py-1 rounded-md ml-4 ${
-                                            client.status === "Active" ? "bg-red-500" : "bg-green-500"
-                                        } text-white`}
-                                        onClick={() => handleStatus(client.uid, client.status)}
-                                    >
-                                        {client.status === "Active" ? "Inactive" : "Active"}
-                                    </button>
-                                            </td>
-                                        </tr>
-                                    ))}
+                                                    >
+                                                        Show Recent Data
+                                                    </Button>
+                                                    <Button
+                                                    variant="contained"
+                                                    className={`px-3 py-1 rounded-md ml-4 ${
+                                                    client.status === "Active" ? "!bg-red-500" : "!bg-green-500"
+                                                    } text-white`}
+                                                    onClick={() => handleStatus(client.uid, client.status)}
+                                                    >
+                                                    {client.status === "Active" ? "Inactive" : "Active"}
+                                                    </Button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                        <td colSpan="9" className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Clients Available</td>
+                                    </tr>
+                                    )}
                                 </tbody>
                             </table>
                         </div>
@@ -357,48 +436,53 @@ const Admin = () => {
         <div className="bg-white p-6 rounded-lg max-w-xs sm:max-w-4xl w-full dark:bg-gray-800 overflow-y-auto max-h-[80vh] dark:text-white">
             <button
                 onClick={() => setIsRecentDataOverlayVisible(false)}
-                className="absolute top-4 right-4 p-2 text-gray-700 dark:text-black bg-gray-200 rounded-full"
+                className="absolute top-4 right-4 w-8 h-8 bg-red-500 text-gray-700 dark:text-black bg-gray-200 rounded-full"
             >
                 X
             </button>
             <h2 className="text-xl font-bold mb-4">Recent Data</h2>
 
             {/* Card View for Mobile */}
-            <div className="sm:hidden grid grid-cols-1 gap-4">
-                {clientRecentData.map((data, index) => (
-                    <div key={index} className="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow-md">
-                        <p className="text-lg font-bold">Timestamp: {new Date(data.timestamp.seconds * 1000).toLocaleString()}</p>
-                        <p><strong>Today's Weight:</strong> {data.todayWeight}</p>
-                        <p><strong>Steps:</strong> {data.steps}</p>
-                        <p><strong>Water (L):</strong> {data.water}</p>
-                        <p><strong>Calories Burned:</strong> {data.caloriesburned}</p>
-                        <p><strong>Calories Needed:</strong> {data.caloriesneeded}</p>
-                    </div>
-                ))}
+            <div className="max-h-96 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:hidden gap-4">
+                {(clientRecentData && clientRecentData.length > 0) ? (
+                    clientRecentData.map((data, index) => (
+                        <div key={index} className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md p-4">
+                            
+                            <p className="text-sm"><strong>Today's Weight:</strong> {data.todayWeight}</p>
+                            <p className="text-sm"><strong>Steps:</strong> {data.steps}</p>
+                            <p className="text-sm"><strong>Water (L):</strong> {data.water}</p>
+                            <p className="text-sm"><strong>Calories Burned:</strong> {data.caloriesburned}</p>
+                            <p className="text-sm"><strong>Calories Needed:</strong> {data.caloriesneeded}</p>
+                            <p className="text-sm">Timestamp: {formatDate(data.timestamp)}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Data Available</p>
+                )}
             </div>
 
             {/* Table View for Desktop */}
-            <div className="hidden sm:block overflow-x-auto max-h-[400px] dark:bg-gray-800 rounded-lg shadow-md">
-                <table className="w-full table-auto dark:text-white">
-                    <thead className="bg-gray-200 dark:bg-gray-700">
+            <div className="hidden md:block max-h-96 overflow-y-auto">
+                <table className="table-auto w-full border-separate border-spacing-0 shadow-lg rounded-lg overflow-hidden">
+                    <thead className="bg-gray-100 text-black dark:bg-gray-700 dark:text-white bg-gray-100 text-gray-600">
                         <tr>
-                            <th className="border-b border-gray-300 p-2 text-center">Timestamp</th>
-                            <th className="border-b border-gray-300 p-2 text-center">Today Weight</th>
-                            <th className="border-b border-gray-300 p-2 text-center">Steps</th>
-                            <th className="border-b border-gray-300 p-2 text-center">Water (L)</th>
-                            <th className="border-b border-gray-300 p-2 text-center">Calories Burned</th>
-                            <th className="border-b border-gray-300 p-2 text-center">Calories Needed</th>
+                        <th className="p-4 text-center">Steps</th>
+                        <th className="p-4 text-center">Water (L)</th>
+                            <th className="p-4 text-center">Today Weight</th>
+                            <th className="p-4 text-center">Calories Burned</th>
+                            <th className="p-4 text-center">Calories Needed</th> 
+                            <th className="p-4 text-center">Timestamp</th>
                         </tr>
                     </thead>
                     <tbody>
                         {clientRecentData.map((data, index) => (
-                            <tr key={index} className="hover:bg-gray-100 dark:hover:bg-gray-700">
-                                <td className="border-b border-gray-300 p-2 text-center">{new Date(data.timestamp.seconds * 1000).toLocaleString()}</td>
-                                <td className="border-b border-gray-300 p-2 text-center">{data.todayWeight}</td>
-                                <td className="border-b border-gray-300 p-2 text-center">{data.steps}</td>
-                                <td className="border-b border-gray-300 p-2 text-center">{data.water}</td>
-                                <td className="border-b border-gray-300 p-2 text-center">{data.caloriesburned}</td>
-                                <td className="border-b border-gray-300 p-2 text-center">{data.caloriesneeded}</td>
+                            <tr key={index} className="dark:bg-gray-800 rounded-lg md:rounded-sm divide-gray-400 shadow-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200">
+                                <td className="p-4 text-center">{data.steps}</td>
+                                <td className="p-4 text-center">{data.water}</td>
+                                <td className="p-4 text-center">{data.todayWeight}</td>
+                                <td className="p-4 text-center">{data.caloriesburned}</td>
+                                <td className="p-4 text-center">{data.caloriesneeded}</td>
+                                <td className="p-4 text-center">{formatDate(data.timestamp)}</td>
                             </tr>
                         ))}
                     </tbody>

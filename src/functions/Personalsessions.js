@@ -292,7 +292,7 @@ const PT = (data) => {
                             ))
                           ) : (
                             <tr>
-                              <td colSpan="3" className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Participants Available</td>
+                              <td colSpan="100%" className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Participants Available</td>
                             </tr>
                             )}
                             </tbody>
