@@ -1,20 +1,20 @@
 {
   "files": {
     "main.css": "/Cal/static/css/main.2e2a9aeb.css",
-    "main.js": "/Cal/static/js/main.11352871.js",
+    "main.js": "/Cal/static/js/main.57310be3.js",
     "static/js/239.e4b4ae22.chunk.js": "/Cal/static/js/239.e4b4ae22.chunk.js",
     "static/js/213.bda07979.chunk.js": "/Cal/static/js/213.bda07979.chunk.js",
     "static/js/553.050f4eb6.chunk.js": "/Cal/static/js/553.050f4eb6.chunk.js",
     "static/media/gym-equipment-illustration-background-landscape-free-photo.jpg": "/Cal/static/media/gym-equipment-illustration-background-landscape-free-photo.6500153f525813d81985.jpg",
     "index.html": "/Cal/index.html",
     "main.2e2a9aeb.css.map": "/Cal/static/css/main.2e2a9aeb.css.map",
-    "main.11352871.js.map": "/Cal/static/js/main.11352871.js.map",
+    "main.57310be3.js.map": "/Cal/static/js/main.57310be3.js.map",
     "239.e4b4ae22.chunk.js.map": "/Cal/static/js/239.e4b4ae22.chunk.js.map",
     "213.bda07979.chunk.js.map": "/Cal/static/js/213.bda07979.chunk.js.map",
     "553.050f4eb6.chunk.js.map": "/Cal/static/js/553.050f4eb6.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.2e2a9aeb.css",
-    "static/js/main.11352871.js"
+    "static/js/main.57310be3.js"
   ]
 }
