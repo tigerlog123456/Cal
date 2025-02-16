@@ -13,35 +13,26 @@ const Requestdata = (agencydata) => {
       setLoading(true);
       try {
         const combinedData = [];
-
         for (const requestDoc of marketRequestsSnapshot.docs) {
           const request = { id: requestDoc.id, ...requestDoc.data() };
-
           const userDoc = await getDoc(doc(db, "users", request.userId));
           if (!userDoc.exists()) {
-          
             continue;
           }
           const user = userDoc.data();
-
           const marketDoc = await getDoc(doc(db, "Market", request.productId));
           if (!marketDoc.exists()) {
-        
             continue;
           }
           const market = marketDoc.data();
-
           combinedData.push({ ...request, user, market });
         }
-
         setData(combinedData);
-
       } catch (error) {
       } finally {
         setLoading(false);
       }
     });
-
     // Clean up the listener on component unmount
     return () => unsubscribe();
   }, []); // Empty dependency array to run only once on mount
@@ -53,7 +44,6 @@ const Requestdata = (agencydata) => {
         // Remove the request from Marketrequests
         const marketRequestDoc = doc(db, "Marketrequests", item.id);
         await deleteDoc(marketRequestDoc);
-        
         // Add the request to the Transactions collection
         const transactionRef = doc(collection(db, "Transactions"), item.id); // Use item.id for unique transaction ID
         await setDoc(transactionRef, {
@@ -70,24 +60,18 @@ const Requestdata = (agencydata) => {
         // Reduce the quantity in the Market collection if the status is confirmed
         const marketDoc = doc(db, "Market", item.productId);
         const marketSnapshot = await getDoc(marketDoc);
-
         if (marketSnapshot.exists()) {
           const currentQuantity = marketSnapshot.data().quantity;
           const newQuantity = currentQuantity - item.quantity; // Subtract the requested quantity
-    
           // Ensure the quantity doesn't go below 0
           if (newQuantity >= 0) {
             await updateDoc(marketDoc, { quantity: newQuantity });
-
-          } else {
-          }
-        } else {
-        }
+          } else {}
+        } else {}
       } else if (status === 'declined') {
         // Remove the request from Marketrequests
         const marketRequestDoc = doc(db, "Marketrequests", item.id);
         await deleteDoc(marketRequestDoc);
-
         // Add the request to the Declinedrequests collection
         const declinedRequestRef = doc(collection(db, "Declinedrequests"), item.id); // Use item.id for unique declined request ID
         await setDoc(declinedRequestRef, {

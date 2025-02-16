@@ -7,7 +7,6 @@ const  AdminTransaction = ({ data }) => {
     const [transactions, setTransactions] = useState([]);
     const [search, setSearch] = useState("");
     const [selectedDate, setSelectedDate] = useState("");
-
     useEffect(() => {
         if (!data) return;
         const q = query(
@@ -55,27 +54,20 @@ const  AdminTransaction = ({ data }) => {
         doc.setFont("helvetica", "bold");
         doc.setFontSize(18);
         doc.text("Receipt", 105, 20, null, null, "center");
-
         doc.setFontSize(12);
         doc.setFont("helvetica", "normal");
-
         let yOffset = 30;
-
         // Draw border
         doc.setLineWidth(0.5);
         doc.rect(10, 10, 190, 140); // Adjust height dynamically
-
         // Table Header
         doc.setFont("helvetica", "bold");
         doc.setFillColor(200, 200, 200); // Light gray background
         doc.rect(14, yOffset, 182, 8, "F"); // Header row
         doc.text("Receipt Details", 105, yOffset + 5, null, null, "center");
-
         yOffset += 20;
-
         // Table Content
         doc.setFont("helvetica", "normal");
-
         const tableData = [
             ["Receipt ID", transaction.id],
             ["Full Name", transaction.userFullname],
@@ -86,20 +78,16 @@ const  AdminTransaction = ({ data }) => {
             ["Total Amount", `$${transaction.quantity * transaction.marketPrice}`],
             ["Purchased Date", formatDate(transaction.createdAt)]
         ];
-
         tableData.forEach(([label, value]) => {
             doc.text(`${label}:`, 20, yOffset);
             doc.text(`${value}`, 100, yOffset);
             yOffset += 10;
         });
-
         yOffset += 10;
-
         // Footer
         doc.setFont("helvetica", "italic");
         doc.setFontSize(10);
         doc.text("Thank you for your business!", 105, yOffset, null, null, "center");
-
         // Save the PDF
         doc.save(`${transaction.id}_transaction_receipt.pdf`);
     };
@@ -109,12 +97,10 @@ const  AdminTransaction = ({ data }) => {
         const matchesSearch = 
             transaction.id.toLowerCase().includes(search.toLowerCase()) ||
             transaction.userFullname.toLowerCase().includes(search.toLowerCase());
-
         // If selectedDate is provided, check if the transaction's date matches
         const matchesDate = selectedDate
             ? formatToDateString(transaction.createdAt) === selectedDate
             : true;
-
         return matchesSearch && matchesDate;
     });
 
@@ -138,7 +124,6 @@ const  AdminTransaction = ({ data }) => {
                     className="p-3 border border-gray-300 dark:border-gray-600 rounded-lg w-full sm:w-1/3 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500"
                 />
             </div>
-
             {/* Mobile View - Cards */}
             <div className="grid grid-cols-1 md:hidden gap-4 max-h-[500px] overflow-y-auto scrollbar-hide">
                 {(filteredTransactions && filteredTransactions.length > 0) ? (
@@ -163,9 +148,7 @@ const  AdminTransaction = ({ data }) => {
                 ) : (
                     <p className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Transaction Available</p>
                 )}
-        {}
     </div>
-
             {/* Desktop View - Table */}
             <div className="hidden md:block overflow-x-auto max-h-[500px] overflow-y-auto scrollbar-hide">
                 <table className="min-w-full rounded-lg overflow-hidden">
@@ -198,8 +181,7 @@ const  AdminTransaction = ({ data }) => {
                                         <Button
                                             variant="contained"
                                             onClick={() => generateTransactionPDF(transaction)}
-                                            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all"
-                                        >
+                                            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-all">
                                             Download PDF
                                         </Button>
                                     </td>
@@ -212,7 +194,6 @@ const  AdminTransaction = ({ data }) => {
                                 </td>
                              </tr>
                         )}
-                        {}
                     </tbody>
                 </table>
             </div>

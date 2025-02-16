@@ -9,7 +9,6 @@ const Addrecentdata = ({ data, onDataAdded, darkMode }) => {
   const [water, setWater] = useState("");
   const [caloriesBurned, setCaloriesBurned] = useState(0);
   const [caloriesNeeded, setCaloriesNeeded] = useState(0);
-
   const calculation = async () => {
     const validateInputs = () => {
       if (steps < 10 || todayWeight < 10 || water < 0) {
@@ -17,17 +16,13 @@ const Addrecentdata = ({ data, onDataAdded, darkMode }) => {
       }
       return true;
     };
-
     if (!data) return;
     if (!validateInputs()) return;
-
     const bmr = 10 * data.weight + 6.25 * data.weight - 5 * data.age + 5;
     const calculatedCaloriesBurned = bmr + steps * 0.04 + water * 0.1;
     const targetBmr = 10 * data.targetWeight + 6.25 * data.height - 5 * data.age + 5;
-
     setCaloriesBurned(parseFloat(calculatedCaloriesBurned.toFixed(0)));
     setCaloriesNeeded(parseFloat(targetBmr.toFixed(0)));
-
     const updatedData = {
       uid: data.uid,
       steps: steps,
@@ -37,12 +32,10 @@ const Addrecentdata = ({ data, onDataAdded, darkMode }) => {
       caloriesneeded: parseFloat(targetBmr.toFixed(0)),
       timestamp: new Date(),
     };
-
     if (!updatedData || Object.keys(updatedData).length === 0) {
       console.log("No valid data to save.");
       return;
     }
-
     try {
       await addDoc(collection(db, 'recentData'), updatedData);
       onDataAdded();
@@ -50,7 +43,6 @@ const Addrecentdata = ({ data, onDataAdded, darkMode }) => {
       console.error('Error saving data:', error);
     }
   };
-
   useEffect(() => {}, [caloriesBurned, caloriesNeeded]);
 
   return (
@@ -67,7 +59,6 @@ const Addrecentdata = ({ data, onDataAdded, darkMode }) => {
             className={`w-full px-4 py-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-white border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
           />
         </div>
-
         <div>
           <label className="block text-sm font-medium mb-1">Steps</label>
           <input
@@ -78,7 +69,6 @@ const Addrecentdata = ({ data, onDataAdded, darkMode }) => {
             className={`w-full px-4 py-2 border dark:border-gray-600 dark:bg-gray-700 dark:text-white  border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none`}
           />
         </div>
-
         <div>
           <label className="block text-sm font-medium mb-1">Today’s Weight (kg)</label>
           <input
@@ -90,7 +80,6 @@ const Addrecentdata = ({ data, onDataAdded, darkMode }) => {
           />
         </div>
       </div>
-
       <Button
         onClick={calculation}
         variant="contained"
@@ -98,7 +87,6 @@ const Addrecentdata = ({ data, onDataAdded, darkMode }) => {
       >
         Calculate
       </Button>
-
       {caloriesBurned > 0 && caloriesNeeded > 0 && (
         <div className={`mt-6 p-4 rounded-lg flex flex-col justify-between dark:bg-gray-700 dark:text-white gap-2 bg-gray-100 text-center items-center text-gray-700`}>
           <p className=" flex flex-row gap-2 items-center font-bold">Calories Burned: <Chip className="font-bold dark:bg-gray-600 dark:text-white text-center ">{caloriesBurned}</Chip></p>

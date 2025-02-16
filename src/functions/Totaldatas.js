@@ -14,8 +14,7 @@ const Totaldatas = ({ recentdata, refreshKey }) => {
   }, [recentdata, refreshKey]);
 
   return (
-    <div className="p-4">
-        
+    <div className="p-4">        
       {recentdata && recentdata.length > 0 && (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-blue-500 text-white p-6 rounded-lg shadow-lg text-center">

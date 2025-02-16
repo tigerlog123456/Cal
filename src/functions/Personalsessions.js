@@ -25,7 +25,6 @@ const PT = (data) => {
       })));
     });
     unsubscribeSessions()
-
   },[db])
 
   // Fetch sessions from Firestore
@@ -40,7 +39,6 @@ const PT = (data) => {
       }));
       setSessions(sessionsList);
     };
-
     fetchSessions();
   }, []);
 
@@ -60,10 +58,8 @@ const PT = (data) => {
         status:"Active",
         createdAt: new Date().toISOString() // Add current timestamp
       };
-
       // Add the new session to Firestore
       await addDoc(collection(db, 'Personalsessions'), sessionData);
-
       // Reset the form
       setNewSession({
         name: '',
@@ -73,7 +69,6 @@ const PT = (data) => {
         capacity: ''
       });
       setShowForm(false);
-
       // Refresh the sessions list
       const querySnapshot = await getDocs(collection(db, 'Personalsessions'));
       const sessionsList = querySnapshot.docs.map(doc => ({
@@ -88,9 +83,7 @@ const PT = (data) => {
     }
   };
   const fetchParticipants = async(sessionid) =>{
-    
      if(sessionid){
-     
       try{
         const participantSnapshot = await getDocs(
           query(collection(db, "participatedsession"), where("sessionId", "==", sessionid))
@@ -121,14 +114,12 @@ const PT = (data) => {
   return (
     <div className="bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 sm:p-6 ">
       <h1 className="text-2xl sm:text-3xl font-bold mb-4 sm:mb-6 text-center">Personal Sessions</h1>
-
       {/* Button to toggle form visibility */}
       <div className="flex justify-center mb-4 sm:mb-6">
         <Button
         variant='contained'
           onClick={() => setShowForm(!showForm)}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
-        >
+          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
           {showForm ? 'Hide Form' : 'Add New Session'}
         </Button>
       </div>
@@ -183,8 +174,7 @@ const PT = (data) => {
             />
             <button
               type="submit"
-              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300"
-            >
+              className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
               Submit
             </button>
           </div>
@@ -268,8 +258,7 @@ const PT = (data) => {
                     <div className="bg-white p-6 rounded-lg max-w-4xl w-full dark:bg-gray-800">
                         <button
                             onClick={() => setshowparticipants(false)}
-                            className="absolute top-4 right-4 w-8 h-8 bg-red-500 text-gray-700 dark:text-black bg-gray-200 rounded-full"
-                        >
+                            className="absolute top-4 right-4 w-8 h-8 bg-red-500 text-gray-700 dark:text-black bg-gray-200 rounded-full">
                             X
                         </button>
                         <div className="overflow-x-auto overflow-y-auto sm:block max-h-96">

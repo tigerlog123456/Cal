@@ -61,7 +61,6 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                             />
                         </div>
                         <div className="flex items-center w-full">
-                           
                             <input
                                 type="number"
                                 value={weight}
@@ -70,8 +69,7 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                             />
                         </div>
-                        <div className="flex items-center w-full">
-                          
+                        <div className="flex items-center w-full">                 
                             <input
                                 type="number"
                                 placeholder="Height"
@@ -81,7 +79,6 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                             />
                         </div>
                         <div className="flex items-center w-full">
-                         
                             <input
                                 type="number"
                                 value={targetweight}
@@ -91,7 +88,6 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                             />
                         </div>
                         <div className="flex items-center w-full">
-                           
                             <input
                                 type="text"
                                 value={health}
@@ -106,7 +102,6 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                 return (
                     <div className="flex flex-col flex-wrap md:h-52 h-auto gap-4 justify-center">
                         <div className="flex items-center w-full">
-                          
                             <input
                                 type="text"
                                 value={agencyname}
@@ -156,7 +151,6 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                 return <p>Invalid user type. Please contact support.</p>;
         }
     };
-
     return (
         <div>
             {renderusertype()}

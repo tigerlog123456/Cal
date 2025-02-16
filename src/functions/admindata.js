@@ -33,11 +33,9 @@ const Admin = () => {
                 setTransactionCount(transactionSnapshot.size);
                 setDeclinedrequests(DeclinedSnapshot.size);
                 setTransactions(transactionsSnapshot.docs.map(doc => doc.data()));
-
                 const usersData = usersSnapshot.docs.map(doc => doc.data());
                 const agencyMap = {};
                 const agencyClients = {};
-
                 usersData.forEach(user => {
                     if (user.userType === "agency") {
                         agencyMap[user.agencyCode] = user;
@@ -46,7 +44,6 @@ const Admin = () => {
                 });
                 let activeCount = 0;
                 let inactiveCount = 0;
-                
                 usersData.forEach(user => {
                     if (user.status === "Inactive") {
                         inactiveCount++;
@@ -54,7 +51,6 @@ const Admin = () => {
                         activeCount++;
                     }
                 });
-                
                 setinactiveuserstatuscount(inactiveCount);
                 setactiveusercount(activeCount);
                 usersData.forEach(user => {
@@ -62,18 +58,15 @@ const Admin = () => {
                         agencyClients[user.agencyId].push(user);
                     }
                 });
-
                 setAgencies(Object.values(agencyMap).map(agency => ({
                     ...agency,
                     clients: agencyClients[agency.agencyCode] || []
                 })));
-
                 setUnconnectedUsers(usersData.filter(user => user.userType === "client" && !user.agencyId));
             } catch (error) {
                 console.error("Error fetching counts:", error);
             }
         };
-
         fetchCounts();
     }, [version ]);
 
@@ -112,55 +105,44 @@ const Admin = () => {
 
         try {
             const newStatus = currentStatus === "Active" ? "Inactive" : "Active"; // Capitalized
-
             // Optimistic update (update UI before Firestore)
             setAgencies(prevAgencies =>
                 prevAgencies.map(agency =>
                     agency.uid === userId ? { ...agency, status: newStatus } : agency
                 )
             );
-
             setSelectedClients(prevClients =>
                 prevClients.map(client =>
                     client.uid === userId ? { ...client, status: newStatus } : client
                 )
             );
-
             setVersion(prev => prev + 1);
-
             // Firestore update
             const userRef = doc(db, "users", userId);
             await updateDoc(userRef, { status: newStatus });
-
         } catch (error) {
             console.error("Error updating status:", error);
         }
     };
-
     const handleShowRecentData = (clientId) => {
         fetchClientRecentData(clientId);
     };
-
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value); // Update search query state on input change
     };
-
     const handleOverlaySearchChange = (event) => {
         setOverlaySearchQuery(event.target.value); // Update overlay search query state on input change
     };
-
     // Filter agencies and clients based on search query
     const filteredAgencies = agencies.filter((agency) =>
         agency.agencyName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         agency.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
         agency.agencyCode.toLowerCase().includes(searchQuery.toLowerCase())
     );
-
     const filteredClients = selectedClients.filter((client) =>
         client.fullName.toLowerCase().includes(overlaySearchQuery.toLowerCase()) ||
         client.email.toLowerCase().includes(overlaySearchQuery.toLowerCase())
     );
-
     return (
         <div className="flex flex-col items-center min-h-screen bg-white dark:bg-gray-900 p-4 dark:text-white">
             {/* Dashboard Count Boxes */}
@@ -168,28 +150,25 @@ const Admin = () => {
                 {[{
                     title: "Users",
                     count: userCount
-                }, {
+                },{
                     title: "Recent Data",
                     count: recentDataCount
-                }, {
+                },{
                     title: "Transactions",
                     count: transactionsCount
-                }, {
+                },{
                     title: "Declined Requests",
                     count: Declinedrequests
-                }, {
+                },{
                     title:" Unconnected Users",
                     count:unconnectedUsers.length
-                },
-                {
+                },{
                     title:" Active Users",
                     count:activeusercount
-                },
-                {
+                },{
                     title:" Inactive Users",
                     count:Inactiveuserstatuscount
                 }
-                
             ].map((item, index) => (
                     <div key={index} className="bg-gray-200 dark:bg-gray-800 text-black dark:text-white p-4 rounded-lg shadow-md text-center flex flex-col items-center justify-center h-24">
                         <h2 className="text-lg font-semibold">{item.title}</h2>
@@ -197,11 +176,9 @@ const Admin = () => {
                     </div>
                 ))}
             </div>
-
             {/* Agencies and Clients Section */}
             <div className="w-full max-w-6xl">
                 <h2 className="text-xl font-bold mb-2 dark:text-white">Agencies and Clients</h2>
-
                 {/* Search Bar */}
                 <div className="mb-4 w-full max-w-lg">
                     <input
@@ -212,7 +189,6 @@ const Admin = () => {
                         className="w-full p-2 bg-gray-200 dark:bg-gray-800 text-black dark:text-white rounded-lg shadow-md"
                     />
                 </div>
-
                 {/* Table View for Desktop */}
                 <div className="hidden md:block max-h-96 overflow-y-auto">
                     <table className="table-auto w-full border-separate border-spacing-0 shadow-lg rounded-lg overflow-hidden">
@@ -260,11 +236,9 @@ const Admin = () => {
                                     <td colSpan="100%" className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Agencies Available</td>
                                 </tr>
                             ) }
-
                         </tbody>
                     </table>
                 </div>
-
                 {/* Card View for Mobile */}
                 <div className="max-h-96 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:hidden gap-4" >
                     {(filteredAgencies && filteredAgencies.length >0)? (
@@ -306,7 +280,6 @@ const Admin = () => {
                     )}
                 </div>
             </div>
-
             {/* Overlay for Clients */}
             {isOverlayVisible && (
                 <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
@@ -318,7 +291,6 @@ const Admin = () => {
                             X
                         </button>
                         <h2 className="text-xl font-bold mb-2 dark:text-white">Clients</h2>
-
                         {/* Search Bar for Clients */}
                         <div className="mb-4 w-full max-w-lg">
                             <input
@@ -429,7 +401,6 @@ const Admin = () => {
                     </div>
                 </div>
             )}
-
             {/* Overlay for Recent Data */}
             {isRecentDataOverlayVisible && clientRecentData && (
     <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex justify-center items-center z-50">
@@ -446,8 +417,7 @@ const Admin = () => {
             <div className="max-h-96 overflow-y-auto grid grid-cols-1 sm:grid-cols-2 md:hidden gap-4">
                 {(clientRecentData && clientRecentData.length > 0) ? (
                     clientRecentData.map((data, index) => (
-                        <div key={index} className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md p-4">
-                            
+                        <div key={index} className="bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-md p-4">              
                             <p className="text-sm"><strong>Today's Weight:</strong> {data.todayWeight}</p>
                             <p className="text-sm"><strong>Steps:</strong> {data.steps}</p>
                             <p className="text-sm"><strong>Water (L):</strong> {data.water}</p>
@@ -460,7 +430,6 @@ const Admin = () => {
                     <p className="text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Data Available</p>
                 )}
             </div>
-
             {/* Table View for Desktop */}
             <div className="hidden md:block max-h-96 overflow-y-auto">
                 <table className="table-auto w-full border-separate border-spacing-0 shadow-lg rounded-lg overflow-hidden">

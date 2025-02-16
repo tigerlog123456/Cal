@@ -33,7 +33,6 @@ const Getagencies = ({ darkMode }) => {
     fetchAgenciesData();
   }, []);
   useEffect(() =>{
-
   },[clientrates])
   const fetchRatesForAgencies = async (agenciesData) => {
     // Fetch and calculate average rate for each agency
@@ -61,7 +60,6 @@ const Getagencies = ({ darkMode }) => {
     }));
     setAllAgencies(updatedAgencies); // Update the agencies state with the average rates
     setFilteredAgencies(updatedAgencies); // Also update filtered data
-    
   };
 
   // Handle search
@@ -92,7 +90,6 @@ const Getagencies = ({ darkMode }) => {
     <div className={`p-6 shadow-lg rounded-lg mx-auto max-w-screen-lg dark:bg-gray-900 dark:text-white bg-white text-gray-800`}>
       <h1 className="font-bold text-2xl mb-6 dark:text-white text-gray-800">Top Gyms</h1>
       {error && <p className="text-red-500 font-bold">{error}</p>}
-
       {/* Sort buttons and search bar */}
       <div className="mb-4 flex flex-col sm:flex-Col justify-between items-center gap-4">
       <input
@@ -139,21 +136,18 @@ const Getagencies = ({ darkMode }) => {
             Sort by Rate
           </Button>
         </div>
-      
       </div>
-
       {/* Responsive Table */}
       <div className="overflow-y-auto max-h-96 border rounded-lg scrollbar-thin dark:border-gray-700 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800 border-gray-200 scrollbar-thumb-gray-400 scrollbar-track-gray-100 dark:bg-gray-900 bg-gray-200">
         <div className={`hidden md:flex justify-between p-4 font-semibold dark:bg-gray-700 dark:text-white bg-gray-100 text-gray-600 sticky top-0 `}>
           <div className="w-1/6 text-center">Name</div>
-          <div  className="w-1/6 text-center">Owner Name</div>
-          <div  className="w-1/6 text-center">Phone Number</div>
-          <div  className="w-1/6 text-center">Location</div>
-          <div  className="w-1/6 text-center">Price</div>
-          <div  className="w-1/6 text-center">Rate</div>
-          <div  className="w-1/6 text-center">Reviews</div>
+          <div className="w-1/6 text-center">Owner Name</div>
+          <div className="w-1/6 text-center">Phone Number</div>
+          <div className="w-1/6 text-center">Location</div>
+          <div className="w-1/6 text-center">Price</div>
+          <div className="w-1/6 text-center">Rate</div>
+          <div className="w-1/6 text-center">Reviews</div>
         </div>
-
         {filteredAgencies && filteredAgencies.length > 0 ? (
           filteredAgencies.map((agency, index) => (
             <div
@@ -163,11 +157,9 @@ const Getagencies = ({ darkMode }) => {
               <div className="md:w-1/6 divide-gray-700 divide-y text-center">
               <span className="block md:hidden font-semibold">Name:</span>{agency.agencyName}
               </div>
-              
               <div className="md:w-1/6 divide-gray-700 divide-y text-center">
               <span className="block md:hidden font-semibold">Owner Name:</span>{agency.ownerName}
               </div>
-
               <div className="md:w-1/6 divide-gray-700 divide-y text-center">
               <span className="block md:hidden font-semibold">Phone Number:</span>{agency.phonenumber}
               </div>

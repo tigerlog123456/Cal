@@ -8,15 +8,12 @@ const Agencyclients = ({ data }) => {
     const [sortOrder, setSortOrder] = useState("asc");
     const [isOverlayVisible, setIsOverlayVisible] = useState(false);
     const [selectedUid, setSelectedUid] = useState(null);
-
     // Compute statistics
     const connectedUsers = clientData.length;
     const activeUsers = clientData.filter((client) => client.status === "Active").length;
-
     const validWeights = clientData
     .map((client) => parseFloat(client.weight)) // Convert weights to numbers
     .filter((weight) => !isNaN(weight) && weight > 0); 
-
     const averageWeight =
     validWeights.length > 0
         ? (validWeights.reduce((sum, weight) => sum + weight, 0) / validWeights.length).toFixed(1)
@@ -42,9 +39,7 @@ const Agencyclients = ({ data }) => {
         <div className="p-6 dark:bg-gray-900 dark:text-white h-auto ">
             {/* Fetch client data */}
             <SpecificUser agencyId={data.agencyCode} setfetcheddata={setClientData} />
-
             <h2 className="text-2xl font-semibold mb-4 text-center mt-14 ">Agency Clients</h2>
-
             {/* Statistics Section */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div className="p-4 bg-indigo-600 text-white rounded-lg shadow-lg text-center">
@@ -60,7 +55,6 @@ const Agencyclients = ({ data }) => {
                     <p className="text-3xl font-bold">{averageWeight}</p>
                 </div>
             </div>
-
             {/* Search and Filter Controls */}
             <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-4">
                 <input
@@ -75,8 +69,7 @@ const Agencyclients = ({ data }) => {
                     onClick={() =>
                         setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"))
                     }
-                    className="p-2 bg-indigo-600 text-white !hover:bg-blue-700 rounded-lg transition duration-200 dark:bg-blue-500 dark:hover:bg-blue-600"
-                >
+                    className="p-2 bg-indigo-600 text-white !hover:bg-blue-700 rounded-lg transition duration-200 dark:bg-blue-500 dark:hover:bg-blue-600">
                     Sort: {sortOrder === "asc" ? "Ascending" : "Descending"}
                 </Button>
             </div>

@@ -10,7 +10,6 @@ const Addrate = ({ data }) => {
   useEffect(() => {
     checkIfRated();
   }, [data , hasRated , rate]);
-
   const checkIfRated = async () => {
     if (data[0] && data[1]) {
       const rateRef = doc(db, "AgencyRate", `${data[0].uid}_${data[1].uid}`);
@@ -31,7 +30,6 @@ const Addrate = ({ data }) => {
           rate: rate,
           timestamp: new Date(),
         });
-
         const agencyRef = doc(db, "users", data[1].uid);
         const agencySnapshot = await getDoc(agencyRef);
         if (agencySnapshot.exists()) {
@@ -39,7 +37,6 @@ const Addrate = ({ data }) => {
             rate: increment(1),
           });
         }
-
         setHasRated(true);
         setRate("");
       } catch (error) {
@@ -57,8 +54,7 @@ const Addrate = ({ data }) => {
           <select
             value={rate}
             onChange={(e) => setRate(e.target.value)}
-            className="px-2 py-1 border border-gray-300 rounded dark:hover:bg-gray-800 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
-          >
+            className="px-2 py-1 border border-gray-300 rounded dark:hover:bg-gray-800 dark:bg-gray-800 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm">
             <option className="text-center dark:bg-gray-800" value="" disabled>
               Rate
             </option>
@@ -71,8 +67,7 @@ const Addrate = ({ data }) => {
           <Button
           variant=""
             onClick={handleSubmit}
-            className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-sm hover:text-white"
-          >
+            className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 text-sm hover:text-white">
             Submit
           </Button>
         </div>

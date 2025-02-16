@@ -14,13 +14,11 @@ const Marketdata = ({ data }) => {
         where("agencyCode", "==", data.agencyId),
         where("status", "==", "active") // Only get active products
       );
-
       // Use onSnapshot for real-time updates
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
         const fetchedData = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         setMarketData(fetchedData);
       });
-
       // Clean up the listener when the component unmounts
       return unsubscribe;
     } catch (error) {
@@ -38,7 +36,6 @@ const Marketdata = ({ data }) => {
     if (!data?.uid) return;
     if (!quantity || quantity <= 0) return;
     if (quantity > availableQuantity) return;
-
     try {
       await addDoc(collection(db, "Marketrequests"), {
         userId: data.uid,
@@ -48,7 +45,6 @@ const Marketdata = ({ data }) => {
         status: "Pending",
         requestTime: new Date().toISOString(),
       });
-
       setQuantity(""); // Reset quantity input
     } catch (error) {
       console.error("Error requesting product:", error);
@@ -77,15 +73,11 @@ const Marketdata = ({ data }) => {
               <h3 className="text-xl font-semibold text-center text-gray-900 dark:text-white mb-2 transition-colors hover:text-blue-600 dark:hover:text-blue-400">
                 {item.name}
               </h3>
-              
               {/* Product Description */}
               <p className="text-sm text-gray-600 text-center dark:text-gray-300 mb-3 line-clamp-2">
                 {item.description}
               </p>
-    
               {/* Price Section */}
-             
-    
               {/* Quantity Section */}
               <div className="flex items-center justify-between mb-4">
                 <p className="text-sm text-gray-600 dark:text-gray-300">Quantity:</p>
@@ -93,8 +85,7 @@ const Marketdata = ({ data }) => {
                   <button
                     onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))}
                     disabled={quantity <= 1}
-                    className="w-8 h-8 flex items-center justify-center rounded-full border bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-white hover:bg-gray-300 disabled:cursor-not-allowed transition duration-150"
-                  >
+                    className="w-8 h-8 flex items-center justify-center rounded-full border bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-white hover:bg-gray-300 disabled:cursor-not-allowed transition duration-150">
                     -
                   </button>
                   <input
@@ -109,8 +100,7 @@ const Marketdata = ({ data }) => {
                   <button
                     onClick={() => setQuantity((prev) => Math.min(prev + 1, item.quantity))}
                     disabled={quantity >= item.quantity}
-                    className="w-8 h-8 flex items-center justify-center rounded-full border bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-white hover:bg-gray-300 disabled:cursor-not-allowed transition duration-150"
-                  >
+                    className="w-8 h-8 flex items-center justify-center rounded-full border bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-white hover:bg-gray-300 disabled:cursor-not-allowed transition duration-150">
                     +
                   </button>
                 </div>
@@ -121,8 +111,7 @@ const Marketdata = ({ data }) => {
               </div>
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 text-center">
                 {item.quantity > 0 ? (<span className="text-green-500 font-bold">{item.quantity} AVAILABLE</span>) : (<span className="text-red-500 font-bold">SOLD OUT</span>)}
-              </p>
-    
+              </p>    
               <Button
                 onClick={() => handleRequestProduct(item.id, item.quantity)}
                 disabled={item.quantity <= 0}

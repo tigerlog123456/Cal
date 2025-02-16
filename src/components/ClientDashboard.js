@@ -6,6 +6,7 @@ import Getagencies from "../functions/getallagencies";
 import Totaldatas from "../functions/Totaldatas";
 import Marketdata from "../functions/getmarketdata"
 import GetPT from "../functions/getPt";
+import ChatModule from "../functions/chatmodule";
 const ClientDashboard = ({ data }) => {
   const [refreshKey, setRefreshKey] = useState(0);
   const [refreshKay1, setRefreshKey1] = useState(0);
@@ -44,14 +45,22 @@ const ClientDashboard = ({ data }) => {
             <GetPT data={data}/>
            <Marketdata data={data}/>
           </div>
-          )}
-          
+          )}     
           {/* Get Agencies if No Agency Connected */}
           {data && data.agencyId === "" && (
             <div className="max-w-4xl mx-auto px-4 mt-10">
               <Getagencies data={data} />
             </div>
           )}
+          {/*chat module*/}
+          {data && data.agencyId && (
+             <div>
+            <ChatModule data={data}/>
+          </div>
+          )
+
+          }
+         
         </>
     </div>
   );

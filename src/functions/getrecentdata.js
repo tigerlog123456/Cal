@@ -6,7 +6,6 @@ import { db } from "../firebase-config";
 const Getrecentdata = ({ data, refreshKey, Setrecent }) => {
   const [recentdata, setRecentdata] = useState([]);
   const [timestamp, settimestamp] = useState([]);
-
   const fetchdata = async () => {
     if (!data || !data.uid) {
       return;
@@ -30,7 +29,6 @@ const Getrecentdata = ({ data, refreshKey, Setrecent }) => {
       console.error('Error fetching recent data:', error);
     }
   };
-
   const formatDate = (timestamp) => {
     const date = typeof timestamp === "number" ? new Date(timestamp) : timestamp;
     if (!date) return "N/A";
@@ -43,11 +41,9 @@ const Getrecentdata = ({ data, refreshKey, Setrecent }) => {
     };
     return date.toLocaleString("en-GB", options); // "en-GB" ensures DD/MM/YYYY format
   };
-
   useEffect(() => {
     fetchdata();
   }, [data, refreshKey]);
-
   return (
     <div className={`p-6 rounded-lg max-w-4xl mx-auto dark:bg-gray-900 bg-white shadow-lg`}>
     <h1 className={`font-bold text-2xl mb-6 dark:text-white text-gray-800`}>Recent Data</h1>

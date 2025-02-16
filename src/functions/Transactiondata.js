@@ -56,27 +56,20 @@ const Transactiondata = ({ data }) => {
         doc.setFont("helvetica", "bold");
         doc.setFontSize(18);
         doc.text("Receipt", 105, 20, null, null, "center");
-
         doc.setFontSize(12);
         doc.setFont("helvetica", "normal");
-
         let yOffset = 30;
-
         // Draw border
         doc.setLineWidth(0.5);
         doc.rect(10, 10, 190, 140); // Adjust height dynamically
-
         // Table Header
         doc.setFont("helvetica", "bold");
         doc.setFillColor(200, 200, 200); // Light gray background
         doc.rect(14, yOffset, 182, 8, "F"); // Header row
         doc.text("Receipt Details", 105, yOffset + 5, null, null, "center");
-
         yOffset += 20;
-
         // Table Content
         doc.setFont("helvetica", "normal");
-
         const tableData = [
             ["Receipt ID", transaction.id],
             ["Full Name", transaction.userFullname],
@@ -86,42 +79,34 @@ const Transactiondata = ({ data }) => {
             ["Total Amount", `$${transaction.quantity * transaction.marketPrice}`],
             ["Purchased Date", formatDate(transaction.createdAt)]
         ];
-
         tableData.forEach(([label, value]) => {
             doc.text(`${label}:`, 20, yOffset);
             doc.text(`${value}`, 100, yOffset);
             yOffset += 10;
         });
-
         yOffset += 10;
-
         // Footer
         doc.setFont("helvetica", "italic");
         doc.setFontSize(10);
         doc.text("Thank you for your business!", 105, yOffset, null, null, "center");
-
         // Save the PDF
         doc.save(`${transaction.id}_transaction_receipt.pdf`);
     };
-
     // Filter transactions based on search and selectedDate
     const filteredTransactions = transactions.filter((transaction) => {
         const matchesSearch = 
             transaction.id.toLowerCase().includes(search.toLowerCase()) ||
             transaction.userFullname.toLowerCase().includes(search.toLowerCase());
-
         // If selectedDate is provided, check if the transaction's date matches
         const matchesDate = selectedDate
             ? formatToDateString(transaction.createdAt) === selectedDate
             : true;
-
         return matchesSearch && matchesDate;
     });
 
     return (
         <div className="p-6 dark:bg-gray-900 dark:text-white">
             <h2 className="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-white">Transactions</h2>
-            
             {/* Search & Date Inputs */}
             <div className="mb-6 flex flex-col sm:flex-row gap-4 justify-center items-center">
                 <input
@@ -139,7 +124,6 @@ const Transactiondata = ({ data }) => {
                 />
                 <Requestdata agencydata={data} />
             </div>
-
             {/* Mobile View - Cards */}
             <div className="grid grid-cols-1 md:hidden gap-4 max-h-[500px] overflow-y-auto scrollbar-hide">
 
@@ -165,7 +149,6 @@ const Transactiondata = ({ data }) => {
                     <p className=" text-center font-bold text-red-500 p-4 bg-gray-200 dark:bg-gray-800 rounded-lg">No Transaction Available</p>
                 )}
     </div>
-
             {/* Desktop View - Table */}
             <div className="hidden md:block overflow-x-auto max-h-[500px] overflow-y-auto scrollbar-hide">
                 <table className="min-w-full rounded-lg overflow-hidden">
