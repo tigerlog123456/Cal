@@ -105,7 +105,7 @@ const GetPT = (data) => {
   };
 
   return (
-    <div className={`p-6 dark:bg-gray-900 dark:text-white bg-white text-gray-900`}>
+    <div className={`p-6 rounded-lg dark:bg-gray-900 dark:text-white bg-white text-gray-900`}>
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-bold text-center dark:text-white">
           Personal Sessions

@@ -101,6 +101,7 @@ const Market = ({ data }) => {
             <label className="block text-sm font-medium mb-2">Name</label>
             <input
               type="text"
+              maxLength={40}
               name="name"
               value={formData.name}
               onChange={handleInputChange}
@@ -113,6 +114,7 @@ const Market = ({ data }) => {
             <label className="block text-sm font-medium mb-2">Description</label>
             <textarea
               name="description"
+              maxLength={100}
               value={formData.description}
               onChange={handleInputChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:text-white"

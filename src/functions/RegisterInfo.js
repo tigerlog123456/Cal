@@ -44,10 +44,12 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                         <div className="flex items-center w-full">
                             <input
                                 type="text"
+                                maxLength={25}
                                 placeholder="Full Name"
                                 value={Fullname}
                                 onChange={(e) => setFullname(e.target.value)}
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
                             />
                         </div>
                         <div className="flex items-center w-full">
@@ -55,45 +57,55 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                                 type="number"
                                 placeholder="Age"
                                 value={age}
-                                min={10}
+                                min={16}
                                 onChange={(e) => setAge(e.target.value)}
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
                             />
                         </div>
                         <div className="flex items-center w-full">
                             <input
                                 type="number"
+                                min={20}
                                 value={weight}
                                 placeholder="Weight"
                                 onChange={(e) => setWeight(e.target.value)}
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
+                                
                             />
                         </div>
                         <div className="flex items-center w-full">                 
                             <input
                                 type="number"
+                                min={20}
                                 placeholder="Height"
                                 value={height}
                                 onChange={(e) => setHeight(e.target.value)}
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
                             />
                         </div>
                         <div className="flex items-center w-full">
                             <input
                                 type="number"
+                                min={20}
                                 value={targetweight}
                                 placeholder="Target Weight"
                                 onChange={(e) => setTargetweight(e.target.value)}
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
                             />
                         </div>
                         <div className="flex items-center w-full">
                             <input
                                 type="text"
+                                maxLength={50}
                                 value={health}
                                 placeholder="Health Condition"
                                 onChange={(e) => setHealth(e.target.value)}
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
                             />
                         </div>
                     </div>
@@ -104,45 +116,56 @@ const Registerinfo = ({ setusertype, registerdata }) => {
                         <div className="flex items-center w-full">
                             <input
                                 type="text"
+                                maxLength={20}
                                 value={agencyname}
                                 placeholder="Agency Name"
                                 onChange={(e) => setAgencyname(e.target.value)}
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
                             />
                         </div>
                         <div className="flex items-center w-full">                      
                             <input
                                 type="text"
+                                maxLength={25}
                                 value={ownername}
                                 placeholder="Owner Name"
                                 onChange={(e) => setOwnername(e.target.value)}
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
                             />
                         </div>
                         <div className="flex items-center w-full">                      
                             <input
                                 type="text"
+                                minLength={8}
+                                maxLength={12}
                                 value={phonenumber}
                                 placeholder="Phone Number"
                                 onChange={(e) => setPhonenumber(e.target.value)}
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
                             />
                         </div>
                         <div className="flex items-center w-full">                        
                             <input
                                 type="text"
+                                maxLength={40}
                                 value={location}
                                 placeholder="Location"
                                 onChange={(e) => setLocation(e.target.value)}
                                 className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
                             />
                         </div>
                         <div className="flex items-center w-full">
                             <input
                                 type="number"
+                                min={1}
                                 placeholder="Price"
                                 onChange={(e) => setPrice(e.target.value)}
-                              className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                required
                             />
                         </div>
                     </div>

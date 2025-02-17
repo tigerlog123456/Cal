@@ -11,7 +11,7 @@ const Addrecentdata = ({ data, onDataAdded, darkMode }) => {
   const [caloriesNeeded, setCaloriesNeeded] = useState(0);
   const calculation = async () => {
     const validateInputs = () => {
-      if (steps < 10 || todayWeight < 10 || water < 0) {
+      if (steps < 5 || todayWeight < 5 || water < 1) {
         return false;
       }
       return true;
@@ -46,7 +46,7 @@ const Addrecentdata = ({ data, onDataAdded, darkMode }) => {
   useEffect(() => {}, [caloriesBurned, caloriesNeeded]);
 
   return (
-    <div className={` flex flex-col justify-betwwen p-6 shadow-lg rounded-lg max-w-md mx-auto dark:bg-gray-900 dark:text-white  bg-white text-gray-800`}>
+    <div className={` flex flex-col justify-around p-6 shadow-lg rounded-lg max-w-1/2  dark:bg-gray-900 dark:text-white  bg-white text-gray-800`}>
       <h1 className="text-2xl font-bold mb-4">Daily Data</h1>
       <div className="space-y-4">
         <div>

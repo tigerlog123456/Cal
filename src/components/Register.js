@@ -116,6 +116,7 @@ const RegisterComponent = ({ onLoginClick, darkMode }) => {
                     <div className="flex flex-col justify-center space-y-4">
                         {/* Email Input */}
                         <input
+                            maxLength={50}
                             type="email"
                             placeholder="Email"
                             className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
@@ -125,6 +126,8 @@ const RegisterComponent = ({ onLoginClick, darkMode }) => {
 
                         {/* Password Input */}
                         <input
+                            maxLength={30}
+                            minLength={8}
                             type="password"
                             placeholder="Password"
                             className="w-full p-3 rounded-lg border-2 border-gray-300 focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"

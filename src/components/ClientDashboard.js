@@ -20,7 +20,7 @@ const ClientDashboard = ({ data }) => {
     <div className="bg-gray-50 dark:bg-gray-800 min-h-screen h-full pt-20 dark:text-white">
         <>
           {/* Welcome Section */}
-          <div className="text-center mt-10 mb-8">
+          <div className="text-center mt-6 mb-6">
             <h2 className="text-3xl font-bold text-gray-800 dark:text-white">
               Welcome, {data.fullName}
             </h2>
@@ -32,16 +32,18 @@ const ClientDashboard = ({ data }) => {
           </div>
 
           {/* Add Recent Data */}
-          <div className="max-w-4xl mx-auto px-4 mb-10">
+          <div className="max-w-full mx-auto px-4 mb-10 flex flex-col md:flex-row gap-4 justify-center">
+
             <Addrecentdata data={data} onDataAdded={handleDataAdded}  />
+            <Getrecentdata data={data} key={`recent-${refreshKey}`} Setrecent={setrecent} />
           </div>
 
           {/* Get Recent Data */}
           <div className="max-w-4xl mx-auto px-4">
-            <Getrecentdata data={data} key={`recent-${refreshKey}`} Setrecent={setrecent} />
+            
           </div>
           {data && data.agencyId && (
-            <div className="max-w-4xl mx-auto px-4 mt-10">
+            <div className="max-w-4xl mx-auto px-4 mt-6">
             <GetPT data={data}/>
            <Marketdata data={data}/>
           </div>

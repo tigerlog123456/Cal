@@ -130,6 +130,7 @@ const PT = (data) => {
           <div className="space-y-3 sm:space-y-4">
             <input
               type="text"
+              maxLength={30}
               name="name"
               placeholder="Name"
               value={newSession.name}
@@ -147,6 +148,7 @@ const PT = (data) => {
             />
             <input
               type="number"
+              min={1}
               name="duration"
               placeholder="Duration"
               value={newSession.duration}
@@ -157,6 +159,7 @@ const PT = (data) => {
             <input
               type="number"
               name="price"
+              min={1}
               placeholder="Price"
               value={newSession.price}
               onChange={handleInputChange}
@@ -165,6 +168,7 @@ const PT = (data) => {
             />
             <input
               type="number"
+              min={1}
               name="capacity"
               placeholder="Capacity"
               value={newSession.capacity}
@@ -172,11 +176,12 @@ const PT = (data) => {
               className="w-full p-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               required
             />
-            <button
+            <Button
+              variant='contained'
               type="submit"
               className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-300">
               Submit
-            </button>
+            </Button>
           </div>
         </form>
       )}

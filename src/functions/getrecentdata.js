@@ -45,7 +45,7 @@ const Getrecentdata = ({ data, refreshKey, Setrecent }) => {
     fetchdata();
   }, [data, refreshKey]);
   return (
-    <div className={`p-6 rounded-lg max-w-4xl mx-auto dark:bg-gray-900 bg-white shadow-lg`}>
+    <div className={`p-6 rounded-lg max-w-xl md:max-w-full  dark:bg-gray-900 bg-white shadow-lg`}>
     <h1 className={`font-bold text-2xl mb-6 dark:text-white text-gray-800`}>Recent Data</h1>
     {recentdata.length > 0 ? (
       <div className={`overflow-y-auto max-h-96 border rounded-lg scrollbar-thin dark:border-gray-700 dark:scrollbar-thumb-gray-600 dark:scrollbar-track-gray-800 border-gray-200 scrollbar-thumb-gray-400 scrollbar-track-gray-100 dark:bg-gray-900 bg-gray-200`}>

@@ -77,6 +77,7 @@ const Profile = ({ data }) => {
                         }
                         </label>
                         <input
+                            maxLength={50}
                             key={key}
                             name={key}
                             value={formData[key]}

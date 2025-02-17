@@ -52,14 +52,14 @@ const Marketdata = ({ data }) => {
   };
 
   return (
-    <div className="p-6 mt-8 max-w-5xl mx-auto">
-    <h1 className="text-2xl font-semibold text-center text-gray-900 dark:text-white mb-6">Market Products</h1>
-    <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div className="p-6 mt-4 max-w-5xl mx-auto">
+    <h1 className="text-2xl font-semibold text-center bg-white dark:bg-gray-900 p-2 rounded-lg text-gray-900 dark:text-white mb-6">Market Products</h1>
+    <div className="grid  grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 bg-gray-100 dark:bg-gray-900 p-2 rounded-lg">
       {(marketData && marketData.length > 0 ) ? (
         marketData.map((item) => (
           <div
             key={item.id}
-            className="bg-white shadow-lg  rounded-lg overflow-hidden dark:bg-gray-900 dark:text-white transition-transform hover:scale-105 hover:shadow-xl transform"
+            className="bg-white shadow-lg  rounded-lg overflow-hidden dark:bg-gray-800 dark:text-white transition-transform hover:scale-105 hover:shadow-xl transform"
           >
             {item.picture && (
               <img
